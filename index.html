@@ -190,7 +190,7 @@ function T(headers,rows,hl=-1){
       if(c==='Alta')cls=' class="warn"';
       if(c==='Confirmado')cls=' class="ok"';
       if(c==='Crítico — sem patches')cls=' class="warn"';
-      if(c==='Fracassada (2023–25)')cls=' class="warn"';
+      if(c==='Em Espera')cls=' class="warn"';
       return `<td${cls}>${disp}</td>`;
     }).join('');
     return `<tr>${tds}</tr>`;
@@ -252,7 +252,7 @@ function vContexto(){return `<style>${BASE}</style><div class="view">
 <p class="body">O Instituto Oswaldo Cruz opera sua presença digital em um sistema construído sobre o <strong>Drupal 7</strong>. O desenvolvimento teve início em 2012 e o sistema foi entregue em 2022. Em janeiro de 2025, a plataforma atingiu o fim oficial do ciclo de suporte — sem perspectiva de novos patches de segurança.</p>
 ${N('Declaração do problema: O IOC opera uma plataforma digital tecnicamente obsoleta e fora de suporte, que representa risco crescente de segurança, impede a evolução dos serviços digitais institucionais e impossibilita conformidade com LGPD e padrões de acessibilidade obrigatórios para entidades públicas federais.','warn','alertTriangle')}
 <h2 class="sec">1.2 Por Que Esta Iniciativa É Urgente Agora</h2>
-${BL(['Drupal 7 <strong>sem suporte de segurança desde janeiro de 2025</strong> — vulnerabilidades descobertas daqui em diante não terão correção oficial','A tentativa anterior de migração para Drupal 10 (2023–2025) foi <strong>encerrada sem entrega</strong>, exigindo nova abordagem com tecnologia diferente','Conformidade com LGPD e padrões eMAG/WCAG é obrigação legal — não pode ser adiada indefinidamente','O crescimento digital do IOC (novos cursos, materiais educativos, coleções, laboratórios) está travado pelas limitações do sistema atual'])}
+${BL(['Drupal 7 <strong>sem suporte de segurança desde janeiro de 2025</strong> — vulnerabilidades descobertas daqui em diante não terão correção oficial','A tentativa anterior de migração para Drupal 10 foi <strong>encerrada sem entrega</strong>','Conformidade com LGPD e padrões eMAG/WCAG é obrigação legal — não pode ser adiada indefinidamente','O crescimento digital do IOC (novos cursos, materiais educativos, coleções, laboratórios) está travado pelas limitações do sistema atual'])}
 <h2 class="sec">1.3 O Portal como Plataforma Multi-Departamento</h2>
 <p class="body">O IOC não é um site institucional simples — é um portal que serve múltiplas diretorias e áreas com públicos, conteúdos e necessidades distintas:</p>
 ${T(['Área','Diretoria Responsável','Conteúdos e Serviços'],[
@@ -274,7 +274,7 @@ function vDiagnostico(){return `<style>${BASE}</style><div class="view">
   <div class="card c-warn"><div class="card-lbl">Problema 1</div><div class="ct">${svg('shieldOff',16)} Sistema Fora de Suporte (EOL)</div><div class="cb">Drupal 7 encerrou suporte oficial em janeiro de 2025. Vulnerabilidades descobertas a partir de agora não terão patch, expondo dados institucionais e serviços públicos a risco crescente e sem solução.</div></div>
   <div class="card c-warn"><div class="card-lbl">Problema 2</div><div class="ct">${svg('wrench',16)} Débito Técnico (2012–2022)</div><div class="cb">Customizações extensas fora do padrão Drupal: módulos desatualizados, gambiarras e código sem documentação. Qualquer alteração tem risco alto de quebrar funcionalidades existentes.</div></div>
   <div class="card c-warn"><div class="card-lbl">Problema 3</div><div class="ct">${svg('refreshCw',16)} Migração = Reescrita Total</div><div class="cb">Não existe caminho de atualização incremental do Drupal 7 para versões superiores. O sistema precisa ser reconstruído do zero — isso nivela o custo com qualquer outra tecnologia moderna.</div></div>
-  <div class="card c-warn"><div class="card-lbl">Problema 4</div><div class="ct">${svg('xCircle',16)} Tentativa Anterior Fracassada</div><div class="cb">Projeto de migração para Drupal 10 iniciado em 2023 foi encerrado em 2025 sem entrega. Evidência concreta de que repetir a mesma abordagem tende a produzir o mesmo resultado.</div></div>
+  <div class="card c-warn"><div class="card-lbl">Problema 4</div><div class="ct">${svg('xCircle',16)} Tentativa Anterior Fracassada</div><div class="cb">Projeto de migração para Drupal 10 iniciado foi encerrado em 2025 sem entrega.</div></div>
   <div class="card c-warn"><div class="card-lbl">Problema 5</div><div class="ct">${svg('user',16)} Dependência de Pessoa-Chave</div><div class="cb">O conhecimento do sistema está concentrado em poucos profissionais. O TI não dispõe de especialistas disponíveis — risco independente da tecnologia escolhida.</div></div>
   <div class="card c-warn"><div class="card-lbl">Problema 6</div><div class="ct">${svg('scale',16)} Risco Institucional e Legal</div><div class="cb">Portal de instituição científica federal. Falhas de segurança, disponibilidade ou acessibilidade têm impacto reputacional direto e potencial legal (LGPD, eMAG/WCAG).</div></div>
 </div></div>`;}
@@ -331,7 +331,7 @@ ${T(['Critério','Drupal 7','Drupal 10/11','Laravel','WordPress'],[
   ['Integração com sistemas Fiocruz','Difícil','Moderada','Alta (API nativa)','Moderada'],
   ['Suporte infraestrutura TI','Sim (atual)','Provável','Confirmado','Sim'],
   ['Conformidade eMAG / WCAG','Parcial','Alta','Alta','Alta'],
-  ['Tentativa anterior no IOC','Sistema atual','Fracassada (2023–25)','—','—'],
+  ['Tentativa anterior no IOC','Sistema atual','Em espera','—','—'],
   ['Recomendação','❌ Inviável','⚠️ Alternativa','✅ Recomendada','⚠️ Alternativa'],
 ],3)}
 <h2 class="sec">Por Que Laravel?</h2>
