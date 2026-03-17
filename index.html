@@ -8,1244 +8,540 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --brand:   #1A5276;
-    --accent:  #2E86C1;
-    --light:   #D6EAF8;
-    --ok:      #1E8449;
-    --ok-bg:   #D5F5E3;
-    --warn:    #D35400;
-    --warn-bg: #FDEBD0;
-    --gold:    #7D6608;
-    --gold-bg: #FEF9E7;
-    --purple:  #6C3483;
-    --purp-bg: #F4ECF7;
-    --teal:    #0E6655;
-    --teal-bg: #D1F2EB;
-    --grey:    #F2F3F4;
-    --mid:     #BDC3C7;
-    --dark:    #1C2833;
-    --text:    #2C3E50;
-    --muted:   #7F8C8D;
-    --white:   #FFFFFF;
-    --surface: #FAFBFC;
-
-    --nav-h: 64px;
-    --font-display: 'Syne', sans-serif;
-    --font-body: 'DM Sans', sans-serif;
-    --font-mono: 'DM Mono', monospace;
-
-    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-    --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: var(--font-body);
-    font-size: 15px;
-    line-height: 1.6;
-    color: var(--text);
-    background: var(--surface);
-    overflow-x: hidden;
-  }
-
-  /* ── NAV ────────────────────────────────────────────────────────────────── */
-  #app-nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: var(--nav-h);
-    background: rgba(26, 82, 118, 0.97);
-    backdrop-filter: blur(12px);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    padding: 0 24px;
-    gap: 0;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    box-shadow: 0 2px 20px rgba(0,0,0,0.18);
-  }
-
-  .nav-logo {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 13px;
-    color: #fff;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    padding-right: 24px;
-    border-right: 1px solid rgba(255,255,255,0.18);
-    margin-right: 8px;
-    line-height: 1.2;
-  }
-  .nav-logo span {
-    display: block;
-    font-weight: 400;
-    font-size: 10px;
-    opacity: 0.6;
-    letter-spacing: 0.12em;
-    margin-top: 2px;
-  }
-
-  .nav-items {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    overflow-x: auto;
-    flex: 1;
-    scrollbar-width: none;
-    padding: 0 8px;
-  }
-  .nav-items::-webkit-scrollbar { display: none; }
-
-  .nav-btn {
-    font-family: var(--font-body);
-    font-size: 12px;
-    font-weight: 500;
-    color: rgba(255,255,255,0.65);
-    background: none;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.18s ease;
-    letter-spacing: 0.01em;
-  }
-  .nav-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
-  .nav-btn.active {
-    color: #fff;
-    background: rgba(255,255,255,0.15);
-    font-weight: 600;
-  }
-
-  .nav-dl {
-    margin-left: auto;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding-left: 16px;
-    border-left: 1px solid rgba(255,255,255,0.15);
-  }
-
-  .btn-download {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--brand);
-    background: #fff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    transition: all 0.18s ease;
-    white-space: nowrap;
-  }
-  .btn-download:hover { background: var(--light); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-  .btn-download svg { flex-shrink: 0; }
-
-  /* ── MAIN ───────────────────────────────────────────────────────────────── */
-  #app-main {
-    padding-top: var(--nav-h);
-    min-height: 100vh;
-  }
-
-  /* ── SHADOW HOST ────────────────────────────────────────────────────────── */
-  .view-host {
-    display: none;
-    animation: fadeSlideIn 0.4s var(--ease-out) both;
-  }
-  .view-host.active { display: block; }
-
-  @keyframes fadeSlideIn {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── SHARED VIEW STYLES (injected into shadow roots) ───────────────────── */
-  /* These are base styles reused in every shadow root */
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  :root{--brand:#1A5276;--accent:#2E86C1;--light:#D6EAF8;--ok:#1E8449;--ok-bg:#D5F5E3;--warn:#D35400;--warn-bg:#FDEBD0;--gold:#7D6608;--gold-bg:#FEF9E7;--purple:#6C3483;--purp-bg:#F4ECF7;--teal:#0E6655;--teal-bg:#D1F2EB;--grey:#F2F3F4;--dark:#1C2833;--text:#2C3E50;--muted:#7F8C8D;--surface:#FAFBFC;--nav-h:64px;--ease-out:cubic-bezier(0.16,1,0.3,1);}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;color:var(--text);background:var(--surface);overflow-x:hidden;}
+  #app-nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(26,82,118,0.97);backdrop-filter:blur(12px);z-index:1000;display:flex;align-items:center;padding:0 24px;border-bottom:1px solid rgba(255,255,255,0.08);box-shadow:0 2px 20px rgba(0,0,0,0.18);}
+  .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:13px;color:#fff;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;padding-right:24px;border-right:1px solid rgba(255,255,255,0.18);margin-right:8px;line-height:1.2;}
+  .nav-logo span{display:block;font-weight:400;font-size:10px;opacity:0.6;letter-spacing:0.12em;margin-top:2px;}
+  .nav-items{display:flex;align-items:center;gap:2px;overflow-x:auto;flex:1;scrollbar-width:none;padding:0 8px;}
+  .nav-items::-webkit-scrollbar{display:none;}
+  .nav-btn{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:rgba(255,255,255,0.65);background:none;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;white-space:nowrap;transition:all 0.18s ease;}
+  .nav-btn:hover{color:#fff;background:rgba(255,255,255,0.1);}
+  .nav-btn.active{color:#fff;background:rgba(255,255,255,0.15);font-weight:600;}
+  .nav-dl{margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:8px;padding-left:16px;border-left:1px solid rgba(255,255,255,0.15);}
+  .btn-download{font-family:'Syne',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--brand);background:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:7px;transition:all 0.18s ease;white-space:nowrap;}
+  .btn-download:hover{background:var(--light);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+  .btn-download svg{width:14px;height:14px;}
+  #app-main{padding-top:var(--nav-h);min-height:100vh;}
+  .view-host{display:none;animation:fadeSlideIn 0.4s var(--ease-out) both;}
+  .view-host.active{display:block;}
+  @keyframes fadeSlideIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
-
 <nav id="app-nav">
   <div class="nav-logo">IOC/Fiocruz<span>PRD · Nova Plataforma Digital</span></div>
   <div class="nav-items" id="nav-items"></div>
   <div class="nav-dl">
     <a class="btn-download" href="./prd-plataforma-ioc-laravel.pdf" download>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       Baixar PRD
     </a>
   </div>
 </nav>
-
-<main id="app-main" role="main"></main>
-
+<main id="app-main"></main>
 <script>
-// ═══════════════════════════════════════════════════════════════════════════════
-// SHARED SHADOW STYLES
-// ═══════════════════════════════════════════════════════════════════════════════
-const SHADOW_BASE = `
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap');
+// ── SVG icons (Lucide-style, all 24x24 viewBox) ──────────────────────────────
+const IC={
+  alertTriangle:`<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>`,
+  info:`<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>`,
+  checkCircle:`<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>`,
+  check:`<polyline points="20 6 9 17 4 12"/>`,
+  star:`<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>`,
+  calendar:`<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>`,
+  target:`<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>`,
+  download:`<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>`,
+  edit:`<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>`,
+  barChart:`<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>`,
+  settings:`<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>`,
+  microscope:`<path d="M6 18h8"/><path d="M3 22h18"/><path d="M14 22a7 7 0 1 0 0-14h-1"/><path d="M9 14h2"/><path d="M9 12a2 2 0 0 1-2-2V6l3-3 3 3v4a2 2 0 0 1-2 2z"/>`,
+  globe:`<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>`,
+  graduationCap:`<path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>`,
+  handshake:`<path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"/>`,
+  shieldOff:`<path d="M19.69 14a6.9 6.9 0 0 0 .31-2V5l-8-3-3.16 1.18"/><path d="M4.73 4.73L4 5v7c0 6 8 10 8 10a20.29 20.29 0 0 0 5.62-4.38"/><line x1="1" y1="1" x2="23" y2="23"/>`,
+  wrench:`<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>`,
+  refreshCw:`<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>`,
+  xCircle:`<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>`,
+  user:`<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>`,
+  scale:`<line x1="12" y1="3" x2="12" y2="21"/><path d="M3 6l9 6 9-6"/><path d="M6 12H3l3 6h0a3 3 0 0 0 6 0l3-6H12"/><path d="M18 12h3l-3 6h0a3 3 0 0 1-6 0l-3-6h3"/>`,
+  skull:`<circle cx="12" cy="8" r="5"/><path d="M8 15h8l1 6H7z"/><line x1="9" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="15" y2="12"/>`,
+  zap:`<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>`,
+  fileText:`<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>`,
+  users:`<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>`,
+  layers:`<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>`,
+  plugZap:`<path d="M6.3 20.3a2.4 2.4 0 0 0 3.4 0L12 18l-6-6-2.3 2.3a2.4 2.4 0 0 0 0 3.4z"/><line x1="2" y1="22" x2="6" y2="18"/><line x1="18" y1="2" x2="22" y2="2"/><line x1="18" y1="8" x2="22" y2="8"/><line x1="20" y1="5" x2="20" y2="0"/>`,
+  container:`<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/>`,
+  testTube:`<path d="M9 3 5 21"/><path d="M15 3l4 18"/><path d="M4 12h16"/>`,
+  clock:`<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>`,
+  lock:`<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>`,
+  key:`<path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>`,
+  link:`<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>`,
+  pieChart:`<path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/>`,
+  database:`<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>`,
+  bot:`<rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/>`,
+};
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+function svg(name,size=18,color='currentColor'){
+  const d=IC[name]||'';
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+}
 
-  :host {
-    --brand:   #1A5276;
-    --accent:  #2E86C1;
-    --light:   #D6EAF8;
-    --ok:      #1E8449;
-    --ok-bg:   #D5F5E3;
-    --warn:    #D35400;
-    --warn-bg: #FDEBD0;
-    --gold:    #7D6608;
-    --gold-bg: #FEF9E7;
-    --purple:  #6C3483;
-    --purp-bg: #F4ECF7;
-    --teal:    #0E6655;
-    --teal-bg: #D1F2EB;
-    --grey:    #F2F3F4;
-    --mid:     #BDC3C7;
-    --dark:    #1C2833;
-    --text:    #2C3E50;
-    --muted:   #7F8C8D;
-    --white:   #FFFFFF;
-    --surface: #FAFBFC;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    color: var(--text);
-  }
-
-  .view { max-width: 960px; margin: 0 auto; padding: 48px 32px 80px; }
-
-  .section-tag {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--accent); background: var(--light);
-    padding: 4px 12px; border-radius: 20px; margin-bottom: 16px;
-  }
-
-  h1.view-title {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(28px, 4vw, 44px); font-weight: 800;
-    color: var(--brand); line-height: 1.1;
-    margin-bottom: 8px; letter-spacing: -0.02em;
-  }
-  h1.view-title em { font-style: normal; color: var(--accent); }
-
-  .subtitle {
-    font-size: 16px; color: var(--muted); font-weight: 300;
-    margin-bottom: 40px; max-width: 600px; line-height: 1.6;
-  }
-
-  h2.sec {
-    font-family: 'Syne', sans-serif;
-    font-size: 20px; font-weight: 700; color: var(--brand);
-    margin: 40px 0 16px; padding-bottom: 8px;
-    border-bottom: 2px solid var(--light);
-    letter-spacing: -0.01em;
-  }
-  h2.sec:first-of-type { margin-top: 0; }
-
-  h3.sub {
-    font-family: 'Syne', sans-serif;
-    font-size: 15px; font-weight: 700; color: var(--accent);
-    margin: 28px 0 10px;
-  }
-
-  p.body { font-size: 14.5px; line-height: 1.75; color: var(--text); margin-bottom: 12px; }
-
-  .note {
-    display: flex; gap: 12px; align-items: flex-start;
-    padding: 14px 16px; border-radius: 8px;
-    margin: 20px 0; font-size: 13.5px; line-height: 1.65;
-  }
-  .note.warn  { background: var(--warn-bg); border-left: 4px solid var(--warn); }
-  .note.ok    { background: var(--ok-bg);   border-left: 4px solid var(--ok); }
-  .note.info  { background: var(--light);   border-left: 4px solid var(--accent); }
-  .note.gold  { background: var(--gold-bg); border-left: 4px solid var(--gold); }
-  .note-icon  { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-  .note-text  { flex: 1; }
-
-  /* Tables */
-  .tbl-wrap { overflow-x: auto; margin: 16px 0 28px; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
-  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-  th {
-    background: var(--brand); color: #fff;
-    font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 600;
-    letter-spacing: 0.04em; text-transform: uppercase;
-    padding: 10px 14px; text-align: left;
-  }
-  th:first-child { border-radius: 10px 0 0 0; }
-  th:last-child  { border-radius: 0 10px 0 0; }
-  td { padding: 10px 14px; vertical-align: top; border-bottom: 1px solid #eef0f2; line-height: 1.55; }
-  tr:last-child td { border-bottom: none; }
-  tr:nth-child(even) td { background: var(--grey); }
-  tr:hover td { background: var(--light) !important; transition: background 0.15s; }
-  .td-ok   { color: var(--ok);   font-weight: 600; }
-  .td-warn { color: var(--warn); font-weight: 600; }
-  .td-accent { color: var(--accent); font-weight: 600; }
-  .td-rec-ok   { color: var(--ok); font-weight: 700; }
-  .td-rec-no   { color: var(--warn); font-weight: 700; }
-  .td-rec-alt  { color: var(--gold); font-weight: 700; }
-  .td-hl { background: var(--ok-bg) !important; }
-  .td-crit { background: var(--warn-bg) !important; }
-  .badge {
-    display: inline-block; padding: 2px 8px; border-radius: 12px;
-    font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
-  }
-  .badge-p1 { background: var(--ok-bg);   color: var(--ok); }
-  .badge-p2 { background: var(--light);   color: var(--accent); }
-  .badge-p3 { background: var(--grey);    color: var(--brand); }
-  .badge-p4 { background: #f0f0f0;        color: var(--muted); }
-
-  /* Cards */
-  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin: 20px 0; }
-  .card {
-    background: #fff; border: 1px solid #e8ecf0;
-    border-radius: 12px; padding: 20px;
-    transition: box-shadow 0.2s, transform 0.2s;
-  }
-  .card:hover { box-shadow: 0 6px 24px rgba(26,82,118,0.1); transform: translateY(-2px); }
-  .card-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 6px;
-  }
-  .card-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--brand); margin-bottom: 8px; }
-  .card-body  { font-size: 13px; color: var(--muted); line-height: 1.6; }
-  .card-accent { border-top: 3px solid var(--accent); }
-  .card-ok     { border-top: 3px solid var(--ok); }
-  .card-warn   { border-top: 3px solid var(--warn); }
-  .card-gold   { border-top: 3px solid var(--gold); }
-  .card-purple { border-top: 3px solid var(--purple); }
-  .card-teal   { border-top: 3px solid var(--teal); }
-
-  /* Persona cards */
-  .persona-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin: 20px 0; }
-  .persona-card {
-    background: #fff; border: 1px solid #e8ecf0; border-radius: 12px;
-    padding: 20px; position: relative; overflow: hidden;
-    transition: box-shadow 0.2s, transform 0.2s;
-  }
-  .persona-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.1); transform: translateY(-2px); }
-  .persona-num {
-    position: absolute; top: 0; right: 0;
-    font-family: 'Syne', sans-serif; font-size: 48px; font-weight: 800;
-    opacity: 0.06; line-height: 1; color: var(--brand);
-    transform: translate(4px, -6px);
-  }
-  .persona-icon { font-size: 28px; margin-bottom: 10px; }
-  .persona-name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--brand); margin-bottom: 4px; }
-  .persona-who  { font-size: 12px; color: var(--muted); margin-bottom: 10px; font-style: italic; }
-  .persona-goal { font-size: 13px; color: var(--text); margin-bottom: 10px; line-height: 1.5; }
-  .persona-needs { font-size: 12px; color: var(--muted); line-height: 1.5; }
-  .persona-needs strong { color: var(--accent); font-weight: 600; }
-
-  /* Pills */
-  .pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
-  .pill {
-    font-size: 12px; padding: 4px 12px; border-radius: 20px;
-    background: var(--grey); color: var(--text); font-weight: 500;
-  }
-  .pill-ok     { background: var(--ok-bg);   color: var(--ok); }
-  .pill-warn   { background: var(--warn-bg); color: var(--warn); }
-  .pill-info   { background: var(--light);   color: var(--brand); }
-  .pill-purple { background: var(--purp-bg); color: var(--purple); }
-  .pill-teal   { background: var(--teal-bg); color: var(--teal); }
-  .pill-gold   { background: var(--gold-bg); color: var(--gold); }
-
-  /* Bullets */
-  ul.blist { list-style: none; padding: 0; margin: 12px 0; }
-  ul.blist li {
-    padding: 6px 0 6px 20px; position: relative;
-    font-size: 14px; line-height: 1.6; border-bottom: 1px solid #f0f2f4;
-  }
-  ul.blist li:last-child { border-bottom: none; }
-  ul.blist li::before {
-    content: ''; position: absolute; left: 0; top: 14px;
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--accent);
-  }
-
-  /* Phase timeline */
-  .timeline { margin: 24px 0; }
-  .tl-item {
-    display: grid; grid-template-columns: 100px 1fr;
-    gap: 0 24px; margin-bottom: 0; position: relative;
-  }
-  .tl-item::before {
-    content: ''; position: absolute;
-    left: 99px; top: 40px; bottom: -1px; width: 2px;
-    background: var(--light);
-  }
-  .tl-item:last-child::before { display: none; }
-  .tl-phase {
-    padding: 16px 0; text-align: right;
-    font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700;
-    color: var(--brand); letter-spacing: 0.04em; text-transform: uppercase;
-  }
-  .tl-phase span {
-    display: block; font-family: 'DM Mono', monospace;
-    font-size: 10px; font-weight: 400; color: var(--muted); margin-top: 2px;
-  }
-  .tl-dot {
-    position: absolute; left: 89px; top: 20px;
-    width: 20px; height: 20px; border-radius: 50%;
-    background: var(--accent); border: 3px solid #fff;
-    box-shadow: 0 0 0 2px var(--accent);
-  }
-  .tl-content {
-    padding: 16px 0 24px 24px;
-    border-left: 2px solid var(--light);
-    margin-left: 0;
-  }
-  .tl-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--brand); margin-bottom: 6px; }
-  .tl-desc  { font-size: 13px; color: var(--muted); line-height: 1.6; }
-  .tl-badge {
-    display: inline-block; margin-top: 8px; padding: 3px 10px; border-radius: 12px;
-    font-size: 11px; font-weight: 600; background: var(--ok-bg); color: var(--ok);
-  }
-
-  /* Divider */
-  .divider { border: none; border-top: 1px solid #e8ecf0; margin: 32px 0; }
-
-  /* Stat cards */
-  .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin: 24px 0; }
-  .stat {
-    background: #fff; border: 1px solid #e8ecf0; border-radius: 10px;
-    padding: 16px; text-align: center;
-  }
-  .stat-num {
-    font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800;
-    color: var(--brand); line-height: 1;
-  }
-  .stat-unit { font-size: 12px; color: var(--accent); font-weight: 600; margin-left: 2px; }
-  .stat-lbl  { font-size: 12px; color: var(--muted); margin-top: 4px; }
-
-  /* Future roadmap */
-  .roadmap { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
-  @media (max-width: 600px) { .roadmap { grid-template-columns: 1fr; } }
-  .rm-item {
-    background: #fff; border: 1px solid #e8ecf0; border-radius: 10px;
-    padding: 16px; display: flex; gap: 12px; align-items: flex-start;
-    transition: box-shadow 0.2s;
-  }
-  .rm-item:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
-  .rm-icon { font-size: 22px; flex-shrink: 0; }
-  .rm-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--brand); margin-bottom: 4px; }
-  .rm-desc  { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
-  .rm-tag   { font-size: 10px; color: var(--ok); background: var(--ok-bg); padding: 2px 8px; border-radius: 10px; display: inline-block; margin-top: 6px; font-weight: 600; }
+// ── Shared shadow CSS ─────────────────────────────────────────────────────────
+const BASE=`
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:host{--brand:#1A5276;--accent:#2E86C1;--light:#D6EAF8;--ok:#1E8449;--ok-bg:#D5F5E3;--warn:#D35400;--warn-bg:#FDEBD0;--gold:#7D6608;--gold-bg:#FEF9E7;--purple:#6C3483;--purp-bg:#F4ECF7;--teal:#0E6655;--teal-bg:#D1F2EB;--grey:#F2F3F4;--text:#2C3E50;--muted:#7F8C8D;--surface:#FAFBFC;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);}
+.view{max-width:960px;margin:0 auto;padding:48px 32px 80px;}
+.section-tag{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);background:var(--light);padding:4px 12px;border-radius:20px;margin-bottom:16px;}
+h1.vt{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,44px);font-weight:800;color:var(--brand);line-height:1.1;margin-bottom:8px;letter-spacing:-0.02em;}
+h1.vt em{font-style:normal;color:var(--accent);}
+.sub{font-size:16px;color:var(--muted);font-weight:300;margin-bottom:40px;max-width:600px;line-height:1.6;}
+h2.sec{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--brand);margin:40px 0 16px;padding-bottom:8px;border-bottom:2px solid var(--light);letter-spacing:-0.01em;}
+h2.sec:first-of-type{margin-top:0;}
+p.body{font-size:14.5px;line-height:1.75;color:var(--text);margin-bottom:12px;}
+.note{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:8px;margin:20px 0;font-size:13.5px;line-height:1.65;}
+.note.warn{background:var(--warn-bg);border-left:4px solid var(--warn);}
+.note.ok{background:var(--ok-bg);border-left:4px solid var(--ok);}
+.note.info{background:var(--light);border-left:4px solid var(--accent);}
+.note.gold{background:var(--gold-bg);border-left:4px solid var(--gold);}
+.ni{flex-shrink:0;display:flex;align-items:center;margin-top:1px;}
+.ni svg{width:18px;height:18px;}
+.note.warn .ni{color:var(--warn);}.note.ok .ni{color:var(--ok);}.note.info .ni{color:var(--accent);}.note.gold .ni{color:var(--gold);}
+.nt{flex:1;}
+.tw{overflow-x:auto;margin:16px 0 28px;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.07);}
+table{width:100%;border-collapse:collapse;font-size:13.5px;}
+th{background:var(--brand);color:#fff;font-family:'Syne',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:10px 14px;text-align:left;}
+th:first-child{border-radius:10px 0 0 0;}th:last-child{border-radius:0 10px 0 0;}
+td{padding:10px 14px;vertical-align:top;border-bottom:1px solid #eef0f2;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:nth-child(even) td{background:var(--grey);}
+tr:hover td{background:var(--light)!important;transition:background .15s;}
+.ok{color:var(--ok);font-weight:600;}.warn{color:var(--warn);font-weight:600;}.accent{color:var(--accent);font-weight:600;}
+.hl{background:var(--ok-bg)!important;}.crit{background:var(--warn-bg)!important;font-weight:700;color:var(--warn);}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin:20px 0;}
+.card{background:#fff;border:1px solid #e8ecf0;border-radius:12px;padding:20px;transition:box-shadow .2s,transform .2s;}
+.card:hover{box-shadow:0 6px 24px rgba(26,82,118,.1);transform:translateY(-2px);}
+.card-lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.ct{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--brand);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.ct svg{width:16px;height:16px;flex-shrink:0;}
+.cb{font-size:13px;color:var(--muted);line-height:1.6;}
+.c-ok{border-top:3px solid var(--ok);}.c-warn{border-top:3px solid var(--warn);}
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:20px 0;}
+.pc{background:#fff;border:1px solid #e8ecf0;border-radius:12px;padding:20px;position:relative;overflow:hidden;transition:box-shadow .2s,transform .2s;}
+.pc:hover{box-shadow:0 6px 24px rgba(0,0,0,.1);transform:translateY(-2px);}
+.pn{position:absolute;top:0;right:0;font-family:'Syne',sans-serif;font-size:48px;font-weight:800;opacity:.06;line-height:1;color:var(--brand);transform:translate(4px,-6px);}
+.pi{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
+.pi svg{width:20px;height:20px;}
+.pi-b{background:var(--light);color:var(--brand);}
+.pi-t{background:var(--teal-bg);color:var(--teal);}
+.pi-p{background:var(--purp-bg);color:var(--purple);}
+.pi-g{background:var(--gold-bg);color:var(--gold);}
+.pname{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--brand);margin-bottom:4px;}
+.pwho{font-size:12px;color:var(--muted);margin-bottom:10px;font-style:italic;}
+.pgoal{font-size:13px;color:var(--text);margin-bottom:10px;line-height:1.5;}
+.pneeds{font-size:12px;color:var(--muted);line-height:1.5;}
+.pneeds strong{color:var(--accent);font-weight:600;}
+ul.bl{list-style:none;padding:0;margin:12px 0;}
+ul.bl li{padding:6px 0 6px 20px;position:relative;font-size:14px;line-height:1.6;border-bottom:1px solid #f0f2f4;}
+ul.bl li:last-child{border-bottom:none;}
+ul.bl li::before{content:'';position:absolute;left:0;top:14px;width:6px;height:6px;border-radius:50%;background:var(--accent);}
+.tl{margin:24px 0;}
+.tli{display:grid;grid-template-columns:100px 1fr;gap:0 24px;position:relative;}
+.tli::before{content:'';position:absolute;left:99px;top:40px;bottom:-1px;width:2px;background:var(--light);}
+.tli:last-child::before{display:none;}
+.tlp{padding:16px 0;text-align:right;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--brand);letter-spacing:.04em;text-transform:uppercase;}
+.tlp span{display:block;font-family:'DM Mono',monospace;font-size:10px;font-weight:400;color:var(--muted);margin-top:2px;}
+.tld{position:absolute;left:89px;top:20px;width:20px;height:20px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:0 0 0 2px var(--accent);}
+.tlc{padding:16px 0 24px 24px;border-left:2px solid var(--light);}
+.tlt{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--brand);margin-bottom:6px;}
+.tld2{font-size:13px;color:var(--muted);line-height:1.6;}
+.tlb{display:inline-block;margin-top:8px;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;background:var(--ok-bg);color:var(--ok);}
+.div{border:none;border-top:1px solid #e8ecf0;margin:32px 0;}
+.rm{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+@media(max-width:600px){.rm{grid-template-columns:1fr;}}
+.rmi{background:#fff;border:1px solid #e8ecf0;border-radius:10px;padding:16px;display:flex;gap:12px;align-items:flex-start;transition:box-shadow .2s;}
+.rmi:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);}
+.rmic{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.rmic svg{width:18px;height:18px;}
+.rmic-b{background:var(--light);color:var(--brand);}
+.rmic-g{background:var(--gold-bg);color:var(--gold);}
+.rmt{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--brand);margin-bottom:4px;}
+.rmd{font-size:12.5px;color:var(--muted);line-height:1.55;}
+.rmtag{font-size:10px;color:var(--ok);background:var(--ok-bg);padding:2px 8px;border-radius:10px;display:inline-block;margin-top:6px;font-weight:600;}
 `;
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// VIEWS DATA
-// ═══════════════════════════════════════════════════════════════════════════════
-
-const VIEWS = [
-  { id: 'capa',        label: '0. Capa' },
-  { id: 'contexto',    label: '1. Contexto' },
-  { id: 'diagnostico', label: '2. Diagnóstico' },
-  { id: 'stakeholders',label: '3. Stakeholders' },
-  { id: 'opcoes',      label: '4. Opções' },
-  { id: 'personas',    label: '5. Personas' },
-  { id: 'jornadas',    label: '6. Jornadas' },
-  { id: 'escopo',      label: '7. Escopo' },
-  { id: 'requisitos',  label: '8. Requisitos' },
-  { id: 'roadmap',     label: '9. Roadmap' },
-  { id: 'proximos',    label: '10. Próximos Passos' },
-];
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// VIEW TEMPLATES
-// ═══════════════════════════════════════════════════════════════════════════════
-
-function tbl(headers, rows, hlCol = -1) {
-  const ths = headers.map(h => `<th>${h}</th>`).join('');
-  const trs = rows.map(r => {
-    const tds = r.map((c, i) => {
-      let cls = '';
-      if (i === hlCol) cls = ' class="td-hl"';
-      if (c === '✅ Recomendada') cls = ' class="td-rec-ok"';
-      if (c === '❌ Inviável')   cls = ' class="td-crit"';
-      if (c === '⚠️ Alternativa') cls = ` style="color:var(--gold);font-weight:700"`;
-      if (c === 'Alto')   cls = ' class="td-warn"';
-      if (c === 'Médio')  cls = ' class="td-accent"';
-      if (c === 'Baixo')  cls = ' class="td-ok"';
-      if (c === 'Alta')   cls = ' class="td-warn"';
-      if (c === 'Crítico — sem patches') cls = ' class="td-warn"';
-      if (c === 'Fracassada (2023–25)')  cls = ' class="td-warn"';
-      if (c === 'Confirmado') cls = ' class="td-ok"';
-      return `<td${cls}>${c}</td>`;
+function N(text,type='info',icon='info'){
+  return `<div class="note ${type}"><span class="ni">${svg(icon,18)}</span><span class="nt">${text}</span></div>`;
+}
+function T(headers,rows,hl=-1){
+  const ths=headers.map(h=>`<th>${h}</th>`).join('');
+  const trs=rows.map(r=>{
+    const tds=r.map((c,i)=>{
+      let cls='',disp=c;
+      if(i===hl)cls=' class="hl"';
+      if(c==='✅ Recomendada'){cls=' class="ok hl"';disp='Recomendada';}
+      if(c==='❌ Inviável'){cls=' class="crit"';disp='Inviável';}
+      if(c==='⚠️ Alternativa'){cls=' style="color:var(--gold);font-weight:700"';disp='Alternativa';}
+      if(c==='Alto')cls=' class="warn"';
+      if(c==='Médio')cls=' class="accent"';
+      if(c==='Baixo')cls=' class="ok"';
+      if(c==='Alta')cls=' class="warn"';
+      if(c==='Confirmado')cls=' class="ok"';
+      if(c==='Crítico — sem patches')cls=' class="warn"';
+      if(c==='Fracassada (2023–25)')cls=' class="warn"';
+      return `<td${cls}>${disp}</td>`;
     }).join('');
     return `<tr>${tds}</tr>`;
   }).join('');
-  return `<div class="tbl-wrap"><table><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table></div>`;
+  return `<div class="tw"><table><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table></div>`;
 }
+function BL(items){return `<ul class="bl">${items.map(i=>`<li>${i}</li>`).join('')}</ul>`;}
 
-function note(text, type = 'info', icon = 'ℹ️') {
-  return `<div class="note ${type}"><span class="note-icon">${icon}</span><span class="note-text">${text}</span></div>`;
-}
+// ── Views ─────────────────────────────────────────────────────────────────────
+function vCapa(){return `<style>${BASE}
+.hero{min-height:calc(100vh - 64px);display:flex;flex-direction:column;justify-content:center;padding:64px 32px;background:linear-gradient(135deg,#0d2d45 0%,#1A5276 50%,#1a6fa8 100%);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(46,134,193,.3) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(26,82,118,.4) 0%,transparent 40%);}
+.hg{position:absolute;inset:0;opacity:.04;background-image:linear-gradient(rgba(214,234,248,1) 1px,transparent 1px),linear-gradient(90deg,rgba(214,234,248,1) 1px,transparent 1px);background-size:48px 48px;}
+.hc{position:relative;max-width:900px;margin:0 auto;}
+.htag{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);background:rgba(255,255,255,.08);padding:6px 16px;border-radius:20px;margin-bottom:32px;border:1px solid rgba(255,255,255,.12);}
+.dot{width:7px;height:7px;border-radius:50%;background:#52BE80;animation:pulse 2s infinite;flex-shrink:0;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.htitle{font-family:'Syne',sans-serif;font-size:clamp(36px,6vw,72px);font-weight:800;color:#fff;line-height:1.0;letter-spacing:-.03em;margin-bottom:8px;}
+.htitle em{font-style:normal;color:#7EC8E3;display:block;font-size:.55em;font-weight:400;margin-bottom:8px;letter-spacing:0;}
+.hsub{font-size:clamp(15px,2vw,18px);color:rgba(255,255,255,.55);font-weight:300;margin:24px 0 48px;max-width:560px;line-height:1.7;}
+.hmeta{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:48px;}
+.mi{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:16px 20px;}
+.ml{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:4px;}
+.mv{font-family:'Syne',sans-serif;font-size:15px;font-weight:600;color:#fff;}
+.hcta{display:flex;gap:12px;flex-wrap:wrap;margin-top:40px;}
+.btn{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:12px 28px;border-radius:8px;cursor:pointer;border:none;transition:all .2s ease;}
+.btn-p{background:#fff;color:var(--brand);}.btn-p:hover{background:var(--light);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2);}
+.btn-s{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);}.btn-s:hover{background:rgba(255,255,255,.18);}
+.ub{margin-top:48px;padding:16px 20px;background:rgba(211,84,0,.15);border:1px solid rgba(211,84,0,.3);border-radius:10px;display:flex;align-items:center;gap:12px;font-size:13.5px;color:rgba(255,255,255,.85);max-width:640px;}
+.ub svg{flex-shrink:0;}
+</style>
+<section class="hero">
+<div class="hg"></div>
+<div class="hc">
+  <div class="htag"><span class="dot"></span>Product Requirements Document · Versão 5.0 · Março 2026</div>
+  <h1 class="htitle"><em>Instituto Oswaldo Cruz — IOC/Fiocruz</em>Nova Plataforma Digital</h1>
+  <p class="hsub">CMS Institucional em Laravel · Portal Multi-Departamento · Substituição do Drupal 7 · 9 meses de desenvolvimento</p>
+  <div class="hcta">
+    <button class="btn btn-p" onclick="document.querySelector('[data-view=contexto]').click()">Ver Contexto</button>
+    <button class="btn btn-s" onclick="document.querySelector('[data-view=opcoes]').click()">Análise de Opções</button>
+  </div>
+  <div class="hmeta">
+    <div class="mi"><div class="ml">Desenvolvedor</div><div class="mv">Matheus Fernandes Cunha</div></div>
+    <div class="mi"><div class="ml">Prazo</div><div class="mv">9 meses · 4 fases</div></div>
+    <div class="mi"><div class="ml">Stack</div><div class="mv">Laravel + Vue.js</div></div>
+    <div class="mi"><div class="ml">Personas</div><div class="mv">7 perfis de usuário</div></div>
+    <div class="mi"><div class="ml">Portal</div><div class="mv">Multi-departamento</div></div>
+    <div class="mi"><div class="ml">Status</div><div class="mv">Aprovação pendente</div></div>
+  </div>
+  <div class="ub">${svg('alertTriangle',20,'rgba(211,84,0,0.9)')}<span>Drupal 7 <strong>sem suporte de segurança desde janeiro de 2025</strong>. Cada dia sem migração é um dia de exposição a vulnerabilidades sem correção oficial.</span></div>
+</div>
+</section>`;}
 
-function bullets(items) {
-  return `<ul class="blist">${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
-}
+function vContexto(){return `<style>${BASE}</style><div class="view">
+<div class="section-tag">Seção 1</div>
+<h1 class="vt">Visão Geral<br><em>e Contexto</em></h1>
+<p class="sub">Antecedentes, urgência e estrutura multi-departamental do portal do IOC.</p>
+<h2 class="sec">1.1 Antecedentes</h2>
+<p class="body">O Instituto Oswaldo Cruz opera sua presença digital em um sistema construído sobre o <strong>Drupal 7</strong>. O desenvolvimento teve início em 2012 e o sistema foi entregue em 2022. Em janeiro de 2025, a plataforma atingiu o fim oficial do ciclo de suporte — sem perspectiva de novos patches de segurança.</p>
+${N('Declaração do problema: O IOC opera uma plataforma digital tecnicamente obsoleta e fora de suporte, que representa risco crescente de segurança, impede a evolução dos serviços digitais institucionais e impossibilita conformidade com LGPD e padrões de acessibilidade obrigatórios para entidades públicas federais.','warn','alertTriangle')}
+<h2 class="sec">1.2 Por Que Esta Iniciativa É Urgente Agora</h2>
+${BL(['Drupal 7 <strong>sem suporte de segurança desde janeiro de 2025</strong> — vulnerabilidades descobertas daqui em diante não terão correção oficial','A tentativa anterior de migração para Drupal 10 (2023–2025) foi <strong>encerrada sem entrega</strong>, exigindo nova abordagem com tecnologia diferente','Conformidade com LGPD e padrões eMAG/WCAG é obrigação legal — não pode ser adiada indefinidamente','O crescimento digital do IOC (novos cursos, materiais educativos, coleções, laboratórios) está travado pelas limitações do sistema atual'])}
+<h2 class="sec">1.3 O Portal como Plataforma Multi-Departamento</h2>
+<p class="body">O IOC não é um site institucional simples — é um portal que serve múltiplas diretorias e áreas com públicos, conteúdos e necessidades distintas:</p>
+${T(['Área','Diretoria Responsável','Conteúdos e Serviços'],[
+  ['Institucional','Comunicação Estratégica / Presidência','Sobre o IOC, estrutura, notícias, agenda, editais, documentos oficiais'],
+  ['Pesquisa','Diretoria de Pesquisa','Laboratórios, linhas de pesquisa, pesquisadores, projetos, publicações científicas'],
+  ['Ensino','Diretoria de Ensino','Pós-graduação, cursos técnicos, IOC+Escolas, jogos educativos, livros, cartilhas'],
+  ['Coleções','Diretoria de Coleções Biológicas','Acervo biológico, registros científicos, metadados Darwin Core, exportação de dados'],
+])}
+${N('Cada área tem seu próprio gestor, seus editores e seu público-alvo. A plataforma permite que cada diretoria administre seu espaço com autonomia, dentro de uma identidade visual e estrutura de navegação unificadas.','info','info')}
+<h2 class="sec">1.4 Alinhamento Institucional</h2>
+${BL(['<strong>Missão Fiocruz:</strong> excelência em ciência, tecnologia e inovação em saúde — o portal é a vitrine pública dessa missão','<strong>Padrão gov.br:</strong> conformidade obrigatória com identidade visual, acessibilidade e segurança do Governo Federal','<strong>Comunicação autônoma:</strong> a equipe publica conteúdo sem depender de TI para cada alteração','<strong>Acesso à ciência:</strong> facilitar o acesso de pesquisadores, alunos, parceiros e sociedade à produção científica do IOC'])}
+</div>`;}
 
-// ── VIEW 0: CAPA ──────────────────────────────────────────────────────────────
-function viewCapa() {
-  return `
-  <style>${SHADOW_BASE}
-    .hero {
-      min-height: calc(100vh - 64px);
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 64px 32px;
-      background: linear-gradient(135deg, #0d2d45 0%, #1A5276 50%, #1a6fa8 100%);
-      position: relative; overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background-image: radial-gradient(circle at 20% 50%, rgba(46,134,193,0.3) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(26,82,118,0.4) 0%, transparent 40%);
-    }
-    .hero-grid {
-      position: absolute; inset: 0; opacity: 0.04;
-      background-image: linear-gradient(var(--light) 1px, transparent 1px),
-                        linear-gradient(90deg, var(--light) 1px, transparent 1px);
-      background-size: 48px 48px;
-    }
-    .hero-content { position: relative; max-width: 900px; margin: 0 auto; }
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.14em;
-      text-transform: uppercase; color: rgba(255,255,255,0.5);
-      background: rgba(255,255,255,0.08); padding: 6px 16px; border-radius: 20px;
-      margin-bottom: 32px; border: 1px solid rgba(255,255,255,0.12);
-    }
-    .hero-tag::before { content: '●'; color: #52BE80; margin-right: 2px; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-    .hero-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(36px, 6vw, 72px); font-weight: 800;
-      color: #fff; line-height: 1.0; letter-spacing: -0.03em;
-      margin-bottom: 8px;
-    }
-    .hero-title em { font-style: normal; color: #7EC8E3; display: block; font-size: 0.55em; font-weight: 400; margin-bottom: 8px; letter-spacing: 0; }
-    .hero-sub {
-      font-size: clamp(15px, 2vw, 18px); color: rgba(255,255,255,0.55);
-      font-weight: 300; margin: 24px 0 48px; max-width: 560px; line-height: 1.7;
-    }
-    .hero-meta {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 16px; margin-top: 48px;
-    }
-    .meta-item {
-      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px; padding: 16px 20px;
-    }
-    .meta-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
-    .meta-value { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; color: #fff; }
-    .hero-cta {
-      display: flex; gap: 12px; flex-wrap: wrap; margin-top: 40px;
-    }
-    .cta-btn {
-      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      padding: 12px 28px; border-radius: 8px; cursor: pointer; border: none;
-      transition: all 0.2s ease;
-    }
-    .cta-primary {
-      background: #fff; color: var(--brand);
-    }
-    .cta-primary:hover { background: var(--light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
-    .cta-secondary {
-      background: rgba(255,255,255,0.1); color: #fff;
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-    .cta-secondary:hover { background: rgba(255,255,255,0.18); }
-    .urgency-bar {
-      margin-top: 48px; padding: 16px 20px;
-      background: rgba(211,84,0,0.15); border: 1px solid rgba(211,84,0,0.3);
-      border-radius: 10px; display: flex; align-items: center; gap: 12px;
-      font-size: 13.5px; color: rgba(255,255,255,0.85); max-width: 640px;
-    }
-    .urgency-bar span { font-size: 18px; }
-  </style>
-  <section class="hero">
-    <div class="hero-grid"></div>
-    <div class="hero-content">
-      <div class="hero-tag">Product Requirements Document · Versão 5.0 · Março 2026</div>
-      <h1 class="hero-title">
-        <em>Instituto Oswaldo Cruz — IOC/Fiocruz</em>
-        Nova Plataforma Digital
-      </h1>
-      <p class="hero-sub">CMS Institucional em Laravel · Portal Multi-Departamento · Substituição do Drupal 7 · 9 meses de desenvolvimento</p>
-      <div class="hero-cta">
-        <button class="cta-btn cta-primary" onclick="document.querySelector('[data-view=contexto]').click()">Ver Contexto →</button>
-        <button class="cta-btn cta-secondary" onclick="document.querySelector('[data-view=opcoes]').click()">Análise de Opções</button>
-      </div>
-      <div class="hero-meta">
-        <div class="meta-item"><div class="meta-label">Desenvolvedor</div><div class="meta-value">Matheus Fernandes Cunha</div></div>
-        <div class="meta-item"><div class="meta-label">Prazo</div><div class="meta-value">9 meses · 4 fases</div></div>
-        <div class="meta-item"><div class="meta-label">Stack</div><div class="meta-value">Laravel + Vue.js</div></div>
-        <div class="meta-item"><div class="meta-label">Personas</div><div class="meta-value">7 perfis de usuário</div></div>
-        <div class="meta-item"><div class="meta-label">Portal</div><div class="meta-value">Multi-departamento</div></div>
-        <div class="meta-item"><div class="meta-label">Status</div><div class="meta-value">Aprovação pendente</div></div>
-      </div>
-      <div class="urgency-bar">
-        <span>⚠️</span>
-        <span>Drupal 7 <strong>sem suporte de segurança desde janeiro de 2025</strong>. Cada dia sem migração é um dia de exposição a vulnerabilidades sem correção oficial.</span>
-      </div>
-    </div>
-  </section>`;
-}
+function vDiagnostico(){return `<style>${BASE}</style><div class="view">
+<div class="section-tag">Seção 2</div>
+<h1 class="vt">Diagnóstico<br><em>Problemas Identificados</em></h1>
+<p class="sub">Levantamento realizado entre setembro de 2025 e fevereiro de 2026, incluindo análise de código-fonte, inventário de conteúdo, estudo do servidor e banco de dados.</p>
+<div class="cards">
+  <div class="card c-warn"><div class="card-lbl">Problema 1</div><div class="ct">${svg('shieldOff',16)} Sistema Fora de Suporte (EOL)</div><div class="cb">Drupal 7 encerrou suporte oficial em janeiro de 2025. Vulnerabilidades descobertas a partir de agora não terão patch, expondo dados institucionais e serviços públicos a risco crescente e sem solução.</div></div>
+  <div class="card c-warn"><div class="card-lbl">Problema 2</div><div class="ct">${svg('wrench',16)} Débito Técnico (2012–2022)</div><div class="cb">Customizações extensas fora do padrão Drupal: módulos desatualizados, gambiarras e código sem documentação. Qualquer alteração tem risco alto de quebrar funcionalidades existentes.</div></div>
+  <div class="card c-warn"><div class="card-lbl">Problema 3</div><div class="ct">${svg('refreshCw',16)} Migração = Reescrita Total</div><div class="cb">Não existe caminho de atualização incremental do Drupal 7 para versões superiores. O sistema precisa ser reconstruído do zero — isso nivela o custo com qualquer outra tecnologia moderna.</div></div>
+  <div class="card c-warn"><div class="card-lbl">Problema 4</div><div class="ct">${svg('xCircle',16)} Tentativa Anterior Fracassada</div><div class="cb">Projeto de migração para Drupal 10 iniciado em 2023 foi encerrado em 2025 sem entrega. Evidência concreta de que repetir a mesma abordagem tende a produzir o mesmo resultado.</div></div>
+  <div class="card c-warn"><div class="card-lbl">Problema 5</div><div class="ct">${svg('user',16)} Dependência de Pessoa-Chave</div><div class="cb">O conhecimento do sistema está concentrado em poucos profissionais. O TI não dispõe de especialistas disponíveis — risco independente da tecnologia escolhida.</div></div>
+  <div class="card c-warn"><div class="card-lbl">Problema 6</div><div class="ct">${svg('scale',16)} Risco Institucional e Legal</div><div class="cb">Portal de instituição científica federal. Falhas de segurança, disponibilidade ou acessibilidade têm impacto reputacional direto e potencial legal (LGPD, eMAG/WCAG).</div></div>
+</div></div>`;}
 
-// ── VIEW 1: CONTEXTO ──────────────────────────────────────────────────────────
-function viewContexto() {
-  return `<style>${SHADOW_BASE}</style>
-  <div class="view">
-    <div class="section-tag">Seção 1</div>
-    <h1 class="view-title">Visão Geral<br><em>e Contexto</em></h1>
-    <p class="subtitle">Antecedentes, urgência e estrutura multi-departamental do portal do IOC.</p>
+function vStakeholders(){return `<style>${BASE}</style><div class="view">
+<div class="section-tag">Seção 3</div>
+<h1 class="vt">Partes<br><em>Interessadas</em></h1>
+<p class="sub">Mapeamento de todos os atores institucionais envolvidos no projeto.</p>
+${T(['Parte Interessada','Papel','Responsabilidade / Interesse','Influência'],[
+  ['Direção IOC / Presidência','Patrocinador estratégico','Aprovação final do projeto e prioridades institucionais','Alta'],
+  ['Comunicação Estratégica','Cliente / Usuário principal','Valida escopo, conteúdo e identidade visual','Alta'],
+  ['Coordenação de TI','Fornecedor de infraestrutura','Servidores, redes, segurança, backups e capacitação','Alta'],
+  ['Diretor de Gestão (DIRGEP)','Árbitro institucional','Decisão sobre tecnologia e continuidade do projeto','Alta'],
+  ['Diretorias (Pesquisa, Ensino, Coleções)','Usuários internos / gestores','Conteúdo e serviços de cada diretoria no portal','Média'],
+  ['Público externo','Usuário final do portal','Acesso às informações institucionais, científicas e educacionais','Baixa'],
+  ['Desenvolvedor (Matheus)','Executor técnico','Desenvolvimento, entrega, documentação e capacitação do TI','Alta'],
+])}
+${N('O suporte de infraestrutura pelo TI foi confirmado em reunião de 17/03/2026. O ponto crítico em aberto é a designação formal de um profissional de TI para capacitação em Laravel.','warn','alertTriangle')}
+</div>`;}
 
-    <h2 class="sec">1.1 Antecedentes</h2>
-    <p class="body">O Instituto Oswaldo Cruz opera sua presença digital em um sistema construído sobre o <strong>Drupal 7</strong>. O desenvolvimento teve início em 2012 e o sistema foi entregue em 2022. Em janeiro de 2025, a plataforma atingiu o fim oficial do ciclo de suporte — sem perspectiva de novos patches de segurança.</p>
-    ${note('Declaração do problema: O IOC opera uma plataforma digital tecnicamente obsoleta e fora de suporte, que representa risco crescente de segurança, impede a evolução dos serviços digitais institucionais e impossibilita conformidade com LGPD e padrões de acessibilidade obrigatórios para entidades públicas federais.', 'warn', '⚠️')}
+function vOpcoes(){return `<style>${BASE}
+.vd{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin:24px 0;}
+.vc{border-radius:12px;padding:20px;text-align:center;border:2px solid transparent;}
+.vc-no{background:var(--warn-bg);border-color:var(--warn);}
+.vc-alt{background:var(--gold-bg);border-color:var(--gold);}
+.vc-yes{background:var(--ok-bg);border-color:var(--ok);}
+.vi{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;}
+.vi svg{width:22px;height:22px;}
+.vc-no .vi{background:rgba(211,84,0,.12);color:var(--warn);}
+.vc-alt .vi{background:rgba(125,102,8,.1);color:var(--gold);}
+.vc-yes .vi{background:rgba(30,132,73,.12);color:var(--ok);}
+.vn{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:6px;}
+.vc-no .vn{color:var(--warn);}.vc-alt .vn{color:var(--gold);}.vc-yes .vn{color:var(--ok);}
+.vv{font-size:12px;font-weight:600;letter-spacing:.04em;}
+.vc-no .vv{color:var(--warn);}.vc-alt .vv{color:var(--gold);}.vc-yes .vv{color:var(--ok);}
+</style><div class="view">
+<div class="section-tag">Seção 4</div>
+<h1 class="vt">Análise de<br><em>Opções Tecnológicas</em></h1>
+<p class="sub">Quatro opções avaliadas e apresentadas em reunião multissetorial com o TI em 26 de fevereiro de 2026.</p>
+<div class="vd">
+  <div class="vc vc-no"><div class="vi">${svg('skull',22)}</div><div class="vn">Drupal 7</div><div class="vv">Inviável</div></div>
+  <div class="vc vc-alt"><div class="vi">${svg('refreshCw',22)}</div><div class="vn">Drupal 10/11</div><div class="vv">Alternativa</div></div>
+  <div class="vc vc-yes"><div class="vi">${svg('zap',22)}</div><div class="vn">Laravel</div><div class="vv">Recomendado</div></div>
+  <div class="vc vc-alt"><div class="vi">${svg('fileText',22)}</div><div class="vn">WordPress</div><div class="vv">Alternativa</div></div>
+</div>
+<h2 class="sec">Tabela Comparativa</h2>
+${T(['Critério','Drupal 7','Drupal 10/11','Laravel','WordPress'],[
+  ['Risco de segurança (EOL)','Crítico — sem patches','Baixo','Baixo','Baixo'],
+  ['Custo de migração','—','Reescrita total','Reescrita total','Reescrita total'],
+  ['Profissionais no Brasil','Escasso','Escasso','Abundante','Abundante'],
+  ['Curva de aprendizado TI','Alta (código legado)','Alta','Média','Baixa'],
+  ['Flexibilidade de evolução','Nenhuma','Alta','Muito alta','Média'],
+  ['Portal multi-departamento','Limitada','Moderada','Alta','Baixa'],
+  ['Integração com sistemas Fiocruz','Difícil','Moderada','Alta (API nativa)','Moderada'],
+  ['Suporte infraestrutura TI','Sim (atual)','Provável','Confirmado','Sim'],
+  ['Conformidade eMAG / WCAG','Parcial','Alta','Alta','Alta'],
+  ['Tentativa anterior no IOC','Sistema atual','Fracassada (2023–25)','—','—'],
+  ['Recomendação','❌ Inviável','⚠️ Alternativa','✅ Recomendada','⚠️ Alternativa'],
+],3)}
+<h2 class="sec">Por Que Laravel?</h2>
+${N('Laravel é a escolha com melhor equilíbrio entre flexibilidade, sustentabilidade, mercado de profissionais e adequação às necessidades de um portal multi-departamento como o do IOC.','ok','checkCircle')}
+<div class="cards" style="margin-top:20px">
+  <div class="card c-ok"><div class="ct">${svg('users',16)} Mercado no Brasil</div><div class="cb">Framework PHP mais popular do Brasil: ampla oferta de profissionais para manutenção futura, reduzindo dependência de pessoa-chave.</div></div>
+  <div class="card c-ok"><div class="ct">${svg('layers',16)} Arquitetura Modular</div><div class="cb">Cada área do portal é um módulo independente, sem gambiarras nem acoplamento desnecessário entre as diretorias.</div></div>
+  <div class="card c-ok"><div class="ct">${svg('plugZap',16)} API-First Nativo</div><div class="cb">Qualquer sistema futuro pode consumir o conteúdo do IOC sem reescrever a plataforma. Base natural para integrações e Darwin Core.</div></div>
+  <div class="card c-ok"><div class="ct">${svg('container',16)} Docker Nativo</div><div class="cb">Containerização total compatível com a infraestrutura existente do TI, sem novo investimento em hardware.</div></div>
+  <div class="card c-ok"><div class="ct">${svg('testTube',16)} Testabilidade</div><div class="cb">PHPUnit integrado permite cobertura de testes automatizados desde o início, reduzindo risco de regressões.</div></div>
+  <div class="card c-ok"><div class="ct">${svg('clock',16)} LTS Previsível</div><div class="cb">Versionamento semântico com Long Term Support — sem risco de EOL abrupto como o que ocorreu com o Drupal 7.</div></div>
+  <div class="card c-ok"><div class="ct">${svg('globe',16)} Comunidade BR</div><div class="cb">Cursos e documentação em português — facilita a capacitação do profissional de TI a ser designado.</div></div>
+  <div class="card c-ok"><div class="ct">${svg('lock',16)} Controle Total</div><div class="cb">Sem dependência de módulos de terceiros frágeis — código próprio, documentado, auditável e mantido pela equipe IOC/TI.</div></div>
+</div></div>`;}
 
-    <h2 class="sec">1.2 Por Que Esta Iniciativa É Urgente Agora</h2>
-    ${bullets([
-      'Drupal 7 <strong>sem suporte de segurança desde janeiro de 2025</strong> — vulnerabilidades descobertas daqui em diante não terão correção oficial',
-      'A tentativa anterior de migração para Drupal 10 (2023–2025) foi <strong>encerrada sem entrega</strong>, exigindo nova abordagem com tecnologia diferente',
-      'Conformidade com LGPD e padrões eMAG/WCAG é obrigação legal — não pode ser adiada indefinidamente',
-      'O crescimento digital do IOC (novos cursos, materiais educativos, coleções, laboratórios) está travado pelas limitações do sistema atual',
-    ])}
-
-    <h2 class="sec">1.3 O Portal como Plataforma Multi-Departamento</h2>
-    <p class="body">O IOC não é um site institucional simples — é um portal que serve múltiplas diretorias e áreas com públicos, conteúdos e necessidades distintas:</p>
-    ${tbl(
-      ['Área', 'Diretoria Responsável', 'Conteúdos e Serviços'],
-      [
-        ['🏛️ Institucional', 'Comunicação Estratégica / Presidência', 'Sobre o IOC, estrutura, notícias, agenda, editais, documentos oficiais'],
-        ['🔬 Pesquisa', 'Diretoria de Pesquisa', 'Laboratórios, linhas de pesquisa, pesquisadores, projetos, publicações científicas'],
-        ['🎓 Ensino', 'Diretoria de Ensino', 'Pós-graduação, cursos técnicos, IOC+Escolas, jogos educativos, livros, cartilhas'],
-        ['🌿 Coleções', 'Diretoria de Coleções Biológicas', 'Acervo biológico, registros científicos, metadados Darwin Core, exportação de dados'],
-      ]
-    )}
-    ${note('Cada área tem seu próprio gestor, seus editores e seu público-alvo. A plataforma permite que cada diretoria administre seu espaço com autonomia, dentro de uma identidade visual e estrutura de navegação unificadas.', 'info', 'ℹ️')}
-
-    <h2 class="sec">1.4 Alinhamento Institucional</h2>
-    ${bullets([
-      '<strong>Missão Fiocruz:</strong> excelência em ciência, tecnologia e inovação em saúde — o portal é a vitrine pública dessa missão',
-      '<strong>Padrão gov.br:</strong> conformidade obrigatória com identidade visual, acessibilidade e segurança do Governo Federal',
-      '<strong>Comunicação autônoma:</strong> a equipe publica conteúdo sem depender de TI para cada alteração',
-      '<strong>Acesso à ciência:</strong> facilitar o acesso de pesquisadores, alunos, parceiros e sociedade à produção científica do IOC',
-    ])}
-  </div>`;
-}
-
-// ── VIEW 2: DIAGNÓSTICO ───────────────────────────────────────────────────────
-function viewDiagnostico() {
-  return `<style>${SHADOW_BASE}</style>
-  <div class="view">
-    <div class="section-tag">Seção 2</div>
-    <h1 class="view-title">Diagnóstico<br><em>Problemas Identificados</em></h1>
-    <p class="subtitle">Levantamento realizado entre setembro de 2025 e fevereiro de 2026, incluindo análise de código-fonte, inventário de conteúdo, estudo do servidor e banco de dados.</p>
-
-    <div class="cards">
-      <div class="card card-warn">
-        <div class="card-label">Problema 1</div>
-        <div class="card-title">⚠️ Sistema Fora de Suporte (EOL)</div>
-        <div class="card-body">Drupal 7 encerrou suporte oficial em janeiro de 2025. Vulnerabilidades descobertas a partir de agora não terão patch, expondo dados institucionais e serviços públicos a risco crescente e sem solução.</div>
-      </div>
-      <div class="card card-warn">
-        <div class="card-label">Problema 2</div>
-        <div class="card-title">🔧 Débito Técnico (2012–2022)</div>
-        <div class="card-body">Customizações extensas fora do padrão Drupal: módulos desatualizados, gambiarras e código sem documentação. Qualquer alteração tem risco alto de quebrar funcionalidades existentes.</div>
-      </div>
-      <div class="card card-warn">
-        <div class="card-label">Problema 3</div>
-        <div class="card-title">🔄 Migração = Reescrita Total</div>
-        <div class="card-body">Não existe caminho de atualização incremental do Drupal 7 para versões superiores. O sistema precisa ser reconstruído do zero — isso nivela o custo com qualquer outra tecnologia moderna.</div>
-      </div>
-      <div class="card card-warn">
-        <div class="card-label">Problema 4</div>
-        <div class="card-title">❌ Tentativa Anterior Fracassada</div>
-        <div class="card-body">Projeto de migração para Drupal 10 iniciado em 2023 foi encerrado em 2025 sem entrega. Evidência concreta de que repetir a mesma abordagem tende a produzir o mesmo resultado.</div>
-      </div>
-      <div class="card card-warn">
-        <div class="card-label">Problema 5</div>
-        <div class="card-title">👤 Dependência de Pessoa-Chave</div>
-        <div class="card-body">O conhecimento do sistema está concentrado em poucos profissionais. O TI não dispõe de especialistas disponíveis — risco independente da tecnologia escolhida.</div>
-      </div>
-      <div class="card card-warn">
-        <div class="card-label">Problema 6</div>
-        <div class="card-title">⚖️ Risco Institucional e Legal</div>
-        <div class="card-body">Portal de instituição científica federal. Falhas de segurança, disponibilidade ou acessibilidade têm impacto reputacional direto e potencial legal (LGPD, eMAG/WCAG).</div>
-      </div>
-    </div>
-  </div>`;
-}
-
-// ── VIEW 3: STAKEHOLDERS ──────────────────────────────────────────────────────
-function viewStakeholders() {
-  return `<style>${SHADOW_BASE}</style>
-  <div class="view">
-    <div class="section-tag">Seção 3</div>
-    <h1 class="view-title">Partes<br><em>Interessadas</em></h1>
-    <p class="subtitle">Mapeamento de todos os atores institucionais envolvidos no projeto.</p>
-    ${tbl(
-      ['Parte Interessada', 'Papel', 'Responsabilidade / Interesse', 'Influência'],
-      [
-        ['Direção IOC / Presidência', 'Patrocinador estratégico', 'Aprovação final do projeto e prioridades institucionais', 'Alta'],
-        ['Comunicação Estratégica', 'Cliente / Usuário principal', 'Valida escopo, conteúdo e identidade visual', 'Alta'],
-        ['Coordenação de TI', 'Fornecedor de infraestrutura', 'Servidores, redes, segurança, backups e capacitação', 'Alta'],
-        ['Diretor de Gestão (DIRGEP)', 'Árbitro institucional', 'Decisão sobre tecnologia e continuidade do projeto', 'Alta'],
-        ['Diretorias (Pesquisa, Ensino, Coleções)', 'Usuários internos / gestores', 'Conteúdo e serviços de cada diretoria no portal', 'Média'],
-        ['Público externo', 'Usuário final do portal', 'Acesso às informações institucionais, científicas e educacionais', 'Baixa'],
-        ['Desenvolvedor (Matheus)', 'Executor técnico', 'Desenvolvimento, entrega, documentação e capacitação do TI', 'Alta'],
-      ]
-    )}
-    ${note('O suporte de infraestrutura pelo TI foi confirmado em reunião de 17/03/2026. O ponto crítico em aberto é a designação formal de um profissional de TI para capacitação em Laravel.', 'warn', '⚠️')}
-  </div>`;
-}
-
-// ── VIEW 4: OPÇÕES ────────────────────────────────────────────────────────────
-function viewOpcoes() {
-  return `<style>${SHADOW_BASE}
-    .verdict {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 14px; margin: 24px 0;
-    }
-    .vcard {
-      border-radius: 12px; padding: 20px; text-align: center;
-      border: 2px solid transparent;
-    }
-    .vcard-no   { background: var(--warn-bg); border-color: var(--warn); }
-    .vcard-alt  { background: var(--gold-bg); border-color: var(--gold); }
-    .vcard-yes  { background: var(--ok-bg);   border-color: var(--ok); }
-    .vcard-icon { font-size: 32px; margin-bottom: 8px; }
-    .vcard-name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-    .vcard-verdict { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; }
-    .vcard-no   .vcard-name    { color: var(--warn); }
-    .vcard-alt  .vcard-name    { color: var(--gold); }
-    .vcard-yes  .vcard-name    { color: var(--ok); }
-    .vcard-no   .vcard-verdict { color: var(--warn); }
-    .vcard-alt  .vcard-verdict { color: var(--gold); }
-    .vcard-yes  .vcard-verdict { color: var(--ok); }
-    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
-    @media (max-width: 600px) { .why-grid { grid-template-columns: 1fr; } }
-    .why-item { background: #fff; border: 1px solid #e8ecf0; border-radius: 10px; padding: 16px; }
-    .why-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
-    .why-item.yes .why-title { color: var(--ok); }
-    .why-item.no  .why-title { color: var(--warn); }
-  </style>
-  <div class="view">
-    <div class="section-tag">Seção 4</div>
-    <h1 class="view-title">Análise de<br><em>Opções Tecnológicas</em></h1>
-    <p class="subtitle">Quatro opções avaliadas e apresentadas em reunião multissetorial com o TI em 26 de fevereiro de 2026.</p>
-
-    <div class="verdict">
-      <div class="vcard vcard-no"><div class="vcard-icon">💀</div><div class="vcard-name">Drupal 7</div><div class="vcard-verdict">❌ Inviável</div></div>
-      <div class="vcard vcard-alt"><div class="vcard-icon">🔄</div><div class="vcard-name">Drupal 10/11</div><div class="vcard-verdict">⚠️ Alternativa</div></div>
-      <div class="vcard vcard-yes"><div class="vcard-icon">⚡</div><div class="vcard-name">Laravel</div><div class="vcard-verdict">✅ Recomendado</div></div>
-      <div class="vcard vcard-alt"><div class="vcard-icon">📝</div><div class="vcard-name">WordPress</div><div class="vcard-verdict">⚠️ Alternativa</div></div>
-    </div>
-
-    <h2 class="sec">Tabela Comparativa</h2>
-    ${tbl(
-      ['Critério', 'Drupal 7', 'Drupal 10/11', 'Laravel', 'WordPress'],
-      [
-        ['Risco de segurança (EOL)', 'Crítico — sem patches', 'Baixo', 'Baixo', 'Baixo'],
-        ['Custo de migração', '—', 'Reescrita total', 'Reescrita total', 'Reescrita total'],
-        ['Profissionais no Brasil', 'Escasso', 'Escasso', 'Abundante', 'Abundante'],
-        ['Curva de aprendizado TI', 'Alta (código legado)', 'Alta', 'Média', 'Baixa'],
-        ['Flexibilidade de evolução', 'Nenhuma', 'Alta', 'Muito alta', 'Média'],
-        ['Portal multi-departamento', 'Limitada', 'Moderada', 'Alta', 'Baixa'],
-        ['Integração com sistemas Fiocruz', 'Difícil', 'Moderada', 'Alta (API nativa)', 'Moderada'],
-        ['Suporte infraestrutura TI', 'Sim (atual)', 'Provável', 'Confirmado', 'Sim'],
-        ['Conformidade eMAG / WCAG', 'Parcial', 'Alta', 'Alta', 'Alta'],
-        ['Tentativa anterior no IOC', 'Sistema atual', 'Fracassada (2023–25)', '—', '—'],
-        ['Recomendação', '❌ Inviável', '⚠️ Alternativa', '✅ Recomendada', '⚠️ Alternativa'],
-      ],
-      3
-    )}
-
-    <h2 class="sec">Por Que Laravel?</h2>
-    ${note('Laravel é a escolha com melhor equilíbrio entre flexibilidade, sustentabilidade, mercado de profissionais e adequação às necessidades de um portal multi-departamento como o do IOC.', 'ok', '✅')}
-    <div class="cards" style="margin-top:20px">
-      <div class="card card-ok"><div class="card-title">👥 Mercado no Brasil</div><div class="card-body">Framework PHP mais popular do Brasil: ampla oferta de profissionais para manutenção futura, reduzindo dependência de pessoa-chave.</div></div>
-      <div class="card card-ok"><div class="card-title">🧩 Arquitetura Modular</div><div class="card-body">Cada área do portal (Institucional, Pesquisa, Ensino, Coleções) é um módulo independente, sem gambiarras nem acoplamento desnecessário.</div></div>
-      <div class="card card-ok"><div class="card-title">🔌 API-First Nativo</div><div class="card-body">Qualquer sistema futuro pode consumir o conteúdo do IOC sem reescrever a plataforma. Base natural para integrações com SIGA, ARCA e API pública de coleções.</div></div>
-      <div class="card card-ok"><div class="card-title">🐳 Docker Nativo</div><div class="card-body">Containerização total compatível com a infraestrutura existente do TI, sem necessidade de novo investimento em hardware.</div></div>
-      <div class="card card-ok"><div class="card-title">🧪 Testabilidade</div><div class="card-body">PHPUnit integrado permite cobertura de testes automatizados desde o início, reduzindo risco de regressões a cada nova funcionalidade.</div></div>
-      <div class="card card-ok"><div class="card-title">📅 LTS Previsível</div><div class="card-body">Versionamento semântico com Long Term Support — sem risco de EOL abrupto como o que ocorreu com o Drupal 7.</div></div>
-      <div class="card card-ok"><div class="card-title">🌐 Comunidade BR</div><div class="card-body">Cursos e documentação em português — facilita diretamente a capacitação do profissional de TI a ser designado.</div></div>
-      <div class="card card-ok"><div class="card-title">🔒 Controle Total</div><div class="card-body">Sem dependência de módulos de terceiros frágeis — todo o comportamento é código próprio, documentado, auditável e mantido pela equipe IOC/TI.</div></div>
-    </div>
-  </div>`;
-}
-
-// ── VIEW 5: PERSONAS ──────────────────────────────────────────────────────────
-function viewPersonas() {
-  const personas = [
-    { num:'1', icon:'✍️', name:'Editor de Conteúdo', who:'Assessores e técnicos das diretorias', goal:'Criar, editar e publicar conteúdo da sua área com autonomia, sem depender do TI', needs:'Editor WYSIWYG, agendamento, fluxo de aprovação configurável, biblioteca de mídia, histórico de versões', color:'accent' },
-    { num:'2', icon:'📊', name:'Gestor de Área', who:'Coordenadores e diretores das quatro áreas', goal:'Garantir que o espaço da sua área esteja atualizado e com as informações corretas', needs:'Painel setorial, controle de editores, visualização por área, relatórios de publicação', color:'accent' },
-    { num:'3', icon:'⚙️', name:'Administrador TI', who:'Equipe de Tecnologia da Informação do IOC', goal:'Gerenciar usuários, permissões e saúde técnica do sistema sem modificar código', needs:'Painel admin, gestão RBAC por área, logs de auditoria LGPD, monitoramento Docker', color:'accent' },
-    { num:'4', icon:'🔬', name:'Pesquisador', who:'Pesquisadores externos, docentes, cientistas', goal:'Encontrar publicações, dados de coleções, laboratórios e grupos de pesquisa do IOC', needs:'Busca avançada com filtros científicos, exportação Darwin Core/CSV, perfis de laboratório', color:'teal' },
-    { num:'5', icon:'🌐', name:'Visitante Público', who:'Jornalistas, população geral, estudantes de graduação', goal:'Acessar notícias, eventos e informações institucionais de forma rápida', needs:'Portal responsivo, busca simples, acesso sem cadastro, conformidade eMAG/WCAG', color:'accent' },
-    { num:'6', icon:'🎓', name:'Aluno / Candidato', who:'Alunos de pós-graduação, técnicos em formação, IOC+Escolas', goal:'Encontrar cursos, materiais educativos, editais e calendários de eventos', needs:'Área de ensino por categoria, download direto de materiais abertos, calendário, inscrições', color:'purple' },
-    { num:'7', icon:'🤝', name:'Parceiro / Cliente', who:'Empresas, órgãos públicos, hospitais que usam serviços do IOC', goal:'Identificar o laboratório ou serviço adequado e iniciar contato para parceria', needs:'Catálogo de serviços, capacidades técnicas, contato institucional — Roadmap Futuro', color:'gold' },
+function vPersonas(){
+  const ps=[
+    {n:'1',ic:'edit',   cl:'b',name:'Editor de Conteúdo',   who:'Assessores e técnicos das diretorias',                goal:'Criar, editar e publicar conteúdo da sua área com autonomia, sem depender do TI',                 needs:'Editor WYSIWYG, agendamento, fluxo de aprovação configurável, biblioteca de mídia, histórico de versões'},
+    {n:'2',ic:'barChart',cl:'b',name:'Gestor de Área',       who:'Coordenadores e diretores das quatro áreas',          goal:'Garantir que o espaço da sua área esteja atualizado e com as informações corretas',                needs:'Painel setorial, controle de editores, visualização por área, relatórios de publicação'},
+    {n:'3',ic:'settings',cl:'b',name:'Administrador TI',     who:'Equipe de Tecnologia da Informação do IOC',           goal:'Gerenciar usuários, permissões e saúde técnica do sistema sem modificar código',                    needs:'Painel admin, gestão RBAC por área, logs de auditoria LGPD, monitoramento Docker'},
+    {n:'4',ic:'microscope',cl:'t',name:'Pesquisador',         who:'Pesquisadores externos, docentes, cientistas',        goal:'Encontrar publicações, dados de coleções, laboratórios e grupos de pesquisa do IOC',               needs:'Busca avançada com filtros científicos, exportação Darwin Core/CSV, perfis de laboratório'},
+    {n:'5',ic:'globe',  cl:'b',name:'Visitante Público',      who:'Jornalistas, população geral, estudantes',            goal:'Acessar notícias, eventos e informações institucionais de forma rápida',                           needs:'Portal responsivo, busca simples, acesso sem cadastro, conformidade eMAG/WCAG'},
+    {n:'6',ic:'graduationCap',cl:'p',name:'Aluno / Candidato',who:'Alunos de pós-graduação, técnicos, IOC+Escolas',     goal:'Encontrar cursos, materiais educativos, editais e calendários de eventos',                          needs:'Área de ensino por categoria, download direto de materiais abertos, calendário, inscrições'},
+    {n:'7',ic:'handshake',cl:'g',name:'Parceiro / Cliente',   who:'Empresas, órgãos públicos, hospitais que usam o IOC',goal:'Identificar o laboratório ou serviço adequado e iniciar contato para parceria',                   needs:'Catálogo de serviços, capacidades técnicas, contato institucional — Roadmap Futuro'},
   ];
-  const cards = personas.map(p => `
-    <div class="persona-card">
-      <div class="persona-num">${p.num}</div>
-      <div class="persona-icon">${p.icon}</div>
-      <div class="persona-name">${p.name}</div>
-      <div class="persona-who">${p.who}</div>
-      <div class="persona-goal">${p.goal}</div>
-      <div class="persona-needs"><strong>Sistema precisa:</strong> ${p.needs}</div>
-    </div>`).join('');
-  return `<style>${SHADOW_BASE}</style>
-  <div class="view">
-    <div class="section-tag">Seção 5</div>
-    <h1 class="view-title">7 Personas<br><em>de Usuário</em></h1>
-    <p class="subtitle">Perfis identificados durante o diagnóstico técnico entre setembro de 2025 e fevereiro de 2026.</p>
-    <div class="persona-grid">${cards}</div>
-    ${note('A Persona 7 (Parceiro/Cliente Institucional) está mapeada mas corresponde a uma área fora do escopo dos 9 meses — será implementada em versão futura conforme o Roadmap (Seção 9).', 'gold', '🗓️')}
-  </div>`;
-}
+  const cards=ps.map(p=>`<div class="pc"><div class="pn">${p.n}</div><div class="pi pi-${p.cl}">${svg(p.ic,20)}</div><div class="pname">${p.name}</div><div class="pwho">${p.who}</div><div class="pgoal">${p.goal}</div><div class="pneeds"><strong>Sistema precisa:</strong> ${p.needs}</div></div>`).join('');
+  return `<style>${BASE}</style><div class="view">
+<div class="section-tag">Seção 5</div>
+<h1 class="vt">7 Personas<br><em>de Usuário</em></h1>
+<p class="sub">Perfis identificados durante o diagnóstico técnico entre setembro de 2025 e fevereiro de 2026.</p>
+<div class="pg">${cards}</div>
+${N('A Persona 7 (Parceiro/Cliente Institucional) está mapeada mas corresponde a uma área fora do escopo dos 9 meses — será implementada em versão futura conforme o Roadmap (Seção 9).','gold','calendar')}
+</div>`;}
 
-// ── VIEW 6: JORNADAS ──────────────────────────────────────────────────────────
-function viewJornadas() {
-  return `<style>${SHADOW_BASE}
-  .journey {
-    background: #fff; border: 1px solid #e8ecf0; border-radius: 12px;
-    padding: 20px; margin-bottom: 16px;
-    display: grid; grid-template-columns: 180px 1fr; gap: 20px;
-    transition: box-shadow 0.2s;
-  }
-  .journey:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-  .journey-persona {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; border-right: 1px solid #f0f2f4; padding-right: 20px;
-  }
-  .journey-icon  { font-size: 32px; margin-bottom: 6px; }
-  .journey-pname { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; color: var(--brand); }
-  .journey-body  { padding-left: 4px; }
-  .journey-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--brand); margin-bottom: 10px; }
-  .journey-steps {
-    font-family: 'DM Mono', monospace; font-size: 11.5px;
-    color: var(--muted); background: var(--grey);
-    padding: 8px 12px; border-radius: 6px; margin-bottom: 10px;
-    line-height: 1.7; word-break: break-word;
-  }
-  .journey-req   { font-size: 12.5px; color: var(--text); margin-bottom: 6px; }
-  .journey-result {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 12px; color: var(--ok); background: var(--ok-bg);
-    padding: 3px 10px; border-radius: 12px; font-weight: 600;
-  }
-  @media (max-width: 560px) {
-    .journey { grid-template-columns: 1fr; }
-    .journey-persona { border-right: none; border-bottom: 1px solid #f0f2f4; padding: 0 0 16px; flex-direction: row; gap: 12px; }
-  }
-  </style>
-  <div class="view">
-    <div class="section-tag">Seção 6</div>
-    <h1 class="view-title">Jornadas<br><em>de Usuário</em></h1>
-    <p class="subtitle">As principais jornadas que orientam os requisitos e prioridades de desenvolvimento.</p>
+function vJornadas(){return `<style>${BASE}
+.jo{background:#fff;border:1px solid #e8ecf0;border-radius:12px;padding:20px;margin-bottom:16px;display:grid;grid-template-columns:150px 1fr;gap:20px;transition:box-shadow .2s;}
+.jo:hover{box-shadow:0 4px 20px rgba(0,0,0,.08);}
+.jp{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-right:1px solid #f0f2f4;padding-right:20px;}
+.jpi{width:40px;height:40px;border-radius:12px;background:var(--light);color:var(--brand);display:flex;align-items:center;justify-content:center;margin-bottom:8px;}
+.jpi svg{width:20px;height:20px;}
+.jpi.t{background:var(--teal-bg);color:var(--teal);}
+.jpi.p{background:var(--purp-bg);color:var(--purple);}
+.jpi.g{background:var(--gold-bg);color:var(--gold);}
+.jpn{font-family:'Syne',sans-serif;font-size:11.5px;font-weight:700;color:var(--brand);line-height:1.3;}
+.jb{padding-left:4px;}
+.jt{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--brand);margin-bottom:10px;}
+.js{font-family:'DM Mono',monospace;font-size:11.5px;color:var(--muted);background:var(--grey);padding:8px 12px;border-radius:6px;margin-bottom:10px;line-height:1.7;}
+.jq{font-size:12.5px;color:var(--text);margin-bottom:8px;}
+.jr{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ok);background:var(--ok-bg);padding:4px 10px;border-radius:12px;font-weight:600;}
+.jr svg{width:13px;height:13px;}
+@media(max-width:560px){.jo{grid-template-columns:1fr;}.jp{border-right:none;border-bottom:1px solid #f0f2f4;padding:0 0 16px;flex-direction:row;gap:12px;}}
+</style><div class="view">
+<div class="section-tag">Seção 6</div>
+<h1 class="vt">Jornadas<br><em>de Usuário</em></h1>
+<p class="sub">As principais jornadas que orientam os requisitos e prioridades de desenvolvimento.</p>
+<div class="jo"><div class="jp"><div class="jpi">${svg('edit',20)}</div><div class="jpn">Editor de Conteúdo</div></div><div class="jb"><div class="jt">Publicar conteúdo no portal</div><div class="js">Login → Seleciona área → Escolhe tipo → Preenche campos → Upload mídia → Rascunho → Revisão (se exigida) → Publicar ou Agendar</div><div class="jq">Fluxo editorial configurável por área; notificação de aprovação; histórico de versões; auto-save</div><div class="jr">${svg('check',13)} Conteúdo publicado e indexado na busca global</div></div></div>
+<div class="jo"><div class="jp"><div class="jpi t">${svg('microscope',20)}</div><div class="jpn">Pesquisador</div></div><div class="jb"><div class="jt">Exportar dados de coleção biológica</div><div class="js">Acessa portal → Área de Coleções → Aplica filtros científicos → Visualiza registros → Seleciona → Exporta CSV ou Darwin Core</div><div class="jq">Filtros por taxonomia, localidade e tipo; metadados completos; exportação em formatos científicos</div><div class="jr">${svg('check',13)} Arquivo com metadados conformes ao padrão Darwin Core</div></div></div>
+<div class="jo"><div class="jp"><div class="jpi p">${svg('graduationCap',20)}</div><div class="jpn">Aluno / Candidato</div></div><div class="jb"><div class="jt">Encontrar curso ou material educativo</div><div class="js">Acessa portal → Área de Ensino → Filtra por tipo (livro, cartilha, jogo, curso técnico, pós-graduação) → Download ou inscrição</div><div class="jq">Área de ensino por categoria; download direto sem cadastro para materiais abertos</div><div class="jr">${svg('check',13)} Material baixado ou informações de inscrição encontradas</div></div></div>
+<div class="jo"><div class="jp"><div class="jpi g">${svg('handshake',20)}</div><div class="jpn">Parceiro<br><small style="font-weight:400;color:var(--muted)">(Futuro)</small></div></div><div class="jb"><div class="jt">Identificar serviço do IOC</div><div class="js">Acessa portal → Serviços → Navega ou busca por tipo → Vê capacidades do laboratório → Acessa contato institucional</div><div class="jq">Catálogo com descrição técnica; contato claro; área filtrável por tipo de serviço</div><div class="jr">${svg('check',13)} Parceiro identifica o laboratório e inicia contato</div></div></div>
+<div class="jo"><div class="jp"><div class="jpi">${svg('globe',20)}</div><div class="jpn">Visitante Público</div></div><div class="jb"><div class="jt">Acessar notícia institucional</div><div class="js">Acessa portal → Notícias → Lê → Navega para conteúdo relacionado</div><div class="jq">Portal responsivo; &lt;3s de carregamento; breadcrumb; conteúdos relacionados sugeridos</div><div class="jr">${svg('check',13)} Visitante lê e continua navegando pelo portal</div></div></div>
+<div class="jo"><div class="jp"><div class="jpi">${svg('settings',20)}</div><div class="jpn">Admin TI</div></div><div class="jb"><div class="jt">Criar usuário editor com RBAC por área</div><div class="js">Login → Painel admin → Usuários → Criar → Define papel e área (ex.: Editor / Ensino) → Confirma</div><div class="jq">RBAC por área; log de auditoria; e-mail automático ao novo usuário</div><div class="jr">${svg('check',13)} Usuário criado com permissões corretas; ação registrada em log</div></div></div>
+</div>`;}
 
-    <div class="journey">
-      <div class="journey-persona"><div class="journey-icon">✍️</div><div class="journey-pname">Editor de Conteúdo</div></div>
-      <div class="journey-body">
-        <div class="journey-title">Publicar conteúdo no portal</div>
-        <div class="journey-steps">Login → Seleciona área → Escolhe tipo → Preenche campos → Upload mídia → Rascunho → Revisão (se exigida) → Publicar ou Agendar</div>
-        <div class="journey-req">Requisito-chave: fluxo editorial configurável por área; notificação de aprovação; histórico de versões; auto-save</div>
-        <div class="journey-result">✓ Conteúdo publicado e indexado na busca global</div>
-      </div>
-    </div>
+function vEscopo(){return `<style>${BASE}</style><div class="view">
+<div class="section-tag">Seção 7</div>
+<h1 class="vt">Escopo<br><em>9 Meses · 4 Fases</em></h1>
+<p class="sub">Escopo calibrado para um desenvolvedor em 9 meses. Foco em entregar plataforma sólida, segura e completa para o portal institucional do IOC.</p>
+${N('Objetivo da Fase 1: eliminar o risco de segurança imediato colocando o portal principal online com o CMS novo em até 3 meses.','ok','target')}
+<h2 class="sec">Funcionalidades por Fase</h2>
+${T(['Pri.','Funcionalidade','Descrição','Fase'],[
+  ['P1','CMS Core','Tipos de conteúdo por área, editor WYSIWYG, versionamento, fluxo editorial configurável, agendamento, RBAC por área','Fase 1 · meses 1–3'],
+  ['P1','Autenticação própria','Login e gestão de usuários com autenticação interna; papéis e permissões por área do portal','Fase 1 · meses 1–3'],
+  ['P1','Portal Institucional','Página inicial, sobre o IOC, notícias, agenda, editais, documentos; eMAG/WCAG 2.1 AA, padrão visual IOC/gov.br','Fase 1 · meses 1–3'],
+  ['P1','Biblioteca de mídia','Upload e organização de imagens, vídeos e documentos; thumbnails automáticos; CDN','Fase 1 · meses 1–3'],
+  ['P2','Área de Pesquisa','Laboratórios com pesquisadores e projetos; publicações científicas; linhas de pesquisa','Fase 2 · meses 4–6'],
+  ['P2','Área de Ensino','Pós-graduação, cursos técnicos, IOC+Escolas, jogos, livros e cartilhas para download; calendário educacional','Fase 2 · meses 4–6'],
+  ['P2','Busca global','Full-text integrada entre todas as áreas via MeiliSearch: tolerância a erros, filtros, sugestões de termos','Fase 2 · meses 4–6'],
+  ['P3','Área de Coleções','Catálogo com filtros científicos, exportação CSV e Darwin Core','Fase 3 · meses 7–8'],
+  ['P4','Testes e entrega','Cobertura ≥ 80%, documentação completa, treinamento, handover ao TI','Fase 4 · mês 9'],
+])}
+<h2 class="sec">Fora do Escopo (nesta versão)</h2>
+${BL(['Login único institucional (SSO) — autenticação própria é suficiente para esta versão','Portais dos programas de pós-graduação em servidores separados — centralização futura','Área de Parceiros e Serviços Institucionais — roadmap futuro','Integrações com SIGA, ARCA, EAD — roadmap futuro','API pública — roadmap futuro','Aplicativo móvel nativo','Infraestrutura de servidores — responsabilidade exclusiva do TI'])}
+<h2 class="sec">Cronograma Resumido</h2>
+<div class="tl">
+  <div class="tli"><div class="tlp">Fase 1<span>meses 1–3</span></div><div class="tld"></div><div class="tlc"><div class="tlt">Fundação — CMS + Portal Institucional</div><div class="tld2">CMS Core, autenticação, portal institucional público, biblioteca de mídia</div><div class="tlb">Marco: portal principal online e seguro</div></div></div>
+  <div class="tli"><div class="tlp">Fase 2<span>meses 4–6</span></div><div class="tld"></div><div class="tlc"><div class="tlt">Expansão — Pesquisa, Ensino e Busca</div><div class="tld2">Área de pesquisa com laboratórios, área de ensino com materiais, busca global MeiliSearch</div><div class="tlb">Marco: todas as 4 áreas do portal ativas</div></div></div>
+  <div class="tli"><div class="tlp">Fase 3<span>meses 7–8</span></div><div class="tld"></div><div class="tlc"><div class="tlt">Coleções Biológicas</div><div class="tld2">Catálogo com filtros científicos e exportação Darwin Core / CSV</div><div class="tlb">Marco: exportação Darwin Core funcional</div></div></div>
+  <div class="tli"><div class="tlp">Fase 4<span>mês 9</span></div><div class="tld" style="background:var(--ok)"></div><div class="tlc"><div class="tlt">Entrega Final</div><div class="tld2">Testes (≥80% cobertura), documentação técnica completa, treinamento das equipes, handover ao TI</div><div class="tlb">Marco: plataforma entregue e TI capacitado</div></div></div>
+</div></div>`;}
 
-    <div class="journey">
-      <div class="journey-persona"><div class="journey-icon">🔬</div><div class="journey-pname">Pesquisador</div></div>
-      <div class="journey-body">
-        <div class="journey-title">Exportar dados de coleção biológica</div>
-        <div class="journey-steps">Acessa portal → Área de Coleções → Aplica filtros científicos → Visualiza registros → Seleciona → Exporta CSV ou Darwin Core</div>
-        <div class="journey-req">Requisito-chave: filtros por taxonomia, localidade e tipo; metadados completos; exportação em formatos científicos</div>
-        <div class="journey-result">✓ Arquivo com metadados conformes ao padrão Darwin Core</div>
-      </div>
-    </div>
+function vRequisitos(){return `<style>${BASE}</style><div class="view">
+<div class="section-tag">Seção 8</div>
+<h1 class="vt">Requisitos<br><em>Funcionais e Não Funcionais</em></h1>
+<p class="sub">Escritos na perspectiva do usuário. Detalhamento técnico completo no SRS (ISO/IEC/IEEE 29148).</p>
+<h2 class="sec">8.1 Requisitos Funcionais</h2>
+${T(['ID','Funcionalidade','História do Usuário','Critério de Aceite'],[
+  ['RF-01','CMS Core','Como editor, quero criar tipos de conteúdo por área com campos específicos','Campos validados; auto-save a cada 30s; tipos configuráveis pelo admin'],
+  ['RF-02','Fluxo editorial','Como editor, quero enviar para revisão e ser notificado de aprovação ou rejeição','Estados visíveis; notificação por e-mail; fluxo configurável por área'],
+  ['RF-03','Agendamento','Como editor, quero agendar publicação para data/hora futura','Publicação automática no horário; cancelamento possível; fuso Brasília'],
+  ['RF-04','Biblioteca de mídia','Como editor, quero fazer upload e reutilizar arquivos em múltiplos conteúdos','Upload múltiplo; thumbnails; busca por tags; formatos configuráveis'],
+  ['RF-05','Busca global','Como visitante, quero buscar qualquer conteúdo com tolerância a erros','&lt;300ms; sugestão de termos; filtros por área e tipo; destaque do termo'],
+  ['RF-06','Gestão de usuários','Como admin, quero criar e gerenciar usuários com papéis por área','CRUD; RBAC por área; log auditável; e-mail automático ao novo usuário'],
+  ['RF-07','Área de Pesquisa','Como pesquisador, quero encontrar laboratórios com equipe e projetos','Filtrável por área; página com equipe, projetos e contato'],
+  ['RF-08','Área de Ensino','Como aluno, quero encontrar cursos e materiais por tipo','Filtro por categoria; download sem cadastro para materiais abertos'],
+  ['RF-09','Coleções Biológicas','Como pesquisador, quero exportar registros com metadados completos','Filtros científicos; exportação CSV e Darwin Core; paginação eficiente'],
+])}
+<h2 class="sec">8.2 Requisitos Não Funcionais</h2>
+${T(['Categoria','Atributo','Requisito','Como será medido'],[
+  ['Desempenho','Tempo de resposta','95% das páginas carregam em &lt;3 segundos','Teste de carga com 200 usuários simultâneos'],
+  ['Desempenho','Disponibilidade','≥ 99,5% uptime mensal','Monitoramento contínuo com alertas'],
+  ['Segurança','LGPD','Log de acesso, direito de exclusão, consentimento documentado','Auditoria antes do go-live'],
+  ['Segurança','Vulnerabilidades','Zero vulnerabilidades críticas (OWASP Top 10)','Scan automatizado no pipeline CI/CD'],
+  ['Acessibilidade','eMAG/WCAG 2.1 AA','100% das páginas públicas conformes','axe-core automatizado + revisão manual'],
+  ['Confiabilidade','Backup','Backup diário, retenção 30 dias, restore testado mensalmente','Teste de restore documentado'],
+  ['Manutenibilidade','Código','Cobertura de testes ≥ 80%; documentação entregue com o código','Relatório de cobertura no CI/CD'],
+])}
+</div>`;}
 
-    <div class="journey">
-      <div class="journey-persona"><div class="journey-icon">🎓</div><div class="journey-pname">Aluno / Candidato</div></div>
-      <div class="journey-body">
-        <div class="journey-title">Encontrar curso ou material educativo</div>
-        <div class="journey-steps">Acessa portal → Área de Ensino → Filtra por tipo (livro, cartilha, jogo, curso técnico, pós-graduação) → Download ou informações de inscrição</div>
-        <div class="journey-req">Requisito-chave: área de ensino por categoria; download direto sem cadastro para materiais abertos; calendário</div>
-        <div class="journey-result">✓ Material baixado ou informações de inscrição encontradas</div>
-      </div>
-    </div>
+function vRoadmap(){return `<style>${BASE}</style><div class="view">
+<div class="section-tag">Seção 9</div>
+<h1 class="vt">Roadmap Futuro<br><em>Oportunidades de Evolução</em></h1>
+<p class="sub">Itens fora do escopo dos 9 meses que a arquitetura Laravel foi projetada para suportar nativamente.</p>
+<div class="rm">
+  <div class="rmi"><div class="rmic rmic-b">${svg('key',18)}</div><div><div class="rmt">Login Único (SSO)</div><div class="rmd">Integração com Shibboleth ou Keycloak para autenticação via conta Fiocruz. Laravel Sanctum já incluso no escopo — sem reescrita da autenticação.</div><span class="rmtag">Versão futura</span></div></div>
+  <div class="rmi"><div class="rmic rmic-b">${svg('graduationCap',18)}</div><div><div class="rmt">Portais de Pós-Graduação</div><div class="rmd">Centralização dos portais de PPG dispersos. Arquitetura multissite: um backend, múltiplos frontends com identidade própria por programa.</div><span class="rmtag">Versão futura</span></div></div>
+  <div class="rmi"><div class="rmic rmic-g">${svg('handshake',18)}</div><div><div class="rmt">Área de Parceiros e Serviços</div><div class="rmd">Catálogo de laboratórios de referência com serviços, capacidades técnicas e contato. Diretório de convênios e parcerias institucionais.</div><span class="rmtag">Versão futura</span></div></div>
+  <div class="rmi"><div class="rmic rmic-b">${svg('link',18)}</div><div><div class="rmt">Integrações Fiocruz</div><div class="rmd">SIGA (acadêmico), ARCA (repositório de publicações) e EAD (plataforma de cursos a distância).</div><span class="rmtag">Versão futura</span></div></div>
+</div>
+<h2 class="sec">API Pública Darwin Core — Destaque Estratégico</h2>
+${N('Oportunidade de alto valor científico e custo incremental mínimo — a arquitetura API-first do Laravel entrega isso nativamente, sem reescrever nada.','ok','star')}
+${BL([
+  '<strong>Darwin Core</strong> é o padrão internacional de biodiversidade adotado pelo GBIF (Global Biodiversity Information Facility) e instituições do mundo todo',
+  'API pública permitiria que o <strong>GBIF e o SpeciesLink</strong> indexassem automaticamente as coleções do IOC — aumentando a visibilidade científica globalmente',
+  'Pesquisadores externos poderiam cruzar dados das coleções do IOC com outras bases mundiais, potencializando colaborações e citações internacionais',
+  'Atende ao movimento de <strong>Ciência Aberta (Open Science)</strong>, alinhado com políticas do CNPq, CAPES e da própria Fiocruz',
+  'O backend Laravel já expõe dados via API REST — publicar endpoint <code style="background:var(--grey);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px">/api/v1/collections</code> com metadados Darwin Core seria extensão natural',
+  'Possibilidade de registro como <strong>nó de dados no GBIF</strong>, posicionando o IOC como referência brasileira em biodiversidade',
+])}
+<h2 class="sec">Outras Oportunidades</h2>
+<div class="rm">
+  <div class="rmi"><div class="rmic rmic-b">${svg('pieChart',18)}</div><div><div class="rmt">Analytics com Matomo</div><div class="rmd">Dashboard de audiência padrão gov.br por área do portal.</div><span class="rmtag">Após go-live</span></div></div>
+  <div class="rmi"><div class="rmic rmic-b">${svg('fileText',18)}</div><div><div class="rmt">Candidaturas Online</div><div class="rmd">Inscrições para PPGs e cursos integradas ao SIGA diretamente no portal.</div><span class="rmtag">Com módulo PPG</span></div></div>
+  <div class="rmi"><div class="rmic rmic-b">${svg('database',18)}</div><div><div class="rmt">Integração Lattes</div><div class="rmd">Importação de dados de pesquisadores via API CNPq para perfis de laboratório.</div><span class="rmtag">Depende do CNPq</span></div></div>
+  <div class="rmi"><div class="rmic rmic-b">${svg('bot',18)}</div><div><div class="rmt">Chatbot Institucional</div><div class="rmd">FAQ e navegação assistida no portal, especialmente útil para candidatos a cursos.</div><span class="rmtag">6+ meses pós-go-live</span></div></div>
+</div></div>`;}
 
-    <div class="journey">
-      <div class="journey-persona"><div class="journey-icon">🤝</div><div class="journey-pname">Parceiro<br><small style="font-weight:400;color:var(--muted)">(Futuro)</small></div></div>
-      <div class="journey-body">
-        <div class="journey-title">Identificar serviço do IOC</div>
-        <div class="journey-steps">Acessa portal → Serviços → Navega ou busca por tipo → Vê capacidades do laboratório → Acessa contato institucional</div>
-        <div class="journey-req">Requisito-chave: catálogo com descrição técnica; contato claro; área filtrável por tipo de serviço</div>
-        <div class="journey-result">✓ Parceiro identifica o laboratório e inicia contato</div>
-      </div>
-    </div>
+function vProximos(){return `<style>${BASE}
+.dl{margin:16px 0;}
+.di{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;background:#fff;border:1px solid #e8ecf0;border-radius:10px;margin-bottom:10px;transition:box-shadow .2s;}
+.di:hover{box-shadow:0 3px 12px rgba(0,0,0,.07);}
+.dn{width:28px;height:28px;border-radius:50%;flex-shrink:0;background:var(--brand);color:#fff;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.dt{font-size:14px;line-height:1.6;padding-top:3px;}
+.oq{background:var(--warn-bg);border-left:3px solid var(--warn);border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:10px;}
+.oqt{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--warn);margin-bottom:4px;}
+.oqw{font-size:12.5px;color:var(--text);margin-bottom:4px;}
+.oqr{font-size:11.5px;color:var(--muted);}
+</style><div class="view">
+<div class="section-tag">Seção 10</div>
+<h1 class="vt">Próximos Passos<br><em>e Decisões Necessárias</em></h1>
+<p class="sub">O que precisa ser decidido nesta reunião para viabilizar o início do projeto.</p>
+<h2 class="sec">Decisões — Esta Reunião</h2>
+<div class="dl">
+  <div class="di"><div class="dn">1</div><div class="dt"><strong>Aprovar formalmente o Laravel</strong> como stack da nova plataforma digital do IOC</div></div>
+  <div class="di"><div class="dn">2</div><div class="dt"><strong>Designar ao menos 1 profissional de TI</strong> para capacitação em Laravel durante o projeto — formalizar como entregável antes do kick-off</div></div>
+  <div class="di"><div class="dn">3</div><div class="dt"><strong>Definir SLA de infraestrutura</strong>: prazo máximo para provisionamento do ambiente de desenvolvimento (servidor com Docker)</div></div>
+  <div class="di"><div class="dn">4</div><div class="dt"><strong>Autorizar o início do projeto</strong> e agendar reunião de kick-off com TI e Comunicação Estratégica</div></div>
+</div>
+<h2 class="sec">Perguntas em Aberto</h2>
+<div class="oq"><div class="oqt">Quem será o profissional de TI designado para capacitação em Laravel?</div><div class="oqw">Sem esse compromisso, o risco de dependência de pessoa-chave permanece crítico após a entrega.</div><div class="oqr">Responsável: TI + DIRGEP · Prazo: esta reunião</div></div>
+<div class="oq"><div class="oqt">Qual o prazo para provisionamento do ambiente de desenvolvimento?</div><div class="oqw">O início do desenvolvimento está bloqueado até o ambiente estar disponível.</div><div class="oqr">Responsável: TI / Infra · Prazo: kick-off do projeto</div></div>
+<div class="oq"><div class="oqt">A identidade visual oficial do IOC será fornecida até quando?</div><div class="oqw">O design do portal público depende do manual de identidade visual.</div><div class="oqr">Responsável: Comunicação · Prazo: antes da Fase 1</div></div>
+<h2 class="sec">Próximos Passos Após Aprovação</h2>
+<div class="tl">
+  <div class="tli"><div class="tlp">Semana 1<span>após aprovação</span></div><div class="tld"></div><div class="tlc"><div class="tlt">Formalização</div><div class="tld2">Assinatura da Carta de Iniciação; designação formal do profissional TI; SLA de infra definido</div></div></div>
+  <div class="tli"><div class="tlp">Semana 2<span>após aprovação</span></div><div class="tld"></div><div class="tlc"><div class="tlt">Kick-off</div><div class="tld2">Reunião de alinhamento com TI e Comunicação; cronograma detalhado da Fase 1; provisionamento do ambiente</div></div></div>
+  <div class="tli"><div class="tlp">Mês 1</div><div class="tld" style="background:var(--ok)"></div><div class="tlc"><div class="tlt">Início do Desenvolvimento</div><div class="tld2">CMS Core + portal institucional · Fase 1 em execução</div></div></div>
+</div>
+${N('A manutenção do Drupal 7 além de 2025 não é uma opção segura. A pergunta não é "se" migrar, mas "como" e "com quais recursos". Este PRD propõe o caminho mais sustentável, com menor risco de insucesso técnico e institucional.','warn','alertTriangle')}
+<hr class="div">
+<p class="body" style="text-align:center;color:var(--muted);font-size:13px">Documentação técnica de referência: <strong>SRS</strong> (ISO/IEC/IEEE 29148) · <strong>Arquitetura de Software</strong> (ISO/IEC/IEEE 42010) · <strong>Design de Software</strong> (ISO/IEC/IEEE 1016)</p>
+</div>`;}
 
-    <div class="journey">
-      <div class="journey-persona"><div class="journey-icon">🌐</div><div class="journey-pname">Visitante Público</div></div>
-      <div class="journey-body">
-        <div class="journey-title">Acessar notícia institucional</div>
-        <div class="journey-steps">Acessa portal → Notícias → Lê → Navega para conteúdo relacionado</div>
-        <div class="journey-req">Requisito-chave: portal responsivo; &lt;3s de carregamento; breadcrumb; conteúdos relacionados sugeridos</div>
-        <div class="journey-result">✓ Visitante lê e continua navegando pelo portal</div>
-      </div>
-    </div>
-
-    <div class="journey">
-      <div class="journey-persona"><div class="journey-icon">⚙️</div><div class="journey-pname">Admin TI</div></div>
-      <div class="journey-body">
-        <div class="journey-title">Criar usuário editor com RBAC por área</div>
-        <div class="journey-steps">Login → Painel admin → Usuários → Criar → Define papel e área (ex.: Editor / Ensino) → Confirma</div>
-        <div class="journey-req">Requisito-chave: RBAC por área; log de auditoria; e-mail automático ao novo usuário</div>
-        <div class="journey-result">✓ Usuário criado com permissões corretas; ação registrada em log</div>
-      </div>
-    </div>
-  </div>`;
-}
-
-// ── VIEW 7: ESCOPO ────────────────────────────────────────────────────────────
-function viewEscopo() {
-  return `<style>${SHADOW_BASE}</style>
-  <div class="view">
-    <div class="section-tag">Seção 7</div>
-    <h1 class="view-title">Escopo<br><em>9 Meses · 4 Fases</em></h1>
-    <p class="subtitle">Escopo calibrado para um desenvolvedor em 9 meses. Foco em entregar plataforma sólida, segura e completa para o portal institucional do IOC.</p>
-
-    ${note('Objetivo da Fase 1: eliminar o risco de segurança imediato colocando o portal principal online com o CMS novo em até 3 meses.', 'ok', '🎯')}
-
-    <h2 class="sec">Funcionalidades por Fase</h2>
-    ${tbl(
-      ['Pri.', 'Funcionalidade', 'Descrição', 'Fase'],
-      [
-        ['P1', 'CMS Core', 'Tipos de conteúdo por área, editor WYSIWYG, versionamento, fluxo editorial configurável, agendamento, RBAC por área', 'Fase 1 · meses 1–3'],
-        ['P1', 'Autenticação própria', 'Login e gestão de usuários com autenticação interna; papéis e permissões por área do portal', 'Fase 1 · meses 1–3'],
-        ['P1', 'Portal Institucional', 'Página inicial, sobre o IOC, notícias, agenda, editais, documentos; eMAG/WCAG 2.1 AA, padrão visual IOC/gov.br', 'Fase 1 · meses 1–3'],
-        ['P1', 'Biblioteca de mídia', 'Upload e organização de imagens, vídeos e documentos; thumbnails automáticos; CDN', 'Fase 1 · meses 1–3'],
-        ['P2', 'Área de Pesquisa', 'Laboratórios com pesquisadores e projetos; publicações científicas; linhas de pesquisa', 'Fase 2 · meses 4–6'],
-        ['P2', 'Área de Ensino', 'Pós-graduação, cursos técnicos, IOC+Escolas, jogos, livros e cartilhas para download; calendário educacional', 'Fase 2 · meses 4–6'],
-        ['P2', 'Busca global', 'Full-text integrada entre todas as áreas via MeiliSearch: tolerância a erros, filtros, sugestões de termos', 'Fase 2 · meses 4–6'],
-        ['P3', 'Área de Coleções', 'Catálogo com filtros científicos, exportação CSV e Darwin Core', 'Fase 3 · meses 7–8'],
-        ['P4', 'Testes e entrega', 'Cobertura ≥ 80%, documentação completa, treinamento, handover ao TI', 'Fase 4 · mês 9'],
-      ]
-    )}
-
-    <h2 class="sec">Fora do Escopo (nesta versão)</h2>
-    ${bullets([
-      'Login único institucional (SSO) — autenticação própria é suficiente para esta versão',
-      'Portais dos programas de pós-graduação em servidores separados — centralização futura',
-      'Área de Parceiros e Serviços Institucionais — roadmap futuro',
-      'Integrações com SIGA, ARCA, EAD — roadmap futuro',
-      'API pública — roadmap futuro',
-      'Aplicativo móvel nativo',
-      'Infraestrutura de servidores — responsabilidade exclusiva do TI',
-    ])}
-
-    <h2 class="sec">Cronograma Resumido</h2>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-phase">Fase 1<span>meses 1–3</span></div>
-        <div class="tl-dot"></div>
-        <div class="tl-content">
-          <div class="tl-title">Fundação — CMS + Portal Institucional</div>
-          <div class="tl-desc">CMS Core, autenticação, portal institucional público, biblioteca de mídia</div>
-          <div class="tl-badge">Marco: portal principal online e seguro</div>
-        </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-phase">Fase 2<span>meses 4–6</span></div>
-        <div class="tl-dot"></div>
-        <div class="tl-content">
-          <div class="tl-title">Expansão — Pesquisa, Ensino e Busca</div>
-          <div class="tl-desc">Área de pesquisa com laboratórios, área de ensino com materiais, busca global MeiliSearch</div>
-          <div class="tl-badge">Marco: todas as 4 áreas do portal ativas</div>
-        </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-phase">Fase 3<span>meses 7–8</span></div>
-        <div class="tl-dot"></div>
-        <div class="tl-content">
-          <div class="tl-title">Coleções Biológicas</div>
-          <div class="tl-desc">Catálogo de coleções com filtros científicos e exportação Darwin Core / CSV</div>
-          <div class="tl-badge">Marco: exportação Darwin Core funcional</div>
-        </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-phase">Fase 4<span>mês 9</span></div>
-        <div class="tl-dot" style="background:var(--ok)"></div>
-        <div class="tl-content">
-          <div class="tl-title">Entrega Final</div>
-          <div class="tl-desc">Testes (≥80% cobertura), documentação técnica completa, treinamento das equipes, handover ao TI</div>
-          <div class="tl-badge">Marco: plataforma entregue e TI capacitado</div>
-        </div>
-      </div>
-    </div>
-  </div>`;
-}
-
-// ── VIEW 8: REQUISITOS ────────────────────────────────────────────────────────
-function viewRequisitos() {
-  return `<style>${SHADOW_BASE}</style>
-  <div class="view">
-    <div class="section-tag">Seção 8</div>
-    <h1 class="view-title">Requisitos<br><em>Funcionais e Não Funcionais</em></h1>
-    <p class="subtitle">Escritos na perspectiva do usuário. Detalhamento técnico completo no SRS (ISO/IEC/IEEE 29148).</p>
-
-    <h2 class="sec">8.1 Requisitos Funcionais</h2>
-    ${tbl(
-      ['ID', 'Funcionalidade', 'História do Usuário', 'Critério de Aceite'],
-      [
-        ['RF-01', 'CMS Core', 'Como editor, quero criar tipos de conteúdo por área com campos específicos', 'Campos validados; auto-save a cada 30s; tipos configuráveis pelo admin'],
-        ['RF-02', 'Fluxo editorial', 'Como editor, quero enviar para revisão e ser notificado de aprovação ou rejeição', 'Estados visíveis; notificação por e-mail; fluxo configurável por área'],
-        ['RF-03', 'Agendamento', 'Como editor, quero agendar publicação para data/hora futura', 'Publicação automática no horário; cancelamento possível; fuso Brasília'],
-        ['RF-04', 'Biblioteca de mídia', 'Como editor, quero fazer upload e reutilizar arquivos em múltiplos conteúdos', 'Upload múltiplo; thumbnails; busca por tags; formatos configuráveis'],
-        ['RF-05', 'Busca global', 'Como visitante, quero buscar qualquer conteúdo com tolerância a erros', '<300ms; sugestão de termos; filtros por área e tipo; destaque do termo'],
-        ['RF-06', 'Gestão de usuários', 'Como admin, quero criar e gerenciar usuários com papéis por área', 'CRUD; RBAC por área; log auditável; e-mail automático ao novo usuário'],
-        ['RF-07', 'Área de Pesquisa', 'Como pesquisador, quero encontrar laboratórios com equipe e projetos', 'Filtrável por área; página com equipe, projetos e contato'],
-        ['RF-08', 'Área de Ensino', 'Como aluno, quero encontrar cursos e materiais por tipo', 'Filtro por categoria; download sem cadastro para materiais abertos'],
-        ['RF-09', 'Coleções Biológicas', 'Como pesquisador, quero exportar registros com metadados completos', 'Filtros científicos; exportação CSV e Darwin Core; paginação eficiente'],
-      ]
-    )}
-
-    <h2 class="sec">8.2 Requisitos Não Funcionais</h2>
-    ${tbl(
-      ['Categoria', 'Atributo', 'Requisito', 'Como será medido'],
-      [
-        ['Desempenho', 'Tempo de resposta', '95% das páginas carregam em < 3 segundos', 'Teste de carga com 200 usuários simultâneos'],
-        ['Desempenho', 'Disponibilidade', '≥ 99,5% uptime mensal', 'Monitoramento contínuo com alertas'],
-        ['Segurança', 'LGPD', 'Log de acesso, direito de exclusão, consentimento documentado', 'Auditoria antes do go-live'],
-        ['Segurança', 'Vulnerabilidades', 'Zero vulnerabilidades críticas (OWASP Top 10)', 'Scan automatizado no pipeline CI/CD'],
-        ['Acessibilidade', 'eMAG/WCAG 2.1 AA', '100% das páginas públicas conformes', 'axe-core automatizado + revisão manual'],
-        ['Confiabilidade', 'Backup', 'Backup diário, retenção 30 dias, restore testado mensalmente', 'Teste de restore documentado'],
-        ['Manutenibilidade', 'Código', 'Cobertura de testes ≥ 80%; documentação entregue com o código', 'Relatório de cobertura no CI/CD'],
-      ]
-    )}
-  </div>`;
-}
-
-// ── VIEW 9: ROADMAP ───────────────────────────────────────────────────────────
-function viewRoadmap() {
-  return `<style>${SHADOW_BASE}</style>
-  <div class="view">
-    <div class="section-tag">Seção 9</div>
-    <h1 class="view-title">Roadmap Futuro<br><em>Oportunidades de Evolução</em></h1>
-    <p class="subtitle">Itens fora do escopo dos 9 meses que a arquitetura Laravel foi projetada para suportar nativamente.</p>
-
-    <div class="roadmap">
-      <div class="rm-item"><div class="rm-icon">🔑</div><div><div class="rm-title">Login Único (SSO)</div><div class="rm-desc">Integração com Shibboleth ou Keycloak para autenticação via conta Fiocruz. Laravel Sanctum já incluso no escopo — sem reescrita da autenticação.</div><span class="rm-tag">Versão futura</span></div></div>
-      <div class="rm-item"><div class="rm-icon">🎓</div><div><div class="rm-title">Portais de Pós-Graduação</div><div class="rm-desc">Centralização dos portais de PPG dispersos. Arquitetura multissite: um backend, múltiplos frontends com identidade própria por programa.</div><span class="rm-tag">Versão futura</span></div></div>
-      <div class="rm-item"><div class="rm-icon">🤝</div><div><div class="rm-title">Área de Parceiros e Serviços</div><div class="rm-desc">Catálogo de laboratórios de referência com serviços, capacidades técnicas e contato. Diretório de convênios e parcerias institucionais.</div><span class="rm-tag">Versão futura</span></div></div>
-      <div class="rm-item"><div class="rm-icon">🔗</div><div><div class="rm-title">Integrações Fiocruz</div><div class="rm-desc">SIGA (acadêmico), ARCA (repositório de publicações) e EAD (plataforma de cursos a distância).</div><span class="rm-tag">Versão futura</span></div></div>
-    </div>
-
-    <h2 class="sec">🌿 API Pública Darwin Core — Destaque Estratégico</h2>
-    ${note('Oportunidade de alto valor científico e custo incremental mínimo — a arquitetura API-first do Laravel entrega isso nativamente, sem reescrever nada.', 'ok', '⭐')}
-    ${bullets([
-      '<strong>Darwin Core</strong> é o padrão internacional de biodiversidade adotado pelo GBIF (Global Biodiversity Information Facility) e instituições do mundo todo',
-      'API pública permitiria que o <strong>GBIF e o SpeciesLink</strong> indexassem automaticamente as coleções do IOC — aumentando a visibilidade científica da instituição globalmente',
-      'Pesquisadores externos poderiam cruzar dados das coleções do IOC com outras bases mundiais, potencializando colaborações e citações internacionais',
-      'Atende ao movimento de <strong>Ciência Aberta (Open Science)</strong>, alinhado com políticas do CNPq, CAPES e da própria Fiocruz',
-      'O backend Laravel já expõe dados via API REST — publicar endpoint <code style="background:var(--grey);padding:2px 6px;border-radius:4px;font-family:monospace">/api/v1/collections</code> com metadados Darwin Core seria extensão natural',
-      'Possibilidade de registro como <strong>nó de dados no GBIF</strong>, posicionando o IOC como referência brasileira em biodiversidade',
-    ])}
-
-    <h2 class="sec">Outras Oportunidades</h2>
-    <div class="roadmap">
-      <div class="rm-item"><div class="rm-icon">📊</div><div><div class="rm-title">Analytics com Matomo</div><div class="rm-desc">Dashboard de audiência padrão gov.br por área do portal.</div><span class="rm-tag">Após go-live</span></div></div>
-      <div class="rm-item"><div class="rm-icon">📝</div><div><div class="rm-title">Candidaturas Online</div><div class="rm-desc">Inscrições para PPGs e cursos integradas ao SIGA diretamente no portal.</div><span class="rm-tag">Com módulo PPG</span></div></div>
-      <div class="rm-item"><div class="rm-icon">🔬</div><div><div class="rm-title">Integração Lattes</div><div class="rm-desc">Importação de dados de pesquisadores via API CNPq para perfis de laboratório.</div><span class="rm-tag">Depende do CNPq</span></div></div>
-      <div class="rm-item"><div class="rm-icon">🤖</div><div><div class="rm-title">Chatbot Institucional</div><div class="rm-desc">FAQ e navegação assistida no portal, especialmente útil para candidatos a cursos.</div><span class="rm-tag">6+ meses pós-go-live</span></div></div>
-    </div>
-  </div>`;
-}
-
-// ── VIEW 10: PRÓXIMOS PASSOS ──────────────────────────────────────────────────
-function viewProximos() {
-  return `<style>${SHADOW_BASE}
-  .decision-list { margin: 16px 0; }
-  .dec-item {
-    display: flex; gap: 14px; align-items: flex-start;
-    padding: 14px 16px; background: #fff; border: 1px solid #e8ecf0;
-    border-radius: 10px; margin-bottom: 10px;
-    transition: box-shadow 0.2s;
-  }
-  .dec-item:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.07); }
-  .dec-num {
-    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-    background: var(--brand); color: #fff;
-    font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .dec-text { font-size: 14px; line-height: 1.6; padding-top: 3px; }
-  .open-q { background: var(--warn-bg); border-left: 3px solid var(--warn); border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 10px; }
-  .open-q-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--warn); margin-bottom: 4px; }
-  .open-q-why   { font-size: 12.5px; color: var(--text); margin-bottom: 4px; }
-  .open-q-who   { font-size: 11.5px; color: var(--muted); }
-  </style>
-  <div class="view">
-    <div class="section-tag">Seção 10</div>
-    <h1 class="view-title">Próximos Passos<br><em>e Decisões Necessárias</em></h1>
-    <p class="subtitle">O que precisa ser decidido nesta reunião para viabilizar o início do projeto.</p>
-
-    <h2 class="sec">Decisões — Esta Reunião</h2>
-    <div class="decision-list">
-      <div class="dec-item"><div class="dec-num">1</div><div class="dec-text"><strong>Aprovar formalmente o Laravel</strong> como stack da nova plataforma digital do IOC</div></div>
-      <div class="dec-item"><div class="dec-num">2</div><div class="dec-text"><strong>Designar ao menos 1 profissional de TI</strong> para capacitação em Laravel durante o projeto — formalizar como entregável antes do kick-off</div></div>
-      <div class="dec-item"><div class="dec-num">3</div><div class="dec-text"><strong>Definir SLA de infraestrutura</strong>: prazo máximo para provisionamento do ambiente de desenvolvimento (servidor com Docker)</div></div>
-      <div class="dec-item"><div class="dec-num">4</div><div class="dec-text"><strong>Autorizar o início do projeto</strong> e agendar reunião de kick-off com TI e Comunicação Estratégica</div></div>
-    </div>
-
-    <h2 class="sec">Perguntas em Aberto</h2>
-    <div class="open-q">
-      <div class="open-q-title">Quem será o profissional de TI designado para capacitação em Laravel?</div>
-      <div class="open-q-why">Sem esse compromisso, o risco de dependência de pessoa-chave permanece crítico após a entrega.</div>
-      <div class="open-q-who">Responsável: TI + DIRGEP · Prazo: esta reunião</div>
-    </div>
-    <div class="open-q">
-      <div class="open-q-title">Qual o prazo para provisionamento do ambiente de desenvolvimento?</div>
-      <div class="open-q-why">O início do desenvolvimento está bloqueado até o ambiente estar disponível.</div>
-      <div class="open-q-who">Responsável: TI / Infra · Prazo: kick-off do projeto</div>
-    </div>
-    <div class="open-q">
-      <div class="open-q-title">A identidade visual oficial do IOC será fornecida até quando?</div>
-      <div class="open-q-why">O design do portal público depende do manual de identidade visual.</div>
-      <div class="open-q-who">Responsável: Comunicação · Prazo: antes da Fase 1</div>
-    </div>
-
-    <h2 class="sec">Próximos Passos Após Aprovação</h2>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-phase">Semana 1<span>após aprovação</span></div>
-        <div class="tl-dot"></div>
-        <div class="tl-content"><div class="tl-title">Formalização</div><div class="tl-desc">Assinatura da Carta de Iniciação do Projeto; designação formal do profissional TI para capacitação; SLA de infra definido</div></div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-phase">Semana 2<span>após aprovação</span></div>
-        <div class="tl-dot"></div>
-        <div class="tl-content"><div class="tl-title">Kick-off</div><div class="tl-desc">Reunião de alinhamento com TI e Comunicação; cronograma detalhado da Fase 1; provisionamento do ambiente</div></div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-phase">Mês 1</div>
-        <div class="tl-dot" style="background:var(--ok)"></div>
-        <div class="tl-content"><div class="tl-title">Início do Desenvolvimento</div><div class="tl-desc">CMS Core + portal institucional · Fase 1 em execução</div></div>
-      </div>
-    </div>
-
-    ${note('A manutenção do Drupal 7 além de 2025 não é uma opção segura. A pergunta não é "se" migrar, mas "como" e "com quais recursos". Este PRD propõe o caminho mais sustentável, com menor risco de insucesso técnico e institucional.', 'warn', '⚠️')}
-
-    <hr class="divider">
-    <p class="body" style="text-align:center;color:var(--muted);font-size:13px">
-      Documentação técnica de referência: <strong>SRS</strong> (ISO/IEC/IEEE 29148) · <strong>Arquitetura de Software</strong> (ISO/IEC/IEEE 42010) · <strong>Design de Software</strong> (ISO/IEC/IEEE 1016)
-    </p>
-  </div>`;
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// VIEW RENDERERS MAP
-// ═══════════════════════════════════════════════════════════════════════════════
-const RENDERERS = {
-  capa:         viewCapa,
-  contexto:     viewContexto,
-  diagnostico:  viewDiagnostico,
-  stakeholders: viewStakeholders,
-  opcoes:       viewOpcoes,
-  personas:     viewPersonas,
-  jornadas:     viewJornadas,
-  escopo:       viewEscopo,
-  requisitos:   viewRequisitos,
-  roadmap:      viewRoadmap,
-  proximos:     viewProximos,
-};
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// ROUTER
-// ═══════════════════════════════════════════════════════════════════════════════
-const main    = document.getElementById('app-main');
-const navItems = document.getElementById('nav-items');
-const hosts   = {};
-const navBtns = {};
-
-// Build nav + shadow hosts
-VIEWS.forEach(({ id, label }) => {
-  // Nav button
-  const btn = document.createElement('button');
-  btn.className = 'nav-btn';
-  btn.textContent = label;
-  btn.dataset.view = id;
-  btn.addEventListener('click', () => navigate(id));
-  navItems.appendChild(btn);
-  navBtns[id] = btn;
-
-  // Shadow host div
-  const host = document.createElement('div');
-  host.className = 'view-host';
-  host.id = `host-${id}`;
-  main.appendChild(host);
-  hosts[id] = host;
-
-  // Attach shadow root lazily
-  host._rendered = false;
+// ── Router ────────────────────────────────────────────────────────────────────
+const VIEWS=[
+  {id:'capa',label:'0. Capa'},{id:'contexto',label:'1. Contexto'},{id:'diagnostico',label:'2. Diagnóstico'},
+  {id:'stakeholders',label:'3. Stakeholders'},{id:'opcoes',label:'4. Opções'},{id:'personas',label:'5. Personas'},
+  {id:'jornadas',label:'6. Jornadas'},{id:'escopo',label:'7. Escopo'},{id:'requisitos',label:'8. Requisitos'},
+  {id:'roadmap',label:'9. Roadmap'},{id:'proximos',label:'10. Próximos Passos'},
+];
+const R={capa:vCapa,contexto:vContexto,diagnostico:vDiagnostico,stakeholders:vStakeholders,opcoes:vOpcoes,personas:vPersonas,jornadas:vJornadas,escopo:vEscopo,requisitos:vRequisitos,roadmap:vRoadmap,proximos:vProximos};
+const main=document.getElementById('app-main'),ni=document.getElementById('nav-items');
+const H={},B={};
+VIEWS.forEach(({id,label})=>{
+  const b=document.createElement('button');
+  b.className='nav-btn';b.textContent=label;b.dataset.view=id;
+  b.addEventListener('click',()=>go(id));ni.appendChild(b);B[id]=b;
+  const h=document.createElement('div');
+  h.className='view-host';h._r=false;main.appendChild(h);H[id]=h;
 });
-
-function navigate(id) {
-  // Hide all
-  Object.values(hosts).forEach(h => h.classList.remove('active'));
-  Object.values(navBtns).forEach(b => b.classList.remove('active'));
-
-  // Show target
-  const host = hosts[id];
-  host.classList.add('active');
-  navBtns[id].classList.add('active');
-
-  // Render shadow root on first visit
-  if (!host._rendered) {
-    const shadow = host.attachShadow({ mode: 'open' });
-    shadow.innerHTML = RENDERERS[id]();
-    host._rendered = true;
-  }
-
-  // Scroll to top
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  // Update URL hash
-  history.replaceState(null, '', `#${id}`);
+function go(id){
+  Object.values(H).forEach(h=>h.classList.remove('active'));
+  Object.values(B).forEach(b=>b.classList.remove('active'));
+  H[id].classList.add('active');B[id].classList.add('active');
+  if(!H[id]._r){const s=H[id].attachShadow({mode:'open'});s.innerHTML=R[id]();H[id]._r=true;}
+  window.scrollTo({top:0,behavior:'smooth'});
+  history.replaceState(null,'',`#${id}`);
 }
-
-// Init: route to hash or default
-const initialView = (location.hash.slice(1) in RENDERERS)
-  ? location.hash.slice(1)
-  : 'capa';
-navigate(initialView);
-
-// Handle back/forward
-window.addEventListener('popstate', () => {
-  const id = location.hash.slice(1);
-  if (id in RENDERERS) navigate(id);
-});
+const init=(location.hash.slice(1) in R)?location.hash.slice(1):'capa';
+go(init);
+window.addEventListener('popstate',()=>{const id=location.hash.slice(1);if(id in R)go(id);});
 </script>
 </body>
 </html>
