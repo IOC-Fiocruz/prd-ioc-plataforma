@@ -9,20 +9,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-  :root{--brand:#1A5276;--accent:#2E86C1;--light:#D6EAF8;--ok:#1E8449;--ok-bg:#D5F5E3;--warn:#D35400;--warn-bg:#FDEBD0;--gold:#7D6608;--gold-bg:#FEF9E7;--purple:#6C3483;--purp-bg:#F4ECF7;--teal:#0E6655;--teal-bg:#D1F2EB;--grey:#F2F3F4;--dark:#1C2833;--text:#2C3E50;--muted:#7F8C8D;--surface:#FAFBFC;--nav-h:64px;--ease-out:cubic-bezier(0.16,1,0.3,1);}
+  :root{--brand:#3d3933;--accent:#e47267;--light:#e6e5c4;--ok:#5a7a52;--ok-bg:#eaf0e8;--warn:#c45a50;--warn-bg:#f5e8e6;--gold:#8a7340;--gold-bg:#f5f0e0;--purple:#7a4540;--purp-bg:#f2ebe9;--teal:#6b6560;--teal-bg:#e8e5e0;--grey:#d7d8c5;--dark:#2a2724;--text:#333333;--muted:#8a8780;--surface:#faf9f5;--nav-h:64px;--ease-out:cubic-bezier(0.16,1,0.3,1);}
   html{scroll-behavior:smooth;}
   body{font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;color:var(--text);background:var(--surface);overflow-x:hidden;}
-  #app-nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(26,82,118,0.97);backdrop-filter:blur(12px);z-index:1000;display:flex;align-items:center;padding:0 24px;border-bottom:1px solid rgba(255,255,255,0.08);box-shadow:0 2px 20px rgba(0,0,0,0.18);}
+  #app-nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(51,47,43,0.98);backdrop-filter:blur(12px);z-index:1000;display:flex;align-items:center;padding:0 24px;border-bottom:2px solid #e47267;box-shadow:0 2px 16px rgba(0,0,0,0.18);}
   .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:13px;color:#fff;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;padding-right:24px;border-right:1px solid rgba(255,255,255,0.18);margin-right:8px;line-height:1.2;}
   .nav-logo span{display:block;font-weight:400;font-size:10px;opacity:0.6;letter-spacing:0.12em;margin-top:2px;}
   .nav-items{display:flex;align-items:center;gap:2px;overflow-x:auto;flex:1;scrollbar-width:none;padding:0 8px;}
   .nav-items::-webkit-scrollbar{display:none;}
   .nav-btn{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:rgba(255,255,255,0.65);background:none;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;white-space:nowrap;transition:all 0.18s ease;}
   .nav-btn:hover{color:#fff;background:rgba(255,255,255,0.1);}
-  .nav-btn.active{color:#fff;background:rgba(255,255,255,0.15);font-weight:600;}
+  .nav-btn.active{color:#fff;background:rgba(228,114,103,0.2);font-weight:600;border-bottom:2px solid #e47267;}
   .nav-dl{margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:8px;padding-left:16px;border-left:1px solid rgba(255,255,255,0.15);}
-  .btn-download{font-family:'Syne',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--brand);background:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:7px;transition:all 0.18s ease;white-space:nowrap;}
-  .btn-download:hover{background:var(--light);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+  .btn-download{font-family:'Syne',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#fff;background:var(--accent);border:none;padding:8px 16px;border-radius:6px;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:7px;transition:all 0.18s ease;white-space:nowrap;}
+  .btn-download:hover{background:#c45a50;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.15);}
   .btn-download svg{width:14px;height:14px;}
   #app-main{padding-top:var(--nav-h);min-height:100vh;}
   .view-host{display:none;animation:fadeSlideIn 0.4s var(--ease-out) both;}
@@ -92,19 +92,19 @@ function svg(name,size=18,color='currentColor'){
 const BASE=`
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:host{--brand:#1A5276;--accent:#2E86C1;--light:#D6EAF8;--ok:#1E8449;--ok-bg:#D5F5E3;--warn:#D35400;--warn-bg:#FDEBD0;--gold:#7D6608;--gold-bg:#FEF9E7;--purple:#6C3483;--purp-bg:#F4ECF7;--teal:#0E6655;--teal-bg:#D1F2EB;--grey:#F2F3F4;--text:#2C3E50;--muted:#7F8C8D;--surface:#FAFBFC;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);}
+:host{--brand:#3d3933;--accent:#e47267;--light:#e6e5c4;--ok:#5a7a52;--ok-bg:#eaf0e8;--warn:#c45a50;--warn-bg:#f5e8e6;--gold:#8a7340;--gold-bg:#f5f0e0;--purple:#7a4540;--purp-bg:#f2ebe9;--teal:#6b6560;--teal-bg:#e8e5e0;--grey:#d7d8c5;--sand:#d6d1af;--cream:#e6e5c4;--text:#333333;--muted:#8a8780;--surface:#faf9f5;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);}
 .view{max-width:960px;margin:0 auto;padding:48px 32px 80px;}
-.section-tag{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);background:var(--light);padding:4px 12px;border-radius:20px;margin-bottom:16px;}
+.section-tag{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);background:var(--sand,#d6d1af);padding:4px 12px;border-radius:20px;margin-bottom:16px;}
 h1.vt{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,44px);font-weight:800;color:var(--brand);line-height:1.1;margin-bottom:8px;letter-spacing:-0.02em;}
 h1.vt em{font-style:normal;color:var(--accent);}
 .sub{font-size:16px;color:var(--muted);font-weight:300;margin-bottom:40px;max-width:600px;line-height:1.6;}
-h2.sec{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--brand);margin:40px 0 16px;padding-bottom:8px;border-bottom:2px solid var(--light);letter-spacing:-0.01em;}
+h2.sec{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--brand);margin:40px 0 16px;padding-bottom:8px;border-bottom:2px solid var(--sand,#d6d1af);letter-spacing:-0.01em;}
 h2.sec:first-of-type{margin-top:0;}
 p.body{font-size:14.5px;line-height:1.75;color:var(--text);margin-bottom:12px;}
 .note{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:8px;margin:20px 0;font-size:13.5px;line-height:1.65;}
 .note.warn{background:var(--warn-bg);border-left:4px solid var(--warn);}
 .note.ok{background:var(--ok-bg);border-left:4px solid var(--ok);}
-.note.info{background:var(--light);border-left:4px solid var(--accent);}
+.note.info{background:var(--sand,#d6d1af);border-left:4px solid var(--accent);}
 .note.gold{background:var(--gold-bg);border-left:4px solid var(--gold);}
 .ni{flex-shrink:0;display:flex;align-items:center;margin-top:1px;}
 .ni svg{width:18px;height:18px;}
@@ -117,12 +117,12 @@ th:first-child{border-radius:10px 0 0 0;}th:last-child{border-radius:0 10px 0 0;
 td{padding:10px 14px;vertical-align:top;border-bottom:1px solid #eef0f2;line-height:1.55;}
 tr:last-child td{border-bottom:none;}
 tr:nth-child(even) td{background:var(--grey);}
-tr:hover td{background:var(--light)!important;transition:background .15s;}
+tr:hover td{background:var(--sand,#d6d1af)!important;transition:background .15s;}
 .ok{color:var(--ok);font-weight:600;}.warn{color:var(--warn);font-weight:600;}.accent{color:var(--accent);font-weight:600;}
 .hl{background:var(--ok-bg)!important;}.crit{background:var(--warn-bg)!important;font-weight:700;color:var(--warn);}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin:20px 0;}
 .card{background:#fff;border:1px solid #e8ecf0;border-radius:12px;padding:20px;transition:box-shadow .2s,transform .2s;}
-.card:hover{box-shadow:0 6px 24px rgba(26,82,118,.1);transform:translateY(-2px);}
+.card:hover{box-shadow:0 6px 24px rgba(61,57,51,.1);transform:translateY(-2px);}
 .card-lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
 .ct{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--brand);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
 .ct svg{width:16px;height:16px;flex-shrink:0;}
@@ -130,11 +130,11 @@ tr:hover td{background:var(--light)!important;transition:background .15s;}
 .c-ok{border-top:3px solid var(--ok);}.c-warn{border-top:3px solid var(--warn);}
 .pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:20px 0;}
 .pc{background:#fff;border:1px solid #e8ecf0;border-radius:12px;padding:20px;position:relative;overflow:hidden;transition:box-shadow .2s,transform .2s;}
-.pc:hover{box-shadow:0 6px 24px rgba(0,0,0,.1);transform:translateY(-2px);}
+.pc:hover{box-shadow:0 6px 24px rgba(61,57,51,.1);transform:translateY(-2px);}
 .pn{position:absolute;top:0;right:0;font-family:'Syne',sans-serif;font-size:48px;font-weight:800;opacity:.06;line-height:1;color:var(--brand);transform:translate(4px,-6px);}
 .pi{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
 .pi svg{width:20px;height:20px;}
-.pi-b{background:var(--light);color:var(--brand);}
+.pi-b{background:var(--sand,#d6d1af);color:var(--brand);}
 .pi-t{background:var(--teal-bg);color:var(--teal);}
 .pi-p{background:var(--purp-bg);color:var(--purple);}
 .pi-g{background:var(--gold-bg);color:var(--gold);}
@@ -149,12 +149,12 @@ ul.bl li:last-child{border-bottom:none;}
 ul.bl li::before{content:'';position:absolute;left:0;top:14px;width:6px;height:6px;border-radius:50%;background:var(--accent);}
 .tl{margin:24px 0;}
 .tli{display:grid;grid-template-columns:100px 1fr;gap:0 24px;position:relative;}
-.tli::before{content:'';position:absolute;left:99px;top:40px;bottom:-1px;width:2px;background:var(--light);}
+.tli::before{content:'';position:absolute;left:99px;top:40px;bottom:-1px;width:2px;background:var(--sand,#d6d1af);}
 .tli:last-child::before{display:none;}
 .tlp{padding:16px 0;text-align:right;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--brand);letter-spacing:.04em;text-transform:uppercase;}
 .tlp span{display:block;font-family:'DM Mono',monospace;font-size:10px;font-weight:400;color:var(--muted);margin-top:2px;}
 .tld{position:absolute;left:89px;top:20px;width:20px;height:20px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:0 0 0 2px var(--accent);}
-.tlc{padding:16px 0 24px 24px;border-left:2px solid var(--light);}
+.tlc{padding:16px 0 24px 24px;border-left:2px solid var(--sand,#d6d1af);}
 .tlt{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--brand);margin-bottom:6px;}
 .tld2{font-size:13px;color:var(--muted);line-height:1.6;}
 .tlb{display:inline-block;margin-top:8px;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;background:var(--ok-bg);color:var(--ok);}
@@ -165,7 +165,7 @@ ul.bl li::before{content:'';position:absolute;left:0;top:14px;width:6px;height:6
 .rmi:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);}
 .rmic{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .rmic svg{width:18px;height:18px;}
-.rmic-b{background:var(--light);color:var(--brand);}
+.rmic-b{background:var(--sand,#d6d1af);color:var(--brand);}
 .rmic-g{background:var(--gold-bg);color:var(--gold);}
 .rmt{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--brand);margin-bottom:4px;}
 .rmd{font-size:12.5px;color:var(--muted);line-height:1.55;}
@@ -201,15 +201,15 @@ function BL(items){return `<ul class="bl">${items.map(i=>`<li>${i}</li>`).join('
 
 // ── Views ─────────────────────────────────────────────────────────────────────
 function vCapa(){return `<style>${BASE}
-.hero{min-height:calc(100vh - 64px);display:flex;flex-direction:column;justify-content:center;padding:64px 32px;background:linear-gradient(135deg,#0d2d45 0%,#1A5276 50%,#1a6fa8 100%);position:relative;overflow:hidden;}
-.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(46,134,193,.3) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(26,82,118,.4) 0%,transparent 40%);}
-.hg{position:absolute;inset:0;opacity:.04;background-image:linear-gradient(rgba(214,234,248,1) 1px,transparent 1px),linear-gradient(90deg,rgba(214,234,248,1) 1px,transparent 1px);background-size:48px 48px;}
+.hero{min-height:calc(100vh - 64px);display:flex;flex-direction:column;justify-content:center;padding:64px 32px;background:linear-gradient(135deg,#1e1b18 0%,#3d3933 55%,#564e47 100%);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(228,114,103,.15) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(61,57,51,.5) 0%,transparent 40%);}
+.hg{position:absolute;inset:0;opacity:.04;background-image:linear-gradient(rgba(230,229,196,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(230,229,196,0.3) 1px,transparent 1px);background-size:48px 48px;}
 .hc{position:relative;max-width:900px;margin:0 auto;}
 .htag{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);background:rgba(255,255,255,.08);padding:6px 16px;border-radius:20px;margin-bottom:32px;border:1px solid rgba(255,255,255,.12);}
 .dot{width:7px;height:7px;border-radius:50%;background:#52BE80;animation:pulse 2s infinite;flex-shrink:0;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .htitle{font-family:'Syne',sans-serif;font-size:clamp(36px,6vw,72px);font-weight:800;color:#fff;line-height:1.0;letter-spacing:-.03em;margin-bottom:8px;}
-.htitle em{font-style:normal;color:#7EC8E3;display:block;font-size:.55em;font-weight:400;margin-bottom:8px;letter-spacing:0;}
+.htitle em{font-style:normal;color:#e6b8b3;display:block;font-size:.55em;font-weight:400;margin-bottom:8px;letter-spacing:0;}
 .hsub{font-size:clamp(15px,2vw,18px);color:rgba(255,255,255,.55);font-weight:300;margin:24px 0 48px;max-width:560px;line-height:1.7;}
 .hmeta{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:48px;}
 .mi{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:16px 20px;}
@@ -217,9 +217,9 @@ function vCapa(){return `<style>${BASE}
 .mv{font-family:'Syne',sans-serif;font-size:15px;font-weight:600;color:#fff;}
 .hcta{display:flex;gap:12px;flex-wrap:wrap;margin-top:40px;}
 .btn{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:12px 28px;border-radius:8px;cursor:pointer;border:none;transition:all .2s ease;}
-.btn-p{background:#fff;color:var(--brand);}.btn-p:hover{background:var(--light);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2);}
+.btn-p{background:#fff;color:var(--brand);}.btn-p:hover{background:var(--sand,#d6d1af);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2);}
 .btn-s{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);}.btn-s:hover{background:rgba(255,255,255,.18);}
-.ub{margin-top:48px;padding:16px 20px;background:rgba(211,84,0,.15);border:1px solid rgba(211,84,0,.3);border-radius:10px;display:flex;align-items:center;gap:12px;font-size:13.5px;color:rgba(255,255,255,.85);max-width:640px;}
+.ub{margin-top:48px;padding:16px 20px;background:rgba(196,90,80,.15);border:1px solid rgba(196,90,80,.3);border-radius:10px;display:flex;align-items:center;gap:12px;font-size:13.5px;color:rgba(255,255,255,.85);max-width:640px;}
 .ub svg{flex-shrink:0;}
 </style>
 <section class="hero">
@@ -240,7 +240,7 @@ function vCapa(){return `<style>${BASE}
     <div class="mi"><div class="ml">Portal</div><div class="mv">Multi-departamento</div></div>
     <div class="mi"><div class="ml">Status</div><div class="mv">Aprovação pendente</div></div>
   </div>
-  <div class="ub">${svg('alertTriangle',20,'rgba(211,84,0,0.9)')}<span>Drupal 7 <strong>sem suporte de segurança desde janeiro de 2025</strong>. Cada dia sem migração é um dia de exposição a vulnerabilidades sem correção oficial.</span></div>
+  <div class="ub">${svg('alertTriangle',20,'rgba(196,90,80,0.9)')}<span>Drupal 7 <strong>sem suporte de segurança desde janeiro de 2025</strong>. Cada dia sem migração é um dia de exposição a vulnerabilidades sem correção oficial.</span></div>
 </div>
 </section>`;}
 
@@ -368,9 +368,9 @@ ${N('A Persona 7 (Parceiro/Cliente Institucional) está mapeada mas corresponde 
 
 function vJornadas(){return `<style>${BASE}
 .jo{background:#fff;border:1px solid #e8ecf0;border-radius:12px;padding:20px;margin-bottom:16px;display:grid;grid-template-columns:150px 1fr;gap:20px;transition:box-shadow .2s;}
-.jo:hover{box-shadow:0 4px 20px rgba(0,0,0,.08);}
-.jp{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-right:1px solid #f0f2f4;padding-right:20px;}
-.jpi{width:40px;height:40px;border-radius:12px;background:var(--light);color:var(--brand);display:flex;align-items:center;justify-content:center;margin-bottom:8px;}
+.jo:hover{box-shadow:0 4px 20px rgba(61,57,51,.1);}
+.jp{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-right:1px solid #ddd8c8;padding-right:20px;}
+.jpi{width:40px;height:40px;border-radius:12px;background:var(--sand,#d6d1af);color:var(--brand);display:flex;align-items:center;justify-content:center;margin-bottom:8px;}
 .jpi svg{width:20px;height:20px;}
 .jpi.t{background:var(--teal-bg);color:var(--teal);}
 .jpi.p{background:var(--purp-bg);color:var(--purple);}
@@ -514,14 +514,176 @@ ${N('A manutenção do Drupal 7 além de 2025 não é uma opção segura. A perg
 <p class="body" style="text-align:center;color:var(--muted);font-size:13px">Documentação técnica de referência: <strong>SRS</strong> (ISO/IEC/IEEE 29148) · <strong>Arquitetura de Software</strong> (ISO/IEC/IEEE 42010) · <strong>Design de Software</strong> (ISO/IEC/IEEE 1016)</p>
 </div>`;}
 
+function vObjec(){return `<style>
+.v-obj .obj{background:#fff;border:1px solid #e0dbd0;border-radius:12px;padding:24px;margin-bottom:24px;}
+.v-obj .obj-hd{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px;}
+.v-obj .obj-ic{width:40px;height:40px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.v-obj .obj-ic svg{width:20px;height:20px;}
+.v-obj .obj-ic-warn{background:#f5e8e6;color:#c45a50;}
+.v-obj .obj-ic-info{background:#e6e5c4;color:#3d3933;}
+.v-obj .obj-ic-ok{background:#eaf0e8;color:#5a7a52;}
+.v-obj .obj-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#3d3933;margin-bottom:4px;}
+.v-obj .obj-sub{font-size:12.5px;color:#8a8780;font-style:italic;}
+.v-obj .obj-divider{border:none;border-top:1px dashed #d6d1af;margin:14px 0;}
+.v-obj .vt-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:11.5px;font-weight:600;margin-bottom:12px;}
+.v-obj .vt-tag svg{width:14px;height:14px;}
+.v-obj .vt-warn{background:#f5e8e6;color:#c45a50;}
+.v-obj .vt-info{background:#e6e5c4;color:#3d3933;}
+.v-obj .vt-ok{background:#eaf0e8;color:#5a7a52;}
+.v-obj .ref-box{background:#f5f3ed;border-radius:8px;padding:12px 16px;margin:12px 0;font-size:12.5px;line-height:1.6;border-left:3px solid #d6d1af;}
+.v-obj .ref-box strong{color:#3d3933;}
+.v-obj .ref-link{color:#e47267;font-family:'DM Mono',monospace;font-size:11px;}
+</style><div class="view v-obj">
+<div class="section-tag">Seção 11</div>
+<h1 class="vt">Resposta às<br><em>Objeções do TI</em></h1>
+<p class="sub">Resposta direta às três objeções levantadas em reuniões anteriores — com fatos, comparações e comprometimentos formais.</p>
+
+<div class="obj">
+  <div class="obj-hd"><div class="obj-ic obj-ic-warn">${svg('alertTriangle',20)}</div>
+  <div><div class="obj-title">Objeção 1: "Ninguém aqui sabe Laravel — vai ser difícil de manter"</div><div class="obj-sub">Objeção legítima. Merece resposta direta e honesta.</div></div></div>
+  <div class="vt-tag vt-warn">${svg('info',14)} Verdadeira no curto prazo — e o plano a endereça explicitamente</div>
+  <div class="obj-divider"></div>
+  ${BL(['A objeção se aplica <strong>igualmente ao Drupal 10</strong>: o TI também não tem nenhum profissional com experiência em Drupal 10 — e a tentativa anterior fracassou exatamente por essa razão','A diferença crítica é o <strong>mercado</strong>: Laravel tem muito mais profissionais disponíveis no Brasil. Contratar ou capacitar para Laravel é significativamente mais fácil e mais barato','O plano prevê a <strong>capacitação de ao menos 1 profissional de TI</strong> durante o projeto, com tempo e materiais dedicados, antes da entrega final','A operação diária <strong>não exige escrever código Laravel</strong>: o TI precisa saber Docker (curso gratuito de 8h), executar 1 comando de deploy e interpretar logs — menos complexo que gerenciar os 15 servidores Drupal 7 atuais sem documentação'])}
+  ${T(['Critério','Drupal 10','Laravel'],[
+    ['TI tem profissionais hoje?','Não','Não (mesma situação)'],
+    ['Oferta no mercado brasileiro','Baixa','Alta'],
+    ['Capacitação (PT-BR)','Difícil — curva alta, docs escassas','Mais acessível — extensa documentação em PT'],
+    ['Tentativa anterior no IOC','Em espera','—'],
+    ['Complexidade operacional','Similar','Bem documentado, pipelines prontos'],
+  ])}
+</div>
+
+<div class="obj">
+  <div class="obj-hd"><div class="obj-ic obj-ic-info">${svg('refreshCw',20)}</div>
+  <div><div class="obj-title">Objeção 2: "Preferimos Drupal porque já conhecemos"</div><div class="obj-sub">Conhecer uma tecnologia fora de suporte não é uma vantagem — é um passivo.</div></div></div>
+  <div class="vt-tag vt-info">${svg('info',14)} O Drupal 7 que o TI conhece não tem caminho de atualização para Drupal 10</div>
+  <div class="obj-divider"></div>
+  ${BL(['O conhecimento atual em Drupal 7 <strong>não se transfere para Drupal 10</strong>: são arquiteturas completamente diferentes (Symfony, Composer, nova estrutura de temas e módulos)','O Drupal 7 do IOC acumulou customizações extensas fora do padrão — o que o TI conhece é, na prática, <strong>um sistema proprietário disfarçado de Drupal</strong>','A migração para Drupal 10 exige reescrita completa, <strong>exatamente como Laravel</strong> — mas sem as vantagens de mercado e disponibilidade de profissionais','Manter o Drupal 7 mais tempo <strong>aumenta o risco sem reduzir o custo</strong> da migração futura'])}
+</div>
+
+<div class="obj">
+  <div class="obj-hd"><div class="obj-ic obj-ic-ok">${svg('checkCircle',20)}</div>
+  <div><div class="obj-title">Objeção 3: "Laravel não é adequado para ambiente governamental"</div><div class="obj-sub">Esta objeção confunde "adequado para governo" com "já amplamente adotado por governo".</div></div></div>
+  <div class="vt-tag vt-ok">${svg('checkCircle',14)} Adequação é definida por conformidade com normas, não por histórico de adoção</div>
+  <div class="obj-divider"></div>
+  ${BL(['A ePING não restringe frameworks — PHP é a linguagem do sistema atual (Drupal 7 é PHP). A infraestrutura do IOC já é totalmente compatível com Laravel <strong>sem qualquer mudança de ambiente</strong>','A ePING determina que a implementação deve "priorizar software livre" — Laravel é <strong>open source sob licença MIT</strong>, atendendo esse critério diretamente'])}
+  ${T(['Requisito Governamental','Status no Laravel','Observação'],[
+    ['eMAG / WCAG 2.1 AA','Compatível','Acessibilidade é no HTML/CSS — independe do framework backend'],
+    ['LGPD — log e auditoria','Nativo (Telescope + middleware)','Log estruturado e auditoria de ações nativos'],
+    ['HTTPS / TLS 1.3','Compatível','Configuração de infraestrutura, independente de framework'],
+    ['Proteção OWASP Top 10','Nativo','CSRF, XSS, SQL Injection protegidos por padrão'],
+    ['API REST (ePING)','Nativo','Laravel é API-first por design'],
+    ['Software livre (ePING)','Licença MIT','Open source, sem custo de licença'],
+  ])}
+  <div class="ref-box"><strong>USP — uso real verificado:</strong> O USPdev (grupo oficial de TI da Universidade de São Paulo) mantém 90+ sistemas acadêmicos em Laravel, incluindo integração com LDAP/Active Directory. Disponível em: <span class="ref-link">github.com/uspdev</span></div>
+  <div class="ref-box"><strong>UFOP — uso real verificado:</strong> Universidade Federal de Ouro Preto utiliza Laravel em sistemas institucionais com login LDAP e autenticação SSO — a mesma integração que o IOC precisaria em versão futura.</div>
+  ${N('Resumo: "Não conhecemos" é diferente de "não é adequado". Laravel atende todos os critérios de segurança governamental. A barreira é de familiaridade — e tem solução: capacitação e documentação.','ok','checkCircle')}
+</div>
+</div>`;}
+
+function vOper(){return `<style>
+.v-oper .op-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+@media(max-width:600px){.v-oper .op-grid{grid-template-columns:1fr;}}
+.v-oper .op-card{background:#fff;border:1px solid #e0dbd0;border-radius:10px;padding:18px;}
+.v-oper .op-card-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#3d3933;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.v-oper .op-card-title svg{width:16px;height:16px;}
+.v-oper .op-card ul{list-style:none;padding:0;}
+.v-oper .op-card li{font-size:12.5px;color:#8a8780;padding:5px 0 5px 16px;position:relative;border-bottom:1px solid #f0ede6;line-height:1.5;}
+.v-oper .op-card li:last-child{border-bottom:none;}
+.v-oper .op-card li::before{content:'';position:absolute;left:0;top:12px;width:5px;height:5px;border-radius:50%;background:#e47267;}
+.v-oper .cx{display:inline-block;font-size:10px;font-weight:600;padding:1px 7px;border-radius:8px;margin-left:6px;}
+.v-oper .cx-low{background:#eaf0e8;color:#5a7a52;}
+.v-oper .cx-auto{background:#e6e5c4;color:#3d3933;}
+.v-oper .resp-split{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:20px 0;}
+@media(max-width:600px){.v-oper .resp-split{grid-template-columns:1fr;}}
+.v-oper .resp-col{background:#fff;border:1px solid #e0dbd0;border-radius:12px;padding:20px;}
+.v-oper .resp-col-ti{border-top:3px solid #3d3933;}
+.v-oper .resp-col-dev{border-top:3px solid #e47267;}
+.v-oper .resp-col-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:14px;}
+.v-oper .resp-col-ti .resp-col-title{color:#3d3933;}
+.v-oper .resp-col-dev .resp-col-title{color:#e47267;}
+</style><div class="view v-oper">
+<div class="section-tag">Seção 12</div>
+<h1 class="vt">Modelo Operacional<br><em>Responsabilidades do TI</em></h1>
+<p class="sub">O que é esperado da equipe de TI para operar a plataforma com autonomia após a entrega. A separação de responsabilidades é clara e formalizada.</p>
+
+${N('Princípio geral: o desenvolvedor constrói e entrega o sistema documentado. O TI opera a infraestrutura. A separação de responsabilidades garante continuidade operacional independente de quem desenvolveu.','info','info')}
+
+<h2 class="sec">Divisão de Responsabilidades</h2>
+<div class="resp-split">
+  <div class="resp-col resp-col-ti">
+    <div class="resp-col-title">${svg('settings',16)} Equipe de TI</div>
+    ${BL(['Provisionar e manter servidores (app, banco, homologação)','Monitorar uptime e responder a alertas','Gerenciar backups diários e testar restore mensal','Aplicar patches de SO (Ubuntu) e servidor web (Nginx)','Gerenciar firewall e certificado SSL','Executar deploys via pipeline (1 comando ou 1 clique)','Designar e capacitar 1 profissional em Laravel'])}
+  </div>
+  <div class="resp-col resp-col-dev">
+    <div class="resp-col-title">${svg('edit',16)} Desenvolvedor</div>
+    ${BL(['Desenvolver as 4 fases do escopo','Entregar documentação técnica completa (runbooks, arquitetura, dicionário de dados)','Configurar pipeline CI/CD e scripts de deploy','Realizar 2 sessões de treinamento do TI','Orientar o profissional TI designado durante o projeto','30 dias de suporte pós-entrega para bugs críticos'])}
+  </div>
+</div>
+
+<h2 class="sec">Atividades do TI no Dia a Dia</h2>
+<div class="op-grid">
+  <div class="op-card">
+    <div class="op-card-title">${svg('clock',16)} Automatizadas</div>
+    <ul>
+      <li>Monitoramento de uptime <span class="cx cx-auto">Automático</span></li>
+      <li>Backup diário de banco + mídia <span class="cx cx-auto">Automático</span></li>
+      <li>Alertas de disco, CPU, memória <span class="cx cx-auto">Automático</span></li>
+      <li>Renovação SSL (Let's Encrypt) <span class="cx cx-auto">Automático</span></li>
+      <li>Scan de segurança no pipeline <span class="cx cx-auto">Automático</span></li>
+    </ul>
+  </div>
+  <div class="op-card">
+    <div class="op-card-title">${svg('wrench',16)} Manuais (mensais)</div>
+    <ul>
+      <li>Patches de SO (apt upgrade) <span class="cx cx-low">Baixa</span></li>
+      <li>Teste de restore de backup <span class="cx cx-low">Baixa</span></li>
+      <li>Revisão de logs de segurança <span class="cx cx-low">Baixa</span></li>
+      <li>Verificação de espaço em disco <span class="cx cx-low">Baixa</span></li>
+      <li>Revisão de regras de firewall <span class="cx cx-low">Baixa</span></li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="sec">Deploy e Atualizações</h2>
+${T(['Atividade','Como funciona','O que o TI precisa fazer'],[
+  ['Deploy de nova versão','Desenvolvedor envia código ao Git; pipeline testa e faz deploy automaticamente','Aprovar o pipeline ou executar 1 comando — resultado em minutos'],
+  ['Rollback de emergência','Versão anterior disponível no pipeline; rollback é 1 comando documentado','Executar 1 comando do runbook — sem precisar entender o código'],
+  ['Migração de banco','Executada automaticamente via Laravel Migrations durante o deploy','Verificar nos logs se a migração foi executada com sucesso'],
+  ['Atualização de dependências','Desenvolvedor prepara e testa; TI valida em homologação','Confirmar funcionamento em homologação antes de aprovar para produção'],
+])}
+
+<h2 class="sec">Infraestrutura Necessária</h2>
+${T(['Recurso','Especificação mínima','Quando provisionar'],[
+  ['Servidor de aplicação','4 vCPUs · 16 GB RAM · 100 GB SSD · Ubuntu 22.04 LTS · Docker','Antes do kick-off — Fase 1'],
+  ['Servidor de banco de dados','4 vCPUs · 32 GB RAM · 200 GB SSD · MySQL 8.0','Antes do kick-off — Fase 1'],
+  ['Ambiente de homologação','2 vCPUs · 8 GB RAM · 50 GB SSD · Ubuntu 22.04 LTS','Antes do kick-off — Fase 1'],
+  ['CDN / proxy reverso','Cloudflare (gratuito) ou Nginx · SSL termination','Fase 1'],
+  ['Acesso SSH','Chave SSH do desenvolvedor nos servidores de dev e homologação','Antes do kick-off'],
+  ['Repositório de código','GitHub ou GitLab institucional para controle de versão','Antes do kick-off'],
+])}
+
+<h2 class="sec">Comparação: Atual vs. Nova Plataforma</h2>
+${T(['Aspecto','Drupal 7 atual (15 servidores)','Nova plataforma Laravel'],[
+  ['Ambientes para gerenciar','15 servidores isolados','1 plataforma centralizada + homologação'],
+  ['Documentação','Nenhuma (conhecimento tácito)','Runbooks completos entregues na Fase 4'],
+  ['Processo de deploy','Manual, sem pipeline, sem rollback','Pipeline automático com rollback em 1 comando'],
+  ['Monitoramento','Ausente ou fragmentado','Centralizado com alertas automáticos'],
+  ['Backup e restore','Processo manual por servidor','Automático centralizado com teste mensal'],
+])}
+
+${N('O modelo operacional descrito é mais simples que o ambiente atual — onde o TI gerencia 15 servidores sem documentação e sem pipeline de deploy. A nova plataforma centraliza tudo em 1 ambiente padronizado.','ok','checkCircle')}
+</div>`;}
+
 // ── Router ────────────────────────────────────────────────────────────────────
 const VIEWS=[
   {id:'capa',label:'0. Capa'},{id:'contexto',label:'1. Contexto'},{id:'diagnostico',label:'2. Diagnóstico'},
   {id:'stakeholders',label:'3. Stakeholders'},{id:'opcoes',label:'4. Opções'},{id:'personas',label:'5. Personas'},
   {id:'jornadas',label:'6. Jornadas'},{id:'escopo',label:'7. Escopo'},{id:'requisitos',label:'8. Requisitos'},
   {id:'roadmap',label:'9. Roadmap'},{id:'proximos',label:'10. Próximos Passos'},
+  {id:'objec',label:'11. Objeções TI'},{id:'oper',label:'12. Modelo Operacional'},
 ];
-const R={capa:vCapa,contexto:vContexto,diagnostico:vDiagnostico,stakeholders:vStakeholders,opcoes:vOpcoes,personas:vPersonas,jornadas:vJornadas,escopo:vEscopo,requisitos:vRequisitos,roadmap:vRoadmap,proximos:vProximos};
+const R={capa:vCapa,contexto:vContexto,diagnostico:vDiagnostico,stakeholders:vStakeholders,opcoes:vOpcoes,personas:vPersonas,jornadas:vJornadas,escopo:vEscopo,requisitos:vRequisitos,roadmap:vRoadmap,proximos:vProximos,objec:vObjec,oper:vOper};
 const main=document.getElementById('app-main'),ni=document.getElementById('nav-items');
 const H={},B={};
 VIEWS.forEach(({id,label})=>{
