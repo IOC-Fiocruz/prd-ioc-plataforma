@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VPS App — Setup Documentation · IOC/Fiocruz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#0d0f12;
+  --surface:#13161b;
+  --surface2:#1a1e25;
+  --border:#252932;
+  --border2:#2e3540;
+  --accent:#4ade80;
+  --accent2:#22c55e;
+  --accent-dim:rgba(74,222,128,0.08);
+  --accent-dim2:rgba(74,222,128,0.15);
+  --blue:#60a5fa;
+  --amber:#fbbf24;
+  --red:#f87171;
+  --purple:#a78bfa;
+  --text:#e2e8f0;
+  --text2:#94a3b8;
+  --text3:#4b5563;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'DM Sans',sans-serif;
+  --display:'Syne',sans-serif;
+}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--text);
+  font-size:15px;
+  line-height:1.7;
+  min-height:100vh;
+}
+
+/* GRID BACKGROUND */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(74,222,128,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74,222,128,0.03) 1px, transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* LAYOUT */
+.wrapper{
+  max-width:900px;
+  margin:0 auto;
+  padding:0 32px 120px;
+  position:relative;
+  z-index:1;
+}
+
+/* HEADER */
+header{
+  padding:64px 0 48px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:64px;
+}
+
+.header-tag{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--accent);
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  margin-bottom:16px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.header-tag::before{
+  content:'';
+  width:20px;
+  height:1px;
+  background:var(--accent);
+}
+
+h1{
+  font-family:var(--display);
+  font-size:clamp(32px,5vw,52px);
+  font-weight:800;
+  line-height:1.05;
+  letter-spacing:-0.02em;
+  margin-bottom:20px;
+  color:#fff;
+}
+h1 em{
+  font-style:normal;
+  color:var(--accent);
+}
+
+.header-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:24px;
+  margin-top:28px;
+}
+.meta-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--text2);
+}
+.meta-dot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--accent);
+  flex-shrink:0;
+}
+
+/* STATUS BANNER */
+.status-banner{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  background:var(--accent-dim);
+  border:1px solid rgba(74,222,128,0.2);
+  border-radius:8px;
+  padding:16px 20px;
+  margin-bottom:48px;
+  font-family:var(--mono);
+  font-size:13px;
+  color:var(--accent);
+}
+.status-pulse{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--accent);
+  flex-shrink:0;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,0.4)}
+  50%{box-shadow:0 0 0 6px rgba(74,222,128,0)}
+}
+
+/* PROGRESS TRACK */
+.progress-track{
+  display:flex;
+  gap:0;
+  margin-bottom:64px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+}
+.progress-step{
+  flex:1;
+  padding:16px 14px;
+  text-align:center;
+  border-right:1px solid var(--border);
+  cursor:pointer;
+  transition:background 0.15s;
+  text-decoration:none;
+}
+.progress-step:last-child{border-right:none}
+.progress-step:hover{background:var(--surface2)}
+.ps-num{
+  font-family:var(--mono);
+  font-size:10px;
+  color:var(--accent);
+  margin-bottom:4px;
+  display:block;
+}
+.ps-label{
+  font-size:11px;
+  color:var(--text2);
+  line-height:1.3;
+  display:block;
+}
+.progress-step.done .ps-num{color:var(--accent)}
+.progress-step.done .ps-label{color:var(--text)}
+
+/* SECTION */
+.section{
+  margin-bottom:64px;
+  scroll-margin-top:32px;
+}
+
+.section-header{
+  display:flex;
+  align-items:flex-start;
+  gap:20px;
+  margin-bottom:28px;
+}
+
+.step-badge{
+  flex-shrink:0;
+  width:44px;
+  height:44px;
+  border-radius:8px;
+  background:var(--accent-dim);
+  border:1px solid rgba(74,222,128,0.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--mono);
+  font-size:13px;
+  font-weight:500;
+  color:var(--accent);
+  margin-top:2px;
+}
+
+.step-info{}
+.step-title{
+  font-family:var(--display);
+  font-size:22px;
+  font-weight:700;
+  color:#fff;
+  margin-bottom:4px;
+  line-height:1.2;
+}
+.step-subtitle{
+  font-size:13px;
+  color:var(--text2);
+  font-family:var(--mono);
+}
+
+/* RESULT BADGE */
+.result{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:var(--mono);
+  font-size:11px;
+  padding:3px 10px;
+  border-radius:4px;
+  margin-left:12px;
+  vertical-align:middle;
+}
+.result.ok{background:rgba(74,222,128,0.12);color:var(--accent);border:1px solid rgba(74,222,128,0.2)}
+.result.warn{background:rgba(251,191,36,0.1);color:var(--amber);border:1px solid rgba(251,191,36,0.2)}
+
+/* CARD */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:16px;
+}
+
+.card-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 16px;
+  background:var(--surface2);
+  border-bottom:1px solid var(--border);
+}
+.card-title{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--text2);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.card-title span{color:var(--text3)}
+
+.card-actions{
+  display:flex;
+  gap:6px;
+}
+.copy-btn{
+  font-family:var(--mono);
+  font-size:10px;
+  color:var(--text3);
+  background:none;
+  border:1px solid var(--border2);
+  padding:3px 8px;
+  border-radius:4px;
+  cursor:pointer;
+  transition:all 0.15s;
+}
+.copy-btn:hover{color:var(--accent);border-color:rgba(74,222,128,0.3)}
+.copy-btn.copied{color:var(--accent);border-color:rgba(74,222,128,0.3)}
+
+/* CODE BLOCK */
+pre{
+  padding:20px;
+  overflow-x:auto;
+  font-family:var(--mono);
+  font-size:13px;
+  line-height:1.8;
+  color:#cbd5e1;
+  tab-size:2;
+}
+pre .cmd{color:#e2e8f0}
+pre .comment{color:var(--text3)}
+pre .flag{color:var(--blue)}
+pre .val{color:var(--accent)}
+pre .str{color:var(--amber)}
+pre .out{color:var(--text3)}
+
+/* EXPLANATION */
+.explanation{
+  margin:16px 0 24px;
+}
+.explanation p{
+  color:var(--text2);
+  font-size:14px;
+  margin-bottom:12px;
+}
+
+/* INLINE TABLE */
+.explain-list{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin:16px 0;
+}
+.explain-item{
+  display:grid;
+  grid-template-columns:160px 1fr;
+  gap:12px;
+  align-items:start;
+  font-size:13px;
+}
+.explain-key{
+  font-family:var(--mono);
+  color:var(--blue);
+  padding:2px 8px;
+  background:rgba(96,165,250,0.08);
+  border-radius:4px;
+  white-space:nowrap;
+}
+.explain-val{
+  color:var(--text2);
+  padding-top:2px;
+}
+
+/* ALERT */
+.alert{
+  display:flex;
+  gap:12px;
+  padding:14px 16px;
+  border-radius:8px;
+  font-size:13px;
+  margin:20px 0;
+  line-height:1.6;
+}
+.alert.warn{
+  background:rgba(251,191,36,0.06);
+  border:1px solid rgba(251,191,36,0.2);
+  color:#fde68a;
+}
+.alert.info{
+  background:rgba(96,165,250,0.06);
+  border:1px solid rgba(96,165,250,0.2);
+  color:#bfdbfe;
+}
+.alert.ok{
+  background:rgba(74,222,128,0.06);
+  border:1px solid rgba(74,222,128,0.2);
+  color:#bbf7d0;
+}
+.alert-icon{
+  font-size:14px;
+  flex-shrink:0;
+  margin-top:1px;
+  font-family:var(--mono);
+  font-weight:500;
+}
+
+/* OUTPUT BOX */
+.output-box{
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:16px 20px;
+  margin:16px 0;
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--text3);
+  line-height:1.8;
+}
+.output-box .ok-line{color:var(--accent)}
+.output-box .label{color:var(--text2)}
+
+/* ARCHITECTURE DIAGRAM */
+.arch{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:28px;
+  margin:24px 0;
+  font-family:var(--mono);
+  font-size:12px;
+}
+.arch-title{
+  font-size:10px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--text3);
+  margin-bottom:20px;
+}
+.arch-row{
+  display:flex;
+  align-items:center;
+  gap:0;
+  margin-bottom:8px;
+}
+.arch-box{
+  padding:8px 14px;
+  border-radius:6px;
+  white-space:nowrap;
+  font-size:12px;
+  border:1px solid;
+}
+.arch-box.nginx{background:rgba(74,222,128,0.08);border-color:rgba(74,222,128,0.25);color:var(--accent)}
+.arch-box.php{background:rgba(96,165,250,0.08);border-color:rgba(96,165,250,0.25);color:var(--blue)}
+.arch-box.net{background:rgba(167,139,250,0.08);border-color:rgba(167,139,250,0.25);color:var(--purple)}
+.arch-box.ext{background:var(--surface2);border-color:var(--border2);color:var(--text2)}
+.arch-arrow{
+  padding:0 10px;
+  color:var(--text3);
+  font-size:14px;
+}
+.arch-label{
+  font-size:10px;
+  color:var(--text3);
+  margin-left:12px;
+}
+
+/* SUMMARY TABLE */
+.summary-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+  margin-top:32px;
+}
+.summary-table th{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--text3);
+  padding:10px 16px;
+  text-align:left;
+  border-bottom:1px solid var(--border);
+  font-weight:400;
+}
+.summary-table td{
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:middle;
+}
+.summary-table tr:last-child td{border-bottom:none}
+.summary-table tr:hover td{background:var(--surface2)}
+.td-step{font-family:var(--mono);color:var(--text2);font-size:12px}
+.td-name{color:var(--text);font-weight:500}
+.td-detail{color:var(--text2);font-size:12px}
+.td-status{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--accent);
+}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border);
+  padding:32px 0;
+  margin-top:80px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--text3);
+}
+
+/* SCROLL ANIMATIONS */
+.section{
+  opacity:0;
+  transform:translateY(16px);
+  transition:opacity 0.4s ease, transform 0.4s ease;
+}
+.section.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-tag">Sprint F1S1 · Semanas 1–2 · IOC/Fiocruz CMS</div>
+    <h1>VPS App<br><em>Setup & Configuration</em></h1>
+    <p style="color:var(--text2);font-size:15px;max-width:560px">
+      Documentação operacional do processo de configuração da VPS de aplicação.
+      Ubuntu 22.04 LTS · Docker Engine 29.3 · Nginx 1.27 · PHP-FPM 8.2
+    </p>
+    <div class="header-meta">
+      <div class="meta-item"><span class="meta-dot"></span>Ubuntu 24.04 LTS</div>
+      <div class="meta-item"><span class="meta-dot"></span>Docker 29.3.0</div>
+      <div class="meta-item"><span class="meta-dot"></span>Nginx 1.27-alpine</div>
+      <div class="meta-item"><span class="meta-dot"></span>PHP-FPM 8.2-alpine</div>
+      <div class="meta-item"><span class="meta-dot"></span>23 Mar 2026</div>
+    </div>
+  </header>
+
+  <!-- STATUS -->
+  <div class="status-banner">
+    <div class="status-pulse"></div>
+    VPS App operacional — Nginx + PHP-FPM respondendo · 6/6 etapas concluídas
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-track">
+    <a class="progress-step done" href="#etapa1"><span class="ps-num">01</span><span class="ps-label">Sistema</span></a>
+    <a class="progress-step done" href="#etapa2"><span class="ps-num">02</span><span class="ps-label">Docker</span></a>
+    <a class="progress-step done" href="#etapa3"><span class="ps-num">03</span><span class="ps-label">Usuário deploy</span></a>
+    <a class="progress-step done" href="#etapa4"><span class="ps-num">04</span><span class="ps-label">Firewall</span></a>
+    <a class="progress-step done" href="#etapa5"><span class="ps-num">05</span><span class="ps-label">Redes Docker</span></a>
+    <a class="progress-step done" href="#etapa6"><span class="ps-num">06</span><span class="ps-label">Nginx + PHP-FPM</span></a>
+  </div>
+
+  <!-- ARQUITETURA -->
+  <div class="section visible" style="margin-bottom:48px">
+    <div class="arch">
+      <div class="arch-title">Arquitetura de rede — VPS App</div>
+      <div class="arch-row">
+        <div class="arch-box ext">Internet :80/:443</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box nginx">ioc_nginx</div>
+        <div class="arch-arrow">↔</div>
+        <div class="arch-box net">ioc_frontend<br><span style="font-size:10px;opacity:0.7">172.20.0.0/24</span></div>
+        <div class="arch-arrow">↔</div>
+        <div class="arch-box php">ioc_app (PHP-FPM)</div>
+      </div>
+      <div style="margin-top:12px" class="arch-row">
+        <div style="width:180px"></div>
+        <div class="arch-arrow" style="opacity:0"> </div>
+        <div class="arch-box php" style="opacity:0.5">ioc_app</div>
+        <div class="arch-arrow">↔</div>
+        <div class="arch-box net">ioc_backend<br><span style="font-size:10px;opacity:0.7">172.20.1.0/24 · internal</span></div>
+        <div class="arch-arrow">↔</div>
+        <div class="arch-box ext">worker · scheduler</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 1 -->
+  <div class="section" id="etapa1">
+    <div class="section-header">
+      <div class="step-badge">01</div>
+      <div class="step-info">
+        <div class="step-title">Sistema <span class="result ok">✓ concluído</span></div>
+        <div class="step-subtitle">apt upgrade · timezone · utilitários base</div>
+      </div>
+    </div>
+
+    <div class="explanation">
+      <p>Atualização do sistema operacional, ajuste de timezone e instalação dos utilitários que serão usados nas etapas seguintes.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span>#</span> Atualizar pacotes do sistema</div>
+        <div class="card-actions"><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+      </div>
+      <pre><span class="cmd">apt update && apt upgrade -y</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span>#</span> Instalar utilitários essenciais</div>
+        <div class="card-actions"><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+      </div>
+      <pre><span class="cmd">apt install -y curl wget git unzip \
+  ca-certificates gnupg lsb-release \
+  ufw fail2ban</span></pre>
+    </div>
+
+    <ul class="explain-list">
+      <li class="explain-item"><span class="explain-key">curl / wget</span><span class="explain-val">Baixar arquivos e scripts externos (instalador do Docker, por exemplo)</span></li>
+      <li class="explain-item"><span class="explain-key">ca-certificates</span><span class="explain-val">Validar certificados SSL ao adicionar repositórios externos</span></li>
+      <li class="explain-item"><span class="explain-key">gnupg</span><span class="explain-val">Verificar assinatura GPG do repositório do Docker</span></li>
+      <li class="explain-item"><span class="explain-key">lsb-release</span><span class="explain-val">Identificar a versão do Ubuntu (o instalador do Docker precisa disso)</span></li>
+      <li class="explain-item"><span class="explain-key">ufw</span><span class="explain-val">Firewall — configurado na Etapa 4</span></li>
+      <li class="explain-item"><span class="explain-key">fail2ban</span><span class="explain-val">Bloqueia IPs com tentativas repetidas de força bruta no SSH</span></li>
+    </ul>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span>#</span> Ajustar timezone</div>
+        <div class="card-actions"><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+      </div>
+      <pre><span class="cmd">timedatectl set-timezone America/Sao_Paulo && timedatectl</span></pre>
+    </div>
+
+    <div class="output-box">
+      <div class="ok-line">Time zone: America/Sao_Paulo (-03, -0300)</div>
+      <div>System clock synchronized: yes</div>
+      <div>NTP service: active</div>
+    </div>
+
+    <div class="alert warn">
+      <span class="alert-icon">!</span>
+      <span>O sistema pode avisar <code>Pending kernel upgrade</code> após o upgrade. Nesse caso, rode <code>reboot</code> e reconecte antes de continuar. Confirme com <code>uname -r</code> — deve mostrar a versão nova.</span>
+    </div>
+  </div>
+
+  <!-- ETAPA 2 -->
+  <div class="section" id="etapa2">
+    <div class="section-header">
+      <div class="step-badge">02</div>
+      <div class="step-info">
+        <div class="step-title">Docker Engine <span class="result ok">✓ concluído</span></div>
+        <div class="step-subtitle">Docker CE 29.3.0 · Compose v5.1.1 · Buildx</div>
+      </div>
+    </div>
+
+    <div class="explanation">
+      <p>Instalação do Docker Engine a partir do repositório oficial. Não usar o pacote do Ubuntu — a versão oficial do Docker é sempre mais atual e recebe patches de segurança mais rápido.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span>#</span> Adicionar repositório oficial do Docker</div>
+        <div class="card-actions"><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+      </div>
+      <pre><span class="cmd">install -m 0755 -d /etc/apt/keyrings
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+  -o /etc/apt/keyrings/docker.asc
+
+chmod a+r /etc/apt/keyrings/docker.asc
+
+echo <span class="str">"deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] \
+https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"</span> \
+  | tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+apt update</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span>#</span> Instalar Docker e plugins</div>
+        <div class="card-actions"><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+      </div>
+      <pre><span class="cmd">apt install -y \
+  docker-ce \
+  docker-ce-cli \
+  containerd.io \
+  docker-buildx-plugin \
+  docker-compose-plugin</span></pre>
+    </div>
+
+    <ul class="explain-list">
+      <li class="explain-item"><span class="explain-key">docker-ce</span><span class="explain-val">Docker Engine — o runtime de containers em si</span></li>
+      <li class="explain-item"><span class="explain-key">docker-ce-cli</span><span class="explain-val">Comando <code>docker</code> no terminal</span></li>
+      <li class="explain-item"><span class="explain-key">containerd.io</span><span class="explain-val">Runtime de baixo nível usado pelo Docker internamente</span></li>
+      <li class="explain-item"><span class="explain-key">docker-buildx-plugin</span><span class="explain-val">Builder multi-stage e multi-plataforma — necessário para nosso Dockerfile</span></li>
+      <li class="explain-item"><span class="explain-key">docker-compose-plugin</span><span class="explain-val">Adiciona <code>docker compose</code> (v2, sem hífen)</span></li>
+    </ul>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span>#</span> Verificar instalação</div>
+        <div class="card-actions"><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+      </div>
+      <pre><span class="cmd">docker --version && docker compose version && docker run --rm hello-world</span></pre>
+    </div>
+
+    <div class="output-box">
+      <div class="ok-line">Docker version 29.3.0, build 5927d80</div>
+      <div class="ok-line">Docker Compose version v5.1.1</div>
+      <div style="margin-top:8px">Hello from Docker!</div>
+    </div>
+  </div>
+
+  <!-- ETAPA 3 -->
+  <div class="section" id="etapa3">
+    <div class="section-header">
+      <div class="step-badge">03</div>
+      <div class="step-info">
+        <div class="step-title">Usuário deploy <span class="result ok">✓ concluído</span></div>
+        <div class="step-subtitle">uid=1002 · grupo docker · estrutura SSH</div>
+      </div>
+    </div>
+
+    <div class="explanation">
+      <p>O usuário <code>deploy</code> é a identidade que o GitHub Actions vai usar via SSH para executar deployments. Nunca usar <code>root</code> para isso — em caso de comprometimento da chave, o dano fica limitado ao que o <code>deploy</code> pode fazer.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span>#</span> Criar usuário e adicionar ao grupo docker</div>
+        <div class="card-actions"><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+      </div>
+      <pre><span class="cmd">useradd -m -s /bin/bash deploy
+usermod -aG docker deploy</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span>#</span> Configurar estrutura SSH</div>
+        <div class="card-actions"><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+      </div>
+      <pre><span class="cmd">mkdir -p /home/deploy/.ssh
+chmod 700 /home/deploy/.ssh
+touch /home/deploy/.ssh/authorized_keys
+chmod 600 /home/deploy/.ssh/authorized_keys
+chown -R deploy:deploy /home/deploy/.ssh</span></pre>
+    </div>
+
+    <ul class="explain-list">
+      <li class="explain-item"><span class="explain-key">chmod 700 .ssh</span><span class="explain-val">O SSH recusa conexão se a pasta tiver permissão mais aberta que 700</span></li>
+      <li class="explain-item"><span class="explain-key">chmod 600 authorized_keys</span><span class="explain-val">Mesmo motivo — arquivo de chaves deve ser legível só pelo dono</span></li>
+    </ul>
+
+    <div class="output-box">
+      <div><span class="label">$ id deploy</span></div>
+      <div class="ok-line">uid=1002(deploy) gid=1002(deploy) groups=1002(deploy),988(docker)</div>
+    </div>
+
+    <div class="alert info">
+      <span class="alert-icon">i</span>
+      <span>A chave SSH pública do GitHub Actions deve ser adicionada em <code>/home/deploy/.ssh/authorized_keys</code> antes de configurar o workflow de CD.</span>
+    </div>
+  </div>
+
+  <!-- ETAPA 4 -->
+  <div class="section" id="etapa4">
+    <div class="section-header">
+      <div class="step-badge">04</div>
+      <div class="step-info">
+        <div class="step-title">Firewall UFW <span class="result ok">✓ concluído</span></div>
+        <div class="step-subtitle">deny incoming por padrão · 4 regras ativas</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span>#</span> Configurar e ativar firewall</div>
+        <div class="card-actions"><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+      </div>
+      <pre><span class="cmd">ufw default deny incoming
+ufw default allow outgoing
+ufw allow 22/tcp    <span class="comment"># SSH</span>
+ufw allow 80/tcp    <span class="comment"># HTTP</span>
+ufw allow 443/tcp   <span class="comment"># HTTPS</span>
+ufw allow 51820/udp <span class="comment"># WireGuard (VPN com VPS DB)</span>
+ufw --force enable</span></pre>
+    </div>
+
+    <div class="alert warn">
+      <span class="alert-icon">!</span>
+      <span>Sempre libere a porta 22 <strong>antes</strong> de ativar o UFW. Se ativar com a porta 22 bloqueada, perde o acesso SSH ao servidor.</span>
+    </div>
+
+    <div class="output-box">
+      <div class="label">$ ufw status verbose</div>
+      <div style="margin-top:8px">
+        <div>To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Action&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; From</div>
+        <div class="ok-line">22/tcp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ALLOW IN&nbsp;&nbsp;&nbsp; Anywhere</div>
+        <div class="ok-line">80/tcp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ALLOW IN&nbsp;&nbsp;&nbsp; Anywhere</div>
+        <div class="ok-line">443/tcp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ALLOW IN&nbsp;&nbsp;&nbsp; Anywhere</div>
+        <div class="ok-line">51820/udp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ALLOW IN&nbsp;&nbsp;&nbsp; Anywhere</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 5 -->
+  <div class="section" id="etapa5">
+    <div class="section-header">
+      <div class="step-badge">05</div>
+      <div class="step-info">
+        <div class="step-title">Redes Docker <span class="result ok">✓ concluído</span></div>
+        <div class="step-subtitle">ioc_frontend · ioc_backend (internal)</div>
+      </div>
+    </div>
+
+    <div class="explanation">
+      <p>Duas redes isoladas. A rede backend tem a flag <code>--internal</code> — containers nela não conseguem acessar a internet diretamente, apenas se comunicar entre si.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span>#</span> Criar redes e estrutura de diretórios</div>
+        <div class="card-actions"><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+      </div>
+      <pre><span class="cmd"><span class="comment"># Diretórios</span>
+mkdir -p /opt/ioc-portal/{app,storage/private,storage/public}
+mkdir -p /var/log/ioc-portal/nginx
+mkdir -p /etc/ioc-portal/nginx
+
+<span class="comment"># Rede frontend — Nginx ↔ PHP-FPM</span>
+docker network create \
+  <span class="flag">--driver</span> bridge \
+  <span class="flag">--subnet</span> <span class="val">172.20.0.0/24</span> \
+  ioc_frontend
+
+<span class="comment"># Rede backend — PHP-FPM ↔ Worker ↔ Scheduler (sem internet)</span>
+docker network create \
+  <span class="flag">--driver</span> bridge \
+  <span class="flag">--subnet</span> <span class="val">172.20.1.0/24</span> \
+  <span class="flag">--internal</span> \
+  ioc_backend</span></pre>
+    </div>
+
+    <ul class="explain-list">
+      <li class="explain-item"><span class="explain-key">--internal</span><span class="explain-val">Bloqueia saída para internet. Worker e Scheduler não precisam de acesso externo direto</span></li>
+      <li class="explain-item"><span class="explain-key">--subnet</span><span class="explain-val">Range de IPs internos. 172.20.0.x = frontend, 172.20.1.x = backend</span></li>
+    </ul>
+  </div>
+
+  <!-- ETAPA 6 -->
+  <div class="section" id="etapa6">
+    <div class="section-header">
+      <div class="step-badge">06</div>
+      <div class="step-info">
+        <div class="step-title">Nginx + PHP-FPM <span class="result ok">✓ concluído</span></div>
+        <div class="step-subtitle">Comunicação via FastCGI na rede ioc_frontend</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span>#</span> Subir containers</div>
+        <div class="card-actions"><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+      </div>
+      <pre><span class="cmd"><span class="comment"># PHP-FPM</span>
+docker run -d \
+  <span class="flag">--name</span> ioc_app \
+  <span class="flag">--network</span> ioc_frontend \
+  <span class="flag">-v</span> /opt/ioc-portal/app/public:/var/www/html/public \
+  <span class="flag">--restart</span> unless-stopped \
+  php:8.2-fpm-alpine
+
+<span class="comment"># Nginx</span>
+docker run -d \
+  <span class="flag">--name</span> ioc_nginx \
+  <span class="flag">--network</span> ioc_frontend \
+  <span class="flag">-p</span> <span class="val">80:80</span> \
+  <span class="flag">-v</span> /etc/ioc-portal/nginx/default.conf:/etc/nginx/conf.d/default.conf \
+  <span class="flag">-v</span> /opt/ioc-portal/app/public:/var/www/html/public \
+  <span class="flag">-v</span> /var/log/ioc-portal/nginx:/var/log/nginx \
+  <span class="flag">--restart</span> unless-stopped \
+  nginx:1.27-alpine</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span>#</span> Smoke test</div>
+        <div class="card-actions"><button class="copy-btn" onclick="copyCode(this)">copiar</button></div>
+      </div>
+      <pre><span class="cmd">docker ps && curl http://localhost</span></pre>
+    </div>
+
+    <div class="output-box">
+      <div class="label">CONTAINER ID&nbsp;&nbsp; IMAGE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; STATUS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NAMES</div>
+      <div class="ok-line">5725539b1f58&nbsp;&nbsp; php:8.2-fpm-alpine&nbsp;&nbsp; Up 7 seconds&nbsp;&nbsp; ioc_app</div>
+      <div class="ok-line">c377b12562c1&nbsp;&nbsp; nginx:1.27-alpine&nbsp;&nbsp;&nbsp; Up 18 seconds&nbsp; ioc_nginx</div>
+      <div style="margin-top:12px" class="ok-line">PHP 8.2.30 OK - IOC Portal</div>
+    </div>
+
+    <div class="alert ok">
+      <span class="alert-icon">✓</span>
+      <span>VPS App operacional. Nginx recebe a requisição, passa para o PHP-FPM via FastCGI na rede interna, e retorna a resposta. Ambos os containers sobrevivem a reboot com <code>--restart unless-stopped</code>.</span>
+    </div>
+  </div>
+
+  <!-- RESUMO -->
+  <div class="section">
+    <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:16px">Resumo da configuração</div>
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th>Etapa</th>
+          <th>O que foi feito</th>
+          <th>Resultado</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-step">01</td>
+          <td class="td-name">Sistema</td>
+          <td class="td-detail">Ubuntu atualizado · timezone SP · utilitários</td>
+          <td class="td-status">✓ ok</td>
+        </tr>
+        <tr>
+          <td class="td-step">02</td>
+          <td class="td-name">Docker Engine</td>
+          <td class="td-detail">29.3.0 · Compose v5.1.1 · Buildx</td>
+          <td class="td-status">✓ ok</td>
+        </tr>
+        <tr>
+          <td class="td-step">03</td>
+          <td class="td-name">Usuário deploy</td>
+          <td class="td-detail">uid=1002 · grupo docker · SSH pronto</td>
+          <td class="td-status">✓ ok</td>
+        </tr>
+        <tr>
+          <td class="td-step">04</td>
+          <td class="td-name">Firewall UFW</td>
+          <td class="td-detail">22/80/443/51820 liberados · deny incoming</td>
+          <td class="td-status">✓ ok</td>
+        </tr>
+        <tr>
+          <td class="td-step">05</td>
+          <td class="td-name">Redes Docker</td>
+          <td class="td-detail">ioc_frontend · ioc_backend (--internal)</td>
+          <td class="td-status">✓ ok</td>
+        </tr>
+        <tr>
+          <td class="td-step">06</td>
+          <td class="td-name">Nginx + PHP-FPM</td>
+          <td class="td-detail">Containers rodando · FastCGI funcionando</td>
+          <td class="td-status">✓ ok</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    <span>IOC/Fiocruz CMS · Sprint F1S1</span>
+    <span>Próximo: Configurar VPS DB →</span>
+  </footer>
+
+</div>
+
+<script>
+// Scroll animation
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+}, {threshold: 0.08});
+
+document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+// Copy button
+function copyCode(btn) {
+  const pre = btn.closest('.card').querySelector('pre');
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'copiado!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'copiar';
+      btn.classList.remove('copied');
+    }, 1800);
+  });
+}
+</script>
+</body>
+</html>
