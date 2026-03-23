@@ -272,6 +272,88 @@ function vCapa(){return `<style>${BASE}
   <div class="hdoc">${svg('alertTriangle',18,'rgba(228,114,103,0.8)')}<span>Este documento é destinado exclusivamente à Coordenação de TI. Contém especificações técnicas detalhadas para subsidiar a decisão de aprovação e provisionamento de infraestrutura.</span></div>
 </div></section>`;}
 
+// ─── S0: Intro ──────────────────────────────────────────────────────────
+function vIntro(){return `<style>${BASE}</style><div class="view">
+<div class="stag">Seção 0</div>
+<h1 class="vt">Proposta Técnica<br><em>Justificativa e Direcionamento</em></h1>
+<p class="sub">Esta seção apresenta o racional da escolha tecnológica, alinhando requisitos do SRS, diretrizes arquiteturais (SA) e decisões de design (SDD).</p>
+
+<h2 class="sec">0.1 Objetivo da Proposta</h2>
+<p class="bd">
+A proposta técnica para o Portal IOC/Fiocruz foi construída com foco em <strong>aderência total aos requisitos institucionais</strong>, sustentabilidade a longo prazo e viabilidade operacional dentro do contexto de TI governamental.
+</p>
+
+<h2 class="sec">0.2 Por que esta abordagem é adequada</h2>
+${T(['Critério','Justificativa'],[
+  ['Aderência ao SRS','Atende integralmente requisitos funcionais (RF-001 a RF-054) e não funcionais (segurança, LGPD, acessibilidade)'],
+  ['Arquitetura','Baseada em arquitetura monolítica modular (SA), equilibrando simplicidade e organização'],
+  ['Sustentação técnica','Estrutura definida no SDD permite manutenção, versionamento e evolução contínua'],
+  ['Operação','Reduz complexidade operacional em comparação a microsserviços'],
+  ['Governança','Facilita controle institucional, auditoria e rastreabilidade'],
+])}
+
+<h2 class="sec">0.3 Benefícios estratégicos</h2>
+<div class="cards">
+  <div class="card c-ok-top"><div class="card-t">${svg('checkCircle',15)} Aderência institucional</div><div class="card-b">Conformidade com eMAG, WCAG 2.1, LGPD e OWASP Top 10.</div></div>
+  <div class="card c-brand-top"><div class="card-t">${svg('layers',15)} Evolução contínua</div><div class="card-b">Arquitetura modular permite crescimento incremental sem reescrita.</div></div>
+  <div class="card c-coral-top"><div class="card-t">${svg('users',15)} Mercado</div><div class="card-b">Alta disponibilidade de profissionais Laravel/Vue no mercado.</div></div>
+  <div class="card c-ok-top"><div class="card-t">${svg('shield',15)} Governança</div><div class="card-b">Maior controle sobre dados, permissões e segurança.</div></div>
+</div>
+
+${N('A decisão prioriza previsibilidade operacional e sustentabilidade institucional, fatores críticos em ambientes governamentais, onde redução de risco é mais relevante que adoção de arquiteturas complexas como microsserviços.','info','info')}
+
+</div>`;}
+
+// ─── S0: Comparação ──────────────────────────────────────────────────────────
+function vComparacao(){return `<style>${BASE}</style><div class="view">
+<div class="stag">Seção 0</div>
+<h1 class="vt">Análise de Alternativas<br><em>Comparação Tecnológica</em></h1>
+<p class="sub">Comparação entre abordagens avaliadas, conforme análise realizada no PRD e validada frente aos requisitos do SRS.</p>
+
+<h2 class="sec">0.4 Alternativas avaliadas</h2>
+${T(['Tecnologia','Tipo','Descrição'],[
+  ['Laravel (proposta)','Framework','Desenvolvimento sob medida com arquitetura modular'],
+  ['Drupal','CMS','Plataforma robusta porém com alta complexidade estrutural'],
+  ['WordPress','CMS','Plataforma simples com limitações para cenários complexos'],
+])}
+
+<h2 class="sec">0.5 Comparação técnica</h2>
+${T(['Critério','Laravel','Drupal','WordPress'],[
+  ['Aderência ao SRS','Alta','Média','Baixa'],
+  ['Flexibilidade','Alta','Média','Baixa'],
+  ['Complexidade','Média','Alta','Baixa'],
+  ['Escalabilidade','Alta','Alta','Média'],
+  ['Governança','Alta','Média','Baixa'],
+  ['Customização','Alta','Média','Baixa'],
+  ['Manutenibilidade','Alta','Média','Baixa'],
+])}
+
+<h2 class="sec">0.6 Análise consolidada</h2>
+<p class="bd">
+A abordagem baseada em <strong>Laravel</strong> apresenta o melhor equilíbrio entre controle, flexibilidade e aderência aos requisitos institucionais.
+</p>
+
+<div class="cards">
+  <div class="card c-ok-top">
+    <div class="card-t">${svg('checkCircle',15)} Laravel</div>
+    <div class="card-b">Alta aderência, controle total e arquitetura sustentável</div>
+  </div>
+
+  <div class="card c-coral-top">
+    <div class="card-t">${svg('alertTriangle',15)} Drupal</div>
+    <div class="card-b">Alta complexidade e curva de aprendizado elevada</div>
+  </div>
+
+  <div class="card c-warn-top">
+    <div class="card-t">${svg('alertOctagon',15)} WordPress</div>
+    <div class="card-b">Limitações estruturais para cenário institucional complexo</div>
+  </div>
+</div>
+
+${N('Embora Drupal apresente forte presença histórica em portais governamentais, sua complexidade estrutural e dificuldade de manutenção tornam a solução menos adequada frente a uma arquitetura moderna baseada em Laravel.','warn','alertTriangle')}
+
+</div>`;}
+
 // ─── S1: Arquitetura ──────────────────────────────────────────────────────────
 function vArch(){return `<style>${BASE}</style><div class="view">
 <div class="stag">Seção 1</div>
@@ -994,19 +1076,21 @@ ${BL([
 
 // ── Router ────────────────────────────────────────────────────────────────────
 const VIEWS=[
-  {id:'capa',    label:'Capa'},
-  {id:'arch',    label:'1. Arquitetura'},
-  {id:'infra',   label:'2. Infraestrutura'},
-  {id:'deploy',  label:'3. Deploy / CI/CD'},
-  {id:'sec',     label:'4. Segurança / LGPD'},
-  {id:'sla',     label:'5. RNF / SLA'},
-  {id:'api',     label:'6. API / Integrações'},
-  {id:'db',      label:'7. Banco de Dados'},
-  {id:'train',   label:'8. Capacitação'},
-  {id:'resp',    label:'9. Responsabilidades'},
-  {id:'tests',   label:'10. Testes'},
+  {id:'capa',       label:'Capa'},
+  {id:'intro',      label:'0. Intro'},
+  {id:'comparacao', label:'0. Comparação'},
+  {id:'arch',       label:'1. Arquitetura'},
+  {id:'infra',      label:'2. Infraestrutura'},
+  {id:'deploy',     label:'3. Deploy / CI/CD'},
+  {id:'sec',        label:'4. Segurança / LGPD'},
+  {id:'sla',        label:'5. RNF / SLA'},
+  {id:'api',        label:'6. API / Integrações'},
+  {id:'db',         label:'7. Banco de Dados'},
+  {id:'train',      label:'8. Capacitação'},
+  {id:'resp',       label:'9. Responsabilidades'},
+  {id:'tests',      label:'10. Testes'},
 ];
-const R={capa:vCapa,arch:vArch,infra:vInfra,deploy:vDeploy,sec:vSec,sla:vSla,api:vApi,db:vDb,train:vTrain,resp:vResp,tests:vTests};
+const R={capa:vCapa,intro: vIntro,comparacao: vComparacao,arch:vArch,infra:vInfra,deploy:vDeploy,sec:vSec,sla:vSla,api:vApi,db:vDb,train:vTrain,resp:vResp,tests:vTests};
 const main=document.getElementById('app-main'),ni=document.getElementById('nav-items');
 const H={},B={};
 VIEWS.forEach(({id,label})=>{
