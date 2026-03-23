@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cronograma — Portal IOC/Fiocruz CMS · 9 Meses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --brand:#2a2724;--brand2:#3d3933;--accent:#e47267;--accent2:#c45a50;
+  --light:#e6e5c4;--sand:#d6d1af;--cream:#f5f3ed;
+  --ok:#4a7c59;--ok-bg:#e8f0e9;
+  --warn:#b85c3a;--warn-bg:#f5ebe6;
+  --info:#3a6b9e;--info-bg:#e6eef5;
+  --gold:#8a6f35;--gold-bg:#f5efdc;
+  --purple:#5e4a8a;--purp-bg:#eeebf5;
+  --text:#1a1917;--muted:#6b6560;--surface:#faf9f5;
+  --border:#e0dbd0;--border2:#c8c2b5;
+  --nav-h:64px;
+  --sidebar:280px;
+  --f1-color:#e47267;--f2-color:#4a7c59;--f3-color:#3a6b9e;--f4-color:#8a6f35;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.6;color:var(--text);background:var(--surface);}
+a{color:var(--accent);text-decoration:none;}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(42,39,36,0.97);backdrop-filter:blur(10px);z-index:200;display:flex;align-items:center;padding:0 24px;border-bottom:2px solid var(--accent);gap:16px;}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:12px;color:#fff;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;line-height:1.2;}
+.nav-logo span{display:block;font-weight:400;font-size:10px;opacity:0.55;margin-top:2px;letter-spacing:0.12em;}
+.nav-sep{width:1px;height:32px;background:rgba(255,255,255,0.15);}
+.nav-filters{display:flex;gap:6px;flex:1;overflow-x:auto;scrollbar-width:none;}
+.nav-filters::-webkit-scrollbar{display:none;}
+.nf-btn{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:rgba(255,255,255,0.55);background:none;border:1px solid rgba(255,255,255,0.15);padding:5px 12px;border-radius:20px;cursor:pointer;white-space:nowrap;transition:all 0.15s;}
+.nf-btn:hover{color:#fff;border-color:rgba(255,255,255,0.35);}
+.nf-btn.active{color:#fff;background:rgba(228,114,103,0.25);border-color:var(--accent);}
+.nav-stats{display:flex;gap:16px;padding-left:16px;border-left:1px solid rgba(255,255,255,0.15);flex-shrink:0;}
+.ns{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);white-space:nowrap;}
+.ns b{color:#fff;font-weight:500;}
+
+/* LAYOUT */
+#app{display:flex;padding-top:var(--nav-h);min-height:100vh;}
+
+/* SIDEBAR */
+#sidebar{width:var(--sidebar);flex-shrink:0;position:fixed;top:var(--nav-h);left:0;bottom:0;overflow-y:auto;background:#fff;border-right:1px solid var(--border);padding:20px 0;}
+#sidebar::-webkit-scrollbar{width:4px;}
+#sidebar::-webkit-scrollbar-track{background:transparent;}
+#sidebar::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+.sb-section{margin-bottom:4px;}
+.sb-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);padding:12px 20px 6px;display:block;}
+.sb-item{display:flex;align-items:center;gap:10px;padding:8px 20px;cursor:pointer;transition:background 0.12s;border:none;background:none;width:100%;text-align:left;}
+.sb-item:hover{background:var(--cream);}
+.sb-item.active{background:var(--cream);border-left:3px solid var(--accent);}
+.sb-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.sb-text{font-size:12px;color:var(--text);line-height:1.3;}
+.sb-text small{display:block;font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;}
+.sb-phase-header{padding:8px 20px;display:flex;align-items:center;gap:8px;}
+.ph-badge{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;padding:3px 8px;border-radius:3px;letter-spacing:0.04em;}
+.ph-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--brand2);}
+.ph-dur{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
+.sb-summary{margin:4px 20px 8px;padding:10px 12px;background:var(--cream);border-radius:6px;font-size:11px;color:var(--muted);line-height:1.5;}
+.sb-summary b{color:var(--text);font-weight:500;}
+
+/* MAIN */
+#main{margin-left:var(--sidebar);flex:1;padding:32px 40px 80px;}
+
+/* HERO */
+.hero-bar{background:linear-gradient(135deg,var(--brand) 0%,var(--brand2) 100%);border-radius:12px;padding:32px 36px;margin-bottom:32px;position:relative;overflow:hidden;}
+.hero-bar::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(228,114,103,0.1);}
+.hero-bar::after{content:'';position:absolute;bottom:-60px;right:80px;width:140px;height:140px;border-radius:50%;background:rgba(228,114,103,0.06);}
+.hero-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:10px;}
+.hero-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#fff;line-height:1.1;letter-spacing:-0.02em;margin-bottom:6px;}
+.hero-title em{font-style:normal;color:var(--accent);}
+.hero-sub{font-size:13px;color:rgba(255,255,255,0.55);margin-bottom:24px;font-weight:300;}
+.hero-metrics{display:flex;gap:24px;flex-wrap:wrap;}
+.hm{text-align:center;}
+.hm-num{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;line-height:1;}
+.hm-lbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:4px;}
+
+/* PROGRESS BAR */
+.progress-section{margin-bottom:32px;}
+.progress-phases{display:flex;gap:3px;height:8px;border-radius:4px;overflow:hidden;margin-bottom:8px;}
+.pp{height:100%;border-radius:0;transition:flex 0.3s;}
+.pp:first-child{border-radius:4px 0 0 4px;}
+.pp:last-child{border-radius:0 4px 4px 4px;}
+.progress-legend{display:flex;gap:20px;flex-wrap:wrap;}
+.pl{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);}
+.pl-dot{width:8px;height:8px;border-radius:2px;}
+.pl b{color:var(--text);font-family:'Syne',sans-serif;font-weight:700;}
+
+/* VIEW TOGGLE */
+.view-toggle{display:flex;gap:4px;margin-bottom:24px;background:var(--cream);padding:4px;border-radius:8px;width:fit-content;}
+.vt-btn{font-size:11px;font-weight:500;color:var(--muted);background:none;border:none;padding:6px 14px;border-radius:5px;cursor:pointer;transition:all 0.15s;font-family:'DM Sans',sans-serif;}
+.vt-btn.active{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,0.08);}
+
+/* GANTT VIEW */
+#gantt-view{}
+.gantt-header{display:grid;gap:1px;margin-bottom:2px;}
+.gantt-months{display:flex;gap:0;}
+.gantt-month{flex:1;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-align:center;padding:4px 0;letter-spacing:0.06em;}
+.gantt-week-headers{display:flex;gap:0;}
+.gwh{flex:1;font-family:'DM Mono',monospace;font-size:9px;color:var(--border2);text-align:center;border-top:1px solid var(--border);}
+
+.phase-block{margin-bottom:20px;}
+.phase-label{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.phase-badge{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;padding:3px 10px;border-radius:3px;}
+.phase-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--brand2);}
+.phase-period{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
+
+.gantt-row{display:flex;align-items:center;gap:0;height:32px;margin-bottom:2px;position:relative;}
+.gantt-row:hover .gr-bar{filter:brightness(1.08);}
+.gr-label{width:220px;flex-shrink:0;font-size:12px;color:var(--text);padding-right:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'DM Sans',sans-serif;}
+.gr-track{flex:1;height:100%;position:relative;display:flex;align-items:center;}
+.gr-bg{position:absolute;inset:0;display:flex;}
+.gr-bg-cell{flex:1;border-right:1px solid var(--border);height:100%;}
+.gr-bg-cell:last-child{border-right:none;}
+.gr-bar{position:absolute;height:20px;border-radius:4px;display:flex;align-items:center;padding:0 8px;cursor:pointer;transition:all 0.2s;z-index:2;}
+.gr-bar:hover{transform:scaleY(1.1);z-index:10;}
+.gr-bar-text{font-size:10px;font-weight:500;color:rgba(255,255,255,0.9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'DM Sans',sans-serif;}
+.gr-milestone{position:absolute;width:12px;height:12px;background:var(--brand);transform:rotate(45deg);z-index:3;cursor:pointer;}
+.gr-milestone:hover{transform:rotate(45deg) scale(1.3);}
+
+/* TODAY LINE */
+.today-line{position:absolute;top:0;bottom:0;width:2px;background:var(--accent);z-index:5;pointer-events:none;}
+.today-label{position:absolute;top:-18px;font-family:'DM Mono',monospace;font-size:9px;color:var(--accent);white-space:nowrap;transform:translateX(-50%);}
+
+/* CARD VIEW */
+#card-view{display:none;}
+.card-view-grid{display:grid;gap:16px;}
+
+.phase-card{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px;}
+.phase-card-header{padding:20px 24px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background 0.12s;}
+.phase-card-header:hover{background:var(--cream);}
+.pch-left{display:flex;align-items:center;gap:12px;}
+.pch-badge{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;padding:4px 12px;border-radius:4px;}
+.pch-info{}
+.pch-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--brand2);}
+.pch-sub{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;}
+.pch-right{display:flex;align-items:center;gap:16px;}
+.pch-stat{text-align:right;}
+.pch-stat-num{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--brand2);}
+.pch-stat-lbl{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;}
+.chevron{font-size:16px;color:var(--muted);transition:transform 0.2s;}
+.phase-card-body{border-top:1px solid var(--border);}
+
+.sprint-row{padding:16px 24px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:160px 1fr auto;gap:16px;align-items:start;transition:background 0.12s;cursor:pointer;}
+.sprint-row:hover{background:var(--cream);}
+.sprint-row:last-child{border-bottom:none;}
+.sr-week{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+.sr-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--brand2);margin-bottom:4px;}
+.sr-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+.sr-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;}
+.sr-tag{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500;}
+.sr-hours{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-align:right;white-space:nowrap;}
+.sr-hours b{font-size:13px;color:var(--text);}
+
+/* TASK DETAIL PANEL */
+#detail-panel{position:fixed;right:-420px;top:var(--nav-h);bottom:0;width:420px;background:#fff;border-left:1px solid var(--border);overflow-y:auto;z-index:100;transition:right 0.3s cubic-bezier(0.16,1,0.3,1);box-shadow:-4px 0 24px rgba(0,0,0,0.08);}
+#detail-panel.open{right:0;}
+.dp-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.dp-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);padding:2px;line-height:1;transition:color 0.12s;}
+.dp-close:hover{color:var(--text);}
+.dp-badge{display:inline-block;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;padding:3px 10px;border-radius:3px;margin-bottom:8px;}
+.dp-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--brand2);line-height:1.2;}
+.dp-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-top:4px;}
+.dp-body{padding:20px 24px;}
+.dp-section{margin-bottom:20px;}
+.dp-section-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.dp-task{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.dp-task:last-child{border-bottom:none;}
+.dp-task-check{width:16px;height:16px;border-radius:3px;border:1.5px solid var(--border2);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;}
+.dp-task-text{font-size:13px;color:var(--text);line-height:1.5;}
+.dp-task-text small{display:block;font-size:11px;color:var(--muted);margin-top:2px;}
+.dp-tech{display:flex;flex-wrap:wrap;gap:6px;}
+.dp-tech-tag{font-family:'DM Mono',monospace;font-size:11px;background:var(--cream);color:var(--brand2);padding:4px 10px;border-radius:4px;border:1px solid var(--border);}
+.dp-note{background:var(--warn-bg);border-left:3px solid var(--warn);padding:12px;border-radius:0 6px 6px 0;font-size:12px;color:var(--text);line-height:1.6;margin-top:8px;}
+.dp-ok{background:var(--ok-bg);border-left:3px solid var(--ok);}
+.dp-info{background:var(--info-bg);border-left:3px solid var(--info);}
+.dp-hours-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.dp-h{background:var(--cream);border-radius:6px;padding:12px;text-align:center;}
+.dp-h-num{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--brand2);}
+.dp-h-lbl{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px;letter-spacing:0.06em;}
+.dp-docker{background:var(--info-bg);border-radius:8px;padding:14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--info);line-height:1.7;}
+.dp-docker b{color:var(--info);font-weight:500;}
+
+/* OVERLAY */
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,0);z-index:99;display:none;transition:background 0.3s;}
+#overlay.active{display:block;background:rgba(0,0,0,0.2);}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  #sidebar{display:none;}
+  #main{margin-left:0;padding:20px;}
+  #detail-panel{width:100%;right:-100%;}
+}
+
+/* TOOLTIP */
+.gr-tooltip{position:absolute;background:var(--brand);color:#fff;font-size:11px;padding:6px 10px;border-radius:6px;white-space:nowrap;pointer-events:none;z-index:100;transform:translateX(-50%);bottom:calc(100% + 6px);display:none;font-family:'DM Sans',sans-serif;}
+.gr-bar:hover .gr-tooltip{display:block;}
+
+/* INFRA BADGE */
+.infra-badge{display:inline-flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:10px;background:var(--info-bg);color:var(--info);border:1px solid rgba(58,107,158,0.2);padding:2px 8px;border-radius:10px;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">IOC/Fiocruz CMS<span>Cronograma de Desenvolvimento · 9 Meses</span></div>
+  <div class="nav-sep"></div>
+  <div class="nav-filters">
+    <button class="nf-btn active" onclick="filterPhase('all')">Todas as fases</button>
+    <button class="nf-btn" onclick="filterPhase('f1')" style="border-color:var(--f1-color)">Fase 1 — Fundação</button>
+    <button class="nf-btn" onclick="filterPhase('f2')" style="border-color:var(--f2-color)">Fase 2 — Expansão</button>
+    <button class="nf-btn" onclick="filterPhase('f3')" style="border-color:var(--f3-color)">Fase 3 — Coleções</button>
+    <button class="nf-btn" onclick="filterPhase('f4')" style="border-color:var(--f4-color)">Fase 4 — Entrega</button>
+  </div>
+  <div class="nav-stats">
+    <div class="ns"><b>1.584</b> h totais</div>
+    <div class="ns"><b>36</b> semanas</div>
+    <div class="ns"><b>8h</b>/dia</div>
+  </div>
+</nav>
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <span class="sb-label">Visão Geral</span>
+  <div id="sb-nav"></div>
+</aside>
+
+<!-- MAIN -->
+<main id="main">
+  <div class="hero-bar">
+    <div class="hero-tag">Portal IOC/Fiocruz — Sistema de Gerenciamento de Conteúdo</div>
+    <h1 class="hero-title">Cronograma <em>9 Meses</em></h1>
+    <p class="hero-sub">Laravel 11 · Vue 3 · MySQL 8 · Redis · MeiliSearch · Docker · GitHub Actions · 2 Servidores VPS</p>
+    <div class="hero-metrics">
+      <div class="hm"><div class="hm-num">1.584</div><div class="hm-lbl">Horas totais</div></div>
+      <div class="hm"><div class="hm-num">4</div><div class="hm-lbl">Fases</div></div>
+      <div class="hm"><div class="hm-num">36</div><div class="hm-lbl">Sprints</div></div>
+      <div class="hm"><div class="hm-num">7</div><div class="hm-lbl">Módulos CMS</div></div>
+      <div class="hm"><div class="hm-num">2</div><div class="hm-lbl">Servidores VPS</div></div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-section">
+    <div class="progress-phases">
+      <div class="pp" style="flex:3;background:var(--f1-color);opacity:0.9;"></div>
+      <div class="pp" style="flex:3;background:var(--f2-color);opacity:0.85;"></div>
+      <div class="pp" style="flex:2;background:var(--f3-color);opacity:0.85;"></div>
+      <div class="pp" style="flex:1;background:var(--f4-color);opacity:0.85;"></div>
+    </div>
+    <div class="progress-legend">
+      <div class="pl"><div class="pl-dot" style="background:var(--f1-color)"></div><b>Fase 1</b>&nbsp;Fundação · Meses 1–3 · 528h</div>
+      <div class="pl"><div class="pl-dot" style="background:var(--f2-color)"></div><b>Fase 2</b>&nbsp;Expansão · Meses 4–6 · 528h</div>
+      <div class="pl"><div class="pl-dot" style="background:var(--f3-color)"></div><b>Fase 3</b>&nbsp;Coleções · Meses 7–8 · 352h</div>
+      <div class="pl"><div class="pl-dot" style="background:var(--f4-color)"></div><b>Fase 4</b>&nbsp;Entrega · Mês 9 · 176h</div>
+    </div>
+  </div>
+
+  <!-- VIEW TOGGLE -->
+  <div class="view-toggle">
+    <button class="vt-btn active" onclick="setView('gantt')">Gantt</button>
+    <button class="vt-btn" onclick="setView('cards')">Sprints detalhados</button>
+  </div>
+
+  <!-- GANTT -->
+  <div id="gantt-view"></div>
+
+  <!-- CARDS -->
+  <div id="card-view"></div>
+</main>
+
+<!-- DETAIL PANEL -->
+<div id="overlay" onclick="closePanel()"></div>
+<div id="detail-panel">
+  <div class="dp-header">
+    <div>
+      <div class="dp-badge" id="dp-badge"></div>
+      <div class="dp-title" id="dp-title"></div>
+      <div class="dp-meta" id="dp-meta"></div>
+    </div>
+    <button class="dp-close" onclick="closePanel()">✕</button>
+  </div>
+  <div class="dp-body" id="dp-body"></div>
+</div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+const PHASES = [
+  {
+    id:'f1', label:'Fase 1', name:'Fundação', period:'Meses 1–3', color:'#e47267', bg:'#fdf1ef',
+    weeks:'Semanas 1–12', totalH:528, totalDays:66,
+    desc:'Infra Docker, CMS Core, autenticação, portal institucional público. Marco: portal seguro online.',
+    docker:`VPS App: Laravel + Nginx + PHP-FPM\nVPS DB: MySQL 8 + Redis + MeiliSearch\nDockerfile multi-stage (builder + runtime)\ngithub Actions: build → test → push image → deploy`,
+    sprints:[
+      {
+        id:'f1s1', week:'Sem 1–2', title:'Infraestrutura Docker & CI/CD', h:80,
+        desc:'Setup completo de dois servidores VPS com Docker. Pipeline GitHub Actions do zero.',
+        tags:['Docker','DevOps','CI/CD','GitHub Actions'],
+        tasks:[
+          {t:'Configurar VPS App (Ubuntu 22.04 + Docker Engine)', d:'Nginx, PHP-FPM, rede interna Docker'},
+          {t:'Configurar VPS DB (Ubuntu 22.04 + Docker Engine)', d:'MySQL 8, Redis, MeiliSearch em containers isolados'},
+          {t:'Rede Docker segura entre servidores', d:'VPN WireGuard ou rede privada do provedor entre VPS'},
+          {t:'Dockerfile multi-stage para Laravel', d:'Stage builder (Composer, NPM) + runtime Alpine mínimo'},
+          {t:'docker-compose.yml para produção e homologação', d:'Services: app, nginx, queue-worker, scheduler'},
+          {t:'GitHub Actions: workflow build + test + push', d:'Build image, rodar PHPUnit, push para registry privado'},
+          {t:'GitHub Actions: workflow deploy', d:'SSH para VPS, pull nova imagem, migrate, restart graceful'},
+          {t:'Secrets e variáveis de ambiente no GitHub', d:'DATABASE_URL, REDIS_URL, APP_KEY encriptados'},
+          {t:'Setup repositório GitHub privado + branch main/develop', d:'Proteção de branch, require reviews'},
+          {t:'Monitoramento básico: UptimeRobot + alertas Slack/e-mail', d:'Alertas de downtime e uso de disco'},
+        ],
+        tech:['Ubuntu 22.04 LTS','Docker 24.x','Docker Compose 2','GitHub Actions','Nginx','WireGuard','UptimeRobot'],
+        note:'Esta semana é crítica. Sem infraestrutura sólida, todo desenvolvimento posterior fica travado.',
+        noteType:'warn',
+        docker:`# VPS App — docker-compose (parcial)\nservices:\n  nginx:\n    image: nginx:alpine\n    volumes: [./nginx.conf:/etc/nginx/conf.d/default.conf]\n  app:\n    build: . # Dockerfile multi-stage\n    env_file: .env.production\n  queue:\n    extends: {service: app}\n    command: php artisan queue:work\n  scheduler:\n    extends: {service: app}\n    command: sh -c "while true; do php artisan schedule:run; sleep 60; done"`
+      },
+      {
+        id:'f1s2', week:'Sem 3–4', title:'Laravel: Estrutura Modular + Banco de Dados', h:80,
+        desc:'Estrutura de módulos Laravel, migrations completas, seeds e Models Eloquent.',
+        tags:['Laravel','MySQL','Arquitetura','Migrations'],
+        tasks:[
+          {t:'Instalar Laravel 11 + pacotes essenciais', d:'Laravel Telescope, Sanctum, Spatie Media Library, Spatie Permissions'},
+          {t:'Estrutura de módulos: app/Modules/{Core,News,Events,Academic,Labs,Collections,Repository}', d:'Cada módulo com Http/, Models/, Services/, database/'},
+          {t:'ModuleServiceProvider para auto-discovery dos módulos', d:'Registro automático de rotas, migrations e views por módulo'},
+          {t:'Migrations: users, roles, permissions, sectors', d:'UUID BINARY(16), índices conforme SDD'},
+          {t:'Migrations: contents, content_types, content_statuses, content_versions', d:'Schema completo com FKs e índices de performance'},
+          {t:'Migrations: media, media_folders, content_media', d:'Suporte a metadados JSON e tipos MIME'},
+          {t:'Migrations: categories, tags, menus, menu_items', d:'Hierarquia recursiva com parent_id'},
+          {t:'Migrations: activity_logs, settings, modules', d:'Auditoria LGPD, configurações por módulo'},
+          {t:'Models Eloquent com relacionamentos e scopes', d:'SoftDeletes, HasUuids, observers registrados'},
+          {t:'Seeders: dados iniciais (roles, permissions, admin)', d:'DatabaseSeeder com dados de produção mínimos'},
+        ],
+        tech:['Laravel 11','MySQL 8','Eloquent ORM','Laravel Telescope','Spatie Permissions','UUID'],
+        note:'Migrations precisam estar 100% corretas antes de seguir. Mudanças de schema custam caro depois.',
+        noteType:'info',
+      },
+      {
+        id:'f1s3', week:'Sem 5–6', title:'Autenticação, RBAC e API Base', h:80,
+        desc:'Sistema de autenticação com Laravel Sanctum, RBAC granular por setor e Controllers REST base.',
+        tags:['Auth','RBAC','API REST','Sanctum'],
+        tasks:[
+          {t:'AuthController: login, logout, me, refresh token', d:'Sanctum tokens, expiração 30min, rate limit 5 tentativas'},
+          {t:'AuthService + UserService com regras RN-011 a RN-020', d:'Usuário inativo bloqueado, sessão expira, setor herdado'},
+          {t:'RBAC Spatie: roles (admin, editor, revisor, autor, gestor)', d:'Permissões granulares por recurso e setor'},
+          {t:'Middleware: Authenticate, Authorize, ThrottleRequests', d:'Pipeline de requisição conforme SDD'},
+          {t:'Middleware: ConvertEmptyStringsToNull, TrimStrings, Cors', d:'Whitelist de origens CORS configurável'},
+          {t:'Base Controller + API Response helper (success/error RFC7807)', d:'Formato de resposta padronizado'},
+          {t:'Rotas versionadas /api/v1/* com grupos de middleware', d:'Rotas públicas vs autenticadas'},
+          {t:'Feature tests: autenticação, permissões, throttle', d:'Cobertura PHPUnit > 80% nos endpoints de auth'},
+          {t:'SSO preparado para integração futura (estrutura base)', d:'Interface SSOServiceInterface implementável'},
+        ],
+        tech:['Laravel Sanctum','Spatie Permissions','PHPUnit','RFC 7807','CORS','JWT estrutura'],
+        note:'Segurança deve ser revisada antes de avançar. Autenticação é a fundação de tudo.',
+        noteType:'warn',
+      },
+      {
+        id:'f1s4', week:'Sem 7–9', title:'CMS Core: Conteúdo, Versionamento e Fluxo Editorial', h:120,
+        desc:'Motor central do CMS: CRUD de conteúdo, versionamento automático, workflow editorial e publicação agendada.',
+        tags:['CMS Core','Conteúdo','Workflow','Versionamento'],
+        tasks:[
+          {t:'ContentService: create, update, delete, publish, unpublish, schedule', d:'Regras RN-001 a RN-010'},
+          {t:'ContentRepository + ContentVersionService (Observer pattern)', d:'Versionamento automático em toda alteração'},
+          {t:'Workflow editorial: Rascunho → Em Revisão → Aprovado → Publicado → Arquivado', d:'Máquina de estados com validações'},
+          {t:'ContentController: CRUD + endpoints de workflow (/publish, /unpublish, /schedule, /restore)', d:'10 endpoints conforme SDD'},
+          {t:'MediaService: upload, processamento, thumbnails automáticos', d:'Spatie Media Library, regras RN-021 a RN-028'},
+          {t:'MediaController: upload, download, metadados', d:'Aceitar até 100MB, validar extensões'},
+          {t:'Publicação agendada: Laravel Scheduler + Queue', d:'Job PublishScheduledContent a cada minuto'},
+          {t:'CategoryService + TagService + MenuService', d:'CRUD com hierarquia recursiva'},
+          {t:'FormRequests com validação e mensagens PT-BR', d:'CreateContentRequest, UpdateContentRequest, etc.'},
+          {t:'API Resources: ContentResource, MediaResource (DTO)', d:'Controle de campos expostos por papel'},
+          {t:'Feature tests cobrindo todos os endpoints de conteúdo', d:'> 80% cobertura, casos de borda'},
+        ],
+        tech:['ContentService','Observer','Laravel Queue','Scheduler','Spatie Media Library','FormRequest'],
+        note:'3 semanas para o coração do sistema. Não pular testes — bugs no CMS Core custam caro em todas as fases.',
+        noteType:'warn',
+      },
+      {
+        id:'f1s5', week:'Sem 10–12', title:'Portal Público + Interface Admin (Vue 3)', h:120,
+        desc:'Frontend: painel administrativo em Vue 3 + Pinia e portal público institucional em Blade/Vue. Conformidade eMAG/WCAG.',
+        tags:['Vue 3','Pinia','Blade','eMAG','WCAG'],
+        tasks:[
+          {t:'Setup Vue 3 + Vite + Pinia + Vue Router (SPA admin)', d:'Autenticação Sanctum com cookie/token'},
+          {t:'Layout administrativo: nav lateral, breadcrumb, notificações', d:'DashboardView com métricas e atalhos'},
+          {t:'ContentListView: tabela paginada com filtros e ações em lote', d:'Filtrar por tipo, status, setor, data'},
+          {t:'ContentEditorView: editor Tiptap + page builder de blocos', d:'Drag-and-drop, pré-visualização, autosave 30s'},
+          {t:'MediaLibraryView: grid com upload drag-and-drop', d:'Busca por tag, tipo MIME, metadados'},
+          {t:'UserManagementView + RolePermissionView', d:'CRUD de usuários, atribuição de papéis por setor'},
+          {t:'Portal público Blade: layout gov.br / padrão IOC', d:'Menu responsivo, breadcrumb, footer'},
+          {t:'Páginas públicas: HomePage, ContentPage, NewsPage, SearchPage', d:'Templates semânticos eMAG'},
+          {t:'Acessibilidade: landmarks, skip-nav, foco, contraste 4.5:1', d:'Teste com axe-core e teclado'},
+          {t:'Integração MeiliSearch: busca global com sugestões e filtros', d:'SearchController, SearchService, Strategy pattern'},
+          {t:'Testes E2E básicos com Dusk (fluxo de login e criação de conteúdo)', d:'Cenários críticos'},
+        ],
+        tech:['Vue 3','Pinia','Vite','Tiptap','Blade','Tailwind','axe-core','MeiliSearch','Laravel Dusk'],
+        note:'Marco da Fase 1: ao final da Semana 12, o portal institucional deve estar online em produção, eliminando o risco do Drupal 7.',
+        noteType:'ok',
+      },
+    ]
+  },
+  {
+    id:'f2', label:'Fase 2', name:'Expansão', period:'Meses 4–6', color:'#4a7c59', bg:'#eaf3ec',
+    weeks:'Semanas 13–24', totalH:528, totalDays:66,
+    desc:'Módulos Pesquisa, Ensino, Busca global MeiliSearch. Marco: todas as 4 áreas do portal ativas.',
+    docker:`Adicionar serviços específicos por módulo\nfila dedicada para indexação MeiliSearch\nbackup automático MySQL + volume storage`,
+    sprints:[
+      {
+        id:'f2s1', week:'Sem 13–15', title:'Módulo B — Notícias com Fluxo Completo', h:120,
+        desc:'Gestão completa de notícias: publicação, destaques, carrossel, área de imprensa.',
+        tags:['Módulo News','Notícias','Destaque','Carrossel'],
+        tasks:[
+          {t:'NewsModule: Model News com campos específicos (categories, tags, press_release)', d:'Especialização de Content'},
+          {t:'NewsService: lógica de destaques (máx. 5 simultâneos — RN-010)', d:'Validação no service layer'},
+          {t:'API: listagem, filtros por categoria/tag/data, destaques, carrossel', d:'Cache Redis 5 min para listagens públicas'},
+          {t:'Frontend admin: NewsListView, NewsEditorView com preview', d:'Preview mobile/desktop antes de publicar'},
+          {t:'Portal público: página de listagem e detalhe da notícia', d:'Open Graph, schema.org NewsArticle'},
+          {t:'Área de imprensa com releases separados', d:'Template diferenciado, download de assets'},
+          {t:'Carrossel na HomePage com notícias em destaque', d:'Acessível, teclado, aria-live'},
+          {t:'Newsletter: modelo base de assinatura (RF-032)', d:'Double opt-in, descadastro LGPD'},
+          {t:'Testes unitários NewsService + Feature tests API', d:'> 80% cobertura módulo'},
+        ],
+        tech:['Módulo News','Laravel Cache','Redis','Vue 3','Schema.org','Open Graph'],
+        note:'Cache Redis é obrigatório para listagens públicas — rota de alta frequência de acesso.',
+        noteType:'info',
+      },
+      {
+        id:'f2s2', week:'Sem 16–17', title:'Módulo C — Agenda e Eventos', h:80,
+        desc:'Calendário institucional, eventos científicos, exportação iCal.',
+        tags:['Módulo Events','Agenda','iCal','Calendário'],
+        tasks:[
+          {t:'EventModule: Model Event com start_date, end_date, location, is_online', d:'Especialização de Content'},
+          {t:'EventService: validações de datas, eventos passados/futuros', d:'Fuso horário America/Sao_Paulo'},
+          {t:'Exportação iCal: endpoint /api/v1/events/ical', d:'Padrão RFC 5545'},
+          {t:'Frontend admin: EventEditorView com seletor de data/hora', d:'Flatpickr integrado'},
+          {t:'Portal público: lista de eventos e calendário visual', d:'Filtros por tipo, mês, online/presencial'},
+          {t:'Formulário de inscrição básico (RF-036)', d:'Registro com confirmação por e-mail'},
+          {t:'Destaque de eventos na página inicial', d:'Widget de próximos eventos'},
+          {t:'Testes: EventService + API endpoints', d:'Cobertura > 80%'},
+        ],
+        tech:['Módulo Events','RFC 5545 iCal','Flatpickr','Laravel Mail'],
+      },
+      {
+        id:'f2s3', week:'Sem 18–20', title:'Módulo E — Laboratórios de Referência', h:120,
+        desc:'Página individual por laboratório, serviços, solicitação de amostras, área autenticada de laudos.',
+        tags:['Módulo Labs','Laboratórios','Laudos','Amostras'],
+        tasks:[
+          {t:'LaboratoryModule: Model Laboratory com coordinator, email, acronym, services[]', d:'JSON para lista de serviços'},
+          {t:'LaboratoryService: página individual, catálogo de serviços', d:'Slugs únicos por laboratório'},
+          {t:'Formulário de solicitação de amostras (RF-043)', d:'Upload de requisição, notificação por e-mail'},
+          {t:'Área autenticada: upload de documentos técnicos por pesquisadores', d:'Role: pesquisador'},
+          {t:'Consulta de laudos autenticada (RF-044)', d:'Busca por protocolo, filtro por laboratório'},
+          {t:'Frontend admin: LaboratoryEditorView com editor de serviços', d:'Interface de gerenciamento de equipe'},
+          {t:'Portal público: página de laboratório com equipe e projetos', d:'Cards de pesquisadores, linha de pesquisa'},
+          {t:'Catálogo de laboratórios com busca e filtros', d:'Por área temática, tipo de serviço'},
+          {t:'Testes: LaboratoryService + upload + área autenticada', d:'Cobertura > 80%'},
+        ],
+        tech:['Módulo Labs','Spatie Media Library','Laravel Mail','Autenticação por papel'],
+        note:'Área de laudos é área restrita — validação dupla de autenticação e papel de pesquisador.',
+        noteType:'warn',
+      },
+      {
+        id:'f2s4', week:'Sem 21–22', title:'Módulo D — Ensino e Pós-Graduação', h:80,
+        desc:'Programas de pós-graduação, editais, área restrita de alunos, materiais educativos para download.',
+        tags:['Módulo Academic','Pós-Graduação','Editais','EAD'],
+        tasks:[
+          {t:'AcademicModule: Model AcademicProgram, Course, Edital, StudentArea', d:'Relacionamentos com Content'},
+          {t:'Gestão de editais: publicação, prazo, status (aberto/encerrado)', d:'Alerta de prazo por e-mail'},
+          {t:'Materiais educativos: livros, cartilhas, jogos — download sem cadastro', d:'Controle de downloads_count'},
+          {t:'Área restrita de alunos com conteúdo por programa', d:'Autenticação por papel: aluno'},
+          {t:'Frontend admin: EditorView de programas e editais', d:'Editor de datas, períodos, status'},
+          {t:'Portal público: área de ensino com filtros por categoria', d:'Filtrar por: livros, jogos, pós-graduação, técnicos'},
+          {t:'Templates: academic.program, academic.course, academic.student', d:'Layout diferenciado por tipo'},
+          {t:'Preparar estrutura de integração SIGA (interfaces, DTOs)', d:'Implementação real em roadmap futuro'},
+          {t:'Testes: AcademicService + download + área restrita', d:''},
+        ],
+        tech:['Módulo Academic','Área restrita','Download tracking','Laravel Storage'],
+      },
+      {
+        id:'f2s5', week:'Sem 23–24', title:'Busca Global MeiliSearch + Refinamentos', h:80,
+        desc:'Busca full-text unificada com tolerância a erros, filtros, facetas, sugestões e indexação assíncrona.',
+        tags:['MeiliSearch','Busca','Full-text','Indexação'],
+        tasks:[
+          {t:'SearchService com Strategy pattern: MeiliSearchStrategy + DatabaseSearchStrategy (fallback)', d:''},
+          {t:'SearchController: /search, /search/suggestions, /search/facets', d:''},
+          {t:'Indexação assíncrona via Queue: IndexContentJob disparado no Observer', d:'Delay < 5 min após publicação — RNF-004'},
+          {t:'Configuração MeiliSearch: índices, filtros, facetas, ranking rules', d:'Por tipo, setor, data'},
+          {t:'Frontend: SearchPage com resultados filtráveis, highlight do termo', d:'Acessível, aria-live para resultados'},
+          {t:'Sugestões em tempo real no campo de busca (debounce 300ms)', d:'< 300ms conforme RNF'},
+          {t:'Cache Redis de buscas frequentes (TTL 5 min)', d:'Hash dos parâmetros como chave'},
+          {t:'Testes: busca com tolerância a erros, filtros combinados, fallback DB', d:''},
+          {t:'Revisão geral Fase 2: performance, acessibilidade, segurança', d:'Marco: todas as 4 áreas ativas'},
+        ],
+        tech:['MeiliSearch','Redis Cache','Laravel Queue','Strategy Pattern','Debounce'],
+        note:'Marco da Fase 2: ao final da Semana 24, todas as 4 áreas do portal (Institucional, Pesquisa, Ensino, Notícias) estão ativas.',
+        noteType:'ok',
+      },
+    ]
+  },
+  {
+    id:'f3', label:'Fase 3', name:'Coleções Biológicas', period:'Meses 7–8', color:'#3a6b9e', bg:'#e9f0f7',
+    weeks:'Semanas 25–32', totalH:352, totalDays:44,
+    desc:'Módulos F e G: catálogo Darwin Core, filtros científicos, exportação e repositório científico.',
+    docker:`Container dedicado para exportação pesada de Darwin Core\nCron job para sync com ARCA (estrutura futura)\nVolume de backups do banco com criptografia`,
+    sprints:[
+      {
+        id:'f3s1', week:'Sem 25–27', title:'Módulo F — Coleções Biológicas + Darwin Core', h:120,
+        desc:'Catálogo pesquisável de coleções com metadados Darwin Core, filtros avançados, exportação CSV/JSON.',
+        tags:['Módulo Collections','Darwin Core','Exportação','API Pública'],
+        tasks:[
+          {t:'CollectionModule: Model Collection com darwin_core JSON, Taxon, CollectionItem', d:'Schema Darwin Core completo'},
+          {t:'Filtros científicos avançados: taxon, localidade, data, coletor, tipo de material', d:'Combinação de múltiplos filtros'},
+          {t:'Paginação eficiente com cursor para grandes volumes de dados', d:'Performance em catálogos > 10k registros'},
+          {t:'Exportação CSV: job assíncrono com arquivo temporário e link de download', d:'Até 50k registros por exportação'},
+          {t:'Exportação JSON Darwin Core: formato padrão GBIF-compatível', d:'Metadados completos por registro'},
+          {t:'API pública /api/v1/collections (RF-050) com rate limiting', d:'Documentação Swagger/OpenAPI'},
+          {t:'Frontend admin: CollectionEditorView com formulário Darwin Core', d:'Campos guiados, validação de taxonomia'},
+          {t:'Portal público: catálogo com busca e filtros científicos', d:'Grid/lista, detail view por item'},
+          {t:'Testes: exportação, filtros combinados, API pública com rate limit', d:'> 80% cobertura'},
+        ],
+        tech:['Darwin Core','GBIF Standard','API OpenAPI','Exportação assíncrona','Cursor Pagination','Rate Limiting'],
+        note:'Darwin Core é o diferencial científico desta fase. Estrutura correta agora viabiliza integração GBIF no roadmap futuro.',
+        noteType:'info',
+      },
+      {
+        id:'f3s2', week:'Sem 28–29', title:'Módulo G — Repositório Científico', h:80,
+        desc:'Integração com repositório ARCA, busca de publicações, metadados bibliográficos com DOI.',
+        tags:['Módulo Repository','ARCA','DOI','Publicações'],
+        tasks:[
+          {t:'RepositoryModule: Model Publication com doi, autores, revista, ano, url_repositorio', d:'Metadados bibliográficos completos'},
+          {t:'PublicationService: busca por autor, área temática, ano, DOI', d:'Filtros combinados'},
+          {t:'Estrutura de integração ARCA via OAI-PMH (interface, DTOs)', d:'Implementação real quando API documentada'},
+          {t:'Importação manual de publicações via formulário admin', d:'Fallback sem integração ARCA'},
+          {t:'Portal público: lista e detalhe de publicação com link para texto completo', d:'Open Access badge, DOI link'},
+          {t:'Exportação de referências em BibTeX e ABNT (RF-053)', d:'Botão de citar'},
+          {t:'Integração com busca global MeiliSearch (publicações indexadas)', d:''},
+          {t:'Testes: PublicationService + busca + exportação de referências', d:''},
+        ],
+        tech:['OAI-PMH','DOI','BibTeX','ABNT','Módulo Repository'],
+      },
+      {
+        id:'f3s3', week:'Sem 30–32', title:'Auditoria, LGPD, Logs e Segurança', h:120,
+        desc:'Sistema completo de auditoria, conformidade LGPD, segurança OWASP e scan automatizado no CI/CD.',
+        tags:['LGPD','Auditoria','OWASP','Segurança'],
+        tasks:[
+          {t:'ActivityLogService com Model Observer em todas as entidades', d:'Quem, quando, o que — rastreabilidade completa'},
+          {t:'LogsView no admin: filtros por usuário, ação, entidade, data, IP', d:'Exportação CSV dos logs'},
+          {t:'LGPD: endpoint de exportação dos dados do usuário (RF-064)', d:'JSON com todos os dados pessoais'},
+          {t:'LGPD: endpoint de exclusão de conta e anonimização', d:'Soft delete + nulificação de PII'},
+          {t:'Retenção de logs: política de 12 meses com job de limpeza automática', d:'RNF-015'},
+          {t:'Headers de segurança no Nginx: CSP, X-Frame-Options, HSTS, X-Content-Type', d:'Configuração via Nginx conf'},
+          {t:'OWASP scan automatizado no GitHub Actions (ZAP baseline)', d:'Bloqueia merge se vulnerabilidade crítica'},
+          {t:'Rate limiting granular: 60 req/min público, 300 req/min autenticado', d:'Por IP e por token'},
+          {t:'Revisão final de segurança: SQL injection (Eloquent), XSS (Blade escaping), CSRF', d:'Revisão de todas as rotas'},
+          {t:'Backup criptografado: job diário + retenção 30 dias + script de restore', d:'RNF-030, RNF-031'},
+          {t:'Teste de restore documentado no runbook', d:'RNF-033'},
+        ],
+        tech:['Laravel Telescope','OWASP ZAP','GitHub Actions','LGPD','HSTS','CSP','Criptografia'],
+        note:'Conformidade LGPD é obrigação legal. Esta fase não pode ser pulada ou adiada.',
+        noteType:'warn',
+      },
+    ]
+  },
+  {
+    id:'f4', label:'Fase 4', name:'Entrega Final', period:'Mês 9', color:'#8a6f35', bg:'#f5efdc',
+    weeks:'Semanas 33–36', totalH:176, totalDays:22,
+    desc:'Testes E2E, cobertura ≥ 80%, documentação técnica, treinamento TI, deploy produção, handover.',
+    docker:`Deploy final com zero-downtime\nRunbook completo de operação Docker\nScript de backup + restore testado e documentado`,
+    sprints:[
+      {
+        id:'f4s1', week:'Sem 33–34', title:'Testes, Performance e Acessibilidade Final', h:80,
+        desc:'Cobertura de testes ≥ 80%, testes de carga, acessibilidade eMAG/WCAG 2.1 AA em 100% das páginas.',
+        tags:['PHPUnit','Dusk','eMAG','Performance','axe-core'],
+        tasks:[
+          {t:'Coverage report PHPUnit: identificar e cobrir gaps até ≥ 80%', d:'Unitários + integração + feature'},
+          {t:'Laravel Dusk: testes E2E dos fluxos críticos', d:'Login, criar/publicar conteúdo, busca, download'},
+          {t:'Testes de carga: 200 usuários simultâneos, < 3s em 95% (RNF-001)', d:'Apache JMeter ou k6'},
+          {t:'axe-core: scan de acessibilidade em todas as páginas públicas', d:'Zero erros de nível AA'},
+          {t:'Revisão manual com teclado e NVDA (leitor de tela)', d:'Fluxos principais acessíveis'},
+          {t:'Análise de performance Lighthouse: Core Web Vitals', d:'LCP < 2.5s, CLS < 0.1, INP < 200ms'},
+          {t:'Otimização de queries N+1 com Laravel Debugbar + Telescope', d:'Eager loading onde necessário'},
+          {t:'Otimização de assets: Vite build produção, compressão Brotli no Nginx', d:'Gzip fallback'},
+        ],
+        tech:['PHPUnit','Laravel Dusk','JMeter','axe-core','Lighthouse','NVDA','Brotli','Telescope'],
+        note:'Não aceitar cobertura < 80%. Esta é uma linha vermelha — bugs em produção em instituição pública têm impacto reputacional.',
+        noteType:'warn',
+      },
+      {
+        id:'f4s2', week:'Sem 35', title:'Documentação Técnica Completa', h:40,
+        desc:'Runbooks, arquitetura atualizada, dicionário de dados, guia de operação Docker para o TI.',
+        tags:['Documentação','Runbook','Handover','TI'],
+        tasks:[
+          {t:'Runbook de operação: deploy, rollback, restart de serviços', d:'Passo a passo sem precisar de código'},
+          {t:'Guia Docker para TI: comandos essenciais, diagnóstico de problemas', d:'Com exemplos práticos'},
+          {t:'Guia de backup e restore: procedimento mensal de teste', d:'Script automatizado + verificação manual'},
+          {t:'Documentação de API: Swagger/OpenAPI para endpoints públicos', d:'Gerado automaticamente + revisão'},
+          {t:'Dicionário de dados atualizado com schema final do banco', d:'Tabelas, campos, índices, FKs'},
+          {t:'Guia de criação de conteúdo para editores', d:'Manual de usuário com screenshots'},
+          {t:'Guia de administração para gestores de área', d:'RBAC, fluxo editorial, publicação'},
+          {t:'README.md completo no repositório', d:'Configuração de ambiente dev, comandos, estrutura do projeto'},
+        ],
+        tech:['Swagger/OpenAPI','Markdown','Docker Docs','GitHub Wiki'],
+        note:'Documentação é entregável contratual. TI não pode operar o que não entende.',
+        noteType:'info',
+      },
+      {
+        id:'f4s3', week:'Sem 36', title:'Treinamento, Deploy Final e Handover', h:40,
+        desc:'Treinamento prático do TI, deploy zero-downtime em produção, handover oficial.',
+        tags:['Treinamento','Deploy','Handover','Go-live'],
+        tasks:[
+          {t:'Sessão de treinamento TI (4h): operação Docker, deploy, rollback, logs', d:'Com exercícios práticos'},
+          {t:'Sessão de treinamento editores (2h): criar e publicar conteúdo, biblioteca de mídia', d:'Fluxo editorial completo'},
+          {t:'Deploy zero-downtime em VPS App e VPS DB (produção final)', d:'Blue-green via GitHub Actions'},
+          {t:'Migração de conteúdo crítico do Drupal 7 (se aplicável)', d:'Posts, páginas, imagens essenciais'},
+          {t:'Configuração DNS: apontar ioc.fiocruz.br para nova infraestrutura', d:'Rollback de DNS planejado'},
+          {t:'Monitoramento intensivo: 48h após go-live com plantão', d:'Alertas ativos, response time < 1h'},
+          {t:'Período de suporte: 30 dias para bugs críticos pós-entrega', d:'Canal de comunicação definido'},
+          {t:'Entrega dos repositórios, secrets e acessos ao TI', d:'Documentação de credenciais segura'},
+          {t:'Handover formal com ata assinada', d:'Transferência de propriedade do sistema'},
+        ],
+        tech:['Blue-green Deploy','DNS Cutover','GitHub Actions','UptimeRobot'],
+        note:'Marco final: portal novo em produção, Drupal 7 descomissionado, TI capacitado e documentação entregue.',
+        noteType:'ok',
+      },
+    ]
+  }
+];
+
+// ── GANTT BUILD ───────────────────────────────────────────────────────────────
+const TOTAL_WEEKS = 36;
+const MONTHS = ['Mês 1','Mês 2','Mês 3','Mês 4','Mês 5','Mês 6','Mês 7','Mês 8','Mês 9'];
+
+function weekToPercent(w){ return ((w-1)/TOTAL_WEEKS)*100; }
+function durationToPercent(d){ return (d/TOTAL_WEEKS)*100; }
+
+// Sprint week ranges
+const SPRINT_RANGES = {
+  f1s1:[1,2], f1s2:[3,4], f1s3:[5,6], f1s4:[7,9], f1s5:[10,12],
+  f2s1:[13,15], f2s2:[16,17], f2s3:[18,20], f2s4:[21,22], f2s5:[23,24],
+  f3s1:[25,27], f3s2:[28,29], f3s3:[30,32],
+  f4s1:[33,34], f4s2:[35,35], f4s3:[36,36]
+};
+
+function buildGantt(){
+  const el = document.getElementById('gantt-view');
+  let html = '';
+
+  // Month headers
+  html += `<div style="display:flex;margin-left:220px;margin-bottom:2px;">`;
+  MONTHS.forEach(m => {
+    html += `<div style="flex:4;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-align:center;padding:2px 0;border-left:1px dashed var(--border);">${m}</div>`;
+  });
+  html += `</div>`;
+
+  // Week tick lines
+  html += `<div style="display:flex;margin-left:220px;height:14px;margin-bottom:4px;">`;
+  for(let w=1;w<=36;w++){
+    const isMonth = (w-1)%4===0;
+    html += `<div style="flex:1;border-left:${isMonth?'1px solid var(--border2)':'1px dashed var(--border)'};display:flex;align-items:center;justify-content:center;">`;
+    if(isMonth) html += `<span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--border2);">S${w}</span>`;
+    html += `</div>`;
+  }
+  html += `</div>`;
+
+  PHASES.forEach(phase => {
+    html += `<div class="phase-block" data-phase="${phase.id}">`;
+    html += `<div class="phase-label">`;
+    html += `<span class="phase-badge" style="background:${phase.color};color:#fff;">${phase.label}</span>`;
+    html += `<span class="phase-name">${phase.name}</span>`;
+    html += `<span class="phase-period" style="margin-left:8px;">${phase.weeks} · ${phase.totalH}h</span>`;
+    html += `</div>`;
+
+    // Phase background row
+    const [pw1, pw2] = getPhaseRange(phase.id);
+    
+    phase.sprints.forEach(sprint => {
+      const [w1,w2] = SPRINT_RANGES[sprint.id];
+      const left = weekToPercent(w1);
+      const width = durationToPercent(w2-w1+1);
+
+      html += `<div class="gantt-row">`;
+      html += `<div class="gr-label" title="${sprint.title}">${sprint.title}</div>`;
+      html += `<div class="gr-track">`;
+
+      // BG cells
+      html += `<div class="gr-bg">`;
+      for(let w=1;w<=36;w++){
+        const isM = (w-1)%4===0;
+        html += `<div class="gr-bg-cell" style="${isM?'border-right-color:var(--border2);':''} ${(w>=pw1&&w<=pw2)?'background:'+phase.bg+';':''}"></div>`;
+      }
+      html += `</div>`;
+
+      // Bar
+      html += `<div class="gr-bar" 
+        style="left:${left}%;width:${width}%;background:${phase.color};opacity:0.88;" 
+        onclick="openPanel('${sprint.id}')" 
+        title="${sprint.title} · ${sprint.h}h">`;
+      html += `<div class="gr-tooltip">${sprint.title} · ${sprint.h}h</div>`;
+      if(width > 8) html += `<span class="gr-bar-text">${sprint.week} · ${sprint.h}h</span>`;
+      html += `</div>`;
+
+      html += `</div></div>`;
+    });
+
+    // Milestones
+    const milestone = getMilestone(phase.id);
+    if(milestone){
+      html += `<div class="gantt-row" style="height:20px;margin-bottom:8px;">`;
+      html += `<div class="gr-label" style="font-size:10px;color:var(--muted);font-style:italic;">${milestone.label}</div>`;
+      html += `<div class="gr-track">`;
+      html += `<div class="gr-bg">`;
+      for(let w=1;w<=36;w++) html += `<div class="gr-bg-cell"></div>`;
+      html += `</div>`;
+      const ml = weekToPercent(milestone.week) - 0.5;
+      html += `<div class="gr-milestone" style="left:${ml}%;top:4px;background:${phase.color};" title="${milestone.label}" onclick="openPanel('${milestone.sprintId}')"></div>`;
+      html += `</div></div>`;
+    }
+
+    html += `</div>`;
+  });
+
+  el.innerHTML = html;
+}
+
+function getPhaseRange(id){
+  const m = {f1:[1,12],f2:[13,24],f3:[25,32],f4:[33,36]};
+  return m[id];
+}
+function getMilestone(id){
+  const m = {
+    f1:{week:12,label:'Marco: Portal institucional online (substitui Drupal 7)',sprintId:'f1s5'},
+    f2:{week:24,label:'Marco: Todas as 4 áreas do portal ativas',sprintId:'f2s5'},
+    f3:{week:32,label:'Marco: Exportação Darwin Core funcional',sprintId:'f3s3'},
+    f4:{week:36,label:'Marco: Handover oficial — sistema entregue ao TI',sprintId:'f4s3'},
+  };
+  return m[id];
+}
+
+// ── CARD VIEW ─────────────────────────────────────────────────────────────────
+function buildCards(){
+  const el = document.getElementById('card-view');
+  let html = '';
+  
+  PHASES.forEach(phase => {
+    html += `<div class="phase-card" data-phase="${phase.id}">`;
+    html += `<div class="phase-card-header" onclick="togglePhase(this)">`;
+    html += `<div class="pch-left">`;
+    html += `<span class="pch-badge" style="background:${phase.color};color:#fff;">${phase.label}</span>`;
+    html += `<div class="pch-info">`;
+    html += `<div class="pch-name">${phase.name} — ${phase.period}</div>`;
+    html += `<div class="pch-sub">${phase.weeks}</div>`;
+    html += `</div></div>`;
+    html += `<div class="pch-right">`;
+    html += `<div class="pch-stat"><div class="pch-stat-num">${phase.totalH}h</div><div class="pch-stat-lbl">Horas</div></div>`;
+    html += `<div class="pch-stat"><div class="pch-stat-num">${phase.sprints.length}</div><div class="pch-stat-lbl">Sprints</div></div>`;
+    html += `<span class="chevron" style="color:${phase.color}">▼</span>`;
+    html += `</div></div>`;
+
+    html += `<div class="phase-card-body">`;
+    phase.sprints.forEach(sprint => {
+      html += `<div class="sprint-row" onclick="openPanel('${sprint.id}')">`;
+      html += `<div>`;
+      html += `<div class="sr-week">${sprint.week}</div>`;
+      html += `</div>`;
+      html += `<div>`;
+      html += `<div class="sr-title">${sprint.title}</div>`;
+      html += `<div class="sr-desc">${sprint.desc}</div>`;
+      html += `<div class="sr-tags">`;
+      sprint.tags.forEach(tag => {
+        html += `<span class="sr-tag" style="background:${phase.bg};color:${phase.color};border:1px solid ${phase.color}30;">${tag}</span>`;
+      });
+      html += `</div></div>`;
+      html += `<div class="sr-hours"><b>${sprint.h}</b>h</div>`;
+      html += `</div>`;
+    });
+    html += `</div></div>`;
+  });
+  
+  el.innerHTML = html;
+}
+
+// ── SIDEBAR ───────────────────────────────────────────────────────────────────
+function buildSidebar(){
+  const el = document.getElementById('sb-nav');
+  let html = '';
+  
+  PHASES.forEach(phase => {
+    html += `<div class="sb-phase-header">`;
+    html += `<span class="ph-badge" style="background:${phase.color};color:#fff;">${phase.label}</span>`;
+    html += `<span class="ph-title">${phase.name}</span>`;
+    html += `<span class="ph-dur" style="margin-left:auto;">${phase.totalH}h</span>`;
+    html += `</div>`;
+    html += `<div class="sb-summary">${phase.desc}</div>`;
+    
+    phase.sprints.forEach(sprint => {
+      html += `<button class="sb-item" onclick="openPanel('${sprint.id}')">`;
+      html += `<span class="sb-dot" style="background:${phase.color};"></span>`;
+      html += `<span class="sb-text">${sprint.title}<small>${sprint.week} · ${sprint.h}h</small></span>`;
+      html += `</button>`;
+    });
+  });
+  
+  el.innerHTML = html;
+}
+
+// ── DETAIL PANEL ──────────────────────────────────────────────────────────────
+function findSprint(id){
+  for(const phase of PHASES){
+    for(const sprint of phase.sprints){
+      if(sprint.id === id) return {sprint, phase};
+    }
+  }
+  return null;
+}
+
+function openPanel(sprintId){
+  const found = findSprint(sprintId);
+  if(!found) return;
+  const {sprint, phase} = found;
+  
+  document.getElementById('dp-badge').textContent = `${phase.label} · ${phase.name}`;
+  document.getElementById('dp-badge').style.background = phase.color;
+  document.getElementById('dp-badge').style.color = '#fff';
+  document.getElementById('dp-title').textContent = sprint.title;
+  document.getElementById('dp-meta').textContent = `${sprint.week} · ${sprint.h} horas de desenvolvimento`;
+  
+  let body = '';
+  
+  // Hours
+  body += `<div class="dp-section">`;
+  body += `<div class="dp-section-title">Métricas do Sprint</div>`;
+  body += `<div class="dp-hours-grid">`;
+  body += `<div class="dp-h"><div class="dp-h-num">${sprint.h}</div><div class="dp-h-lbl">Horas</div></div>`;
+  body += `<div class="dp-h"><div class="dp-h-num">${sprint.h/8}</div><div class="dp-h-lbl">Dias úteis</div></div>`;
+  body += `<div class="dp-h"><div class="dp-h-num">${sprint.tasks.length}</div><div class="dp-h-lbl">Entregáveis</div></div>`;
+  body += `<div class="dp-h"><div class="dp-h-num">${Math.round(sprint.h/sprint.tasks.length)}h</div><div class="dp-h-lbl">Média/tarefa</div></div>`;
+  body += `</div></div>`;
+
+  // Tasks
+  body += `<div class="dp-section">`;
+  body += `<div class="dp-section-title">Entregáveis (${sprint.tasks.length})</div>`;
+  sprint.tasks.forEach(task => {
+    body += `<div class="dp-task">`;
+    body += `<div class="dp-task-check" style="border-color:${phase.color}30;"></div>`;
+    body += `<div class="dp-task-text">${task.t}${task.d?`<small>${task.d}</small>`:''}</div>`;
+    body += `</div>`;
+  });
+  body += `</div>`;
+
+  // Tech
+  if(sprint.tech && sprint.tech.length){
+    body += `<div class="dp-section">`;
+    body += `<div class="dp-section-title">Tecnologias</div>`;
+    body += `<div class="dp-tech">`;
+    sprint.tech.forEach(t => body += `<span class="dp-tech-tag">${t}</span>`);
+    body += `</div></div>`;
+  }
+
+  // Docker note
+  if(phase.docker && sprint === phase.sprints[0]){
+    body += `<div class="dp-section">`;
+    body += `<div class="dp-section-title">Infra Docker nesta fase</div>`;
+    body += `<div class="dp-docker">${phase.docker.split('\n').map(l=>`<div>${l}</div>`).join('')}</div>`;
+    body += `</div>`;
+  }
+
+  // Note
+  if(sprint.note){
+    const cls = sprint.noteType === 'warn' ? 'dp-note' : sprint.noteType === 'ok' ? 'dp-note dp-ok' : 'dp-note dp-info';
+    body += `<div class="dp-section">`;
+    body += `<div class="${cls}">${sprint.note}</div>`;
+    body += `</div>`;
+  }
+
+  document.getElementById('dp-body').innerHTML = body;
+  document.getElementById('detail-panel').classList.add('open');
+  document.getElementById('overlay').classList.add('active');
+}
+
+function closePanel(){
+  document.getElementById('detail-panel').classList.remove('open');
+  document.getElementById('overlay').classList.remove('active');
+}
+
+// ── VIEW TOGGLE ───────────────────────────────────────────────────────────────
+function setView(v){
+  document.getElementById('gantt-view').style.display = v==='gantt'?'block':'none';
+  document.getElementById('card-view').style.display = v==='cards'?'block':'none';
+  document.querySelectorAll('.vt-btn').forEach(b=>{
+    b.classList.toggle('active', b.textContent.toLowerCase().includes(v==='gantt'?'gantt':'sprint'));
+  });
+}
+
+// ── FILTER ────────────────────────────────────────────────────────────────────
+function filterPhase(id){
+  document.querySelectorAll('.nf-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  document.querySelectorAll('.phase-block,.phase-card').forEach(el=>{
+    if(id==='all' || el.dataset.phase===id){
+      el.style.display='';
+    } else {
+      el.style.display='none';
+    }
+  });
+}
+
+// ── PHASE TOGGLE (cards) ──────────────────────────────────────────────────────
+function togglePhase(header){
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.chevron');
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : '';
+  chevron.style.transform = isOpen ? 'rotate(-90deg)' : '';
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+buildSidebar();
+buildGantt();
+buildCards();
+setView('gantt');
+</script>
+</body>
+</html>
