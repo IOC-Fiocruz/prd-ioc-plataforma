@@ -401,6 +401,7 @@ function vEscopo(){return `<style>${BASE}</style><div class="view">
 ${N('Objetivo da Fase 1: eliminar o risco de segurança imediato colocando o portal principal online com o CMS novo em até 3 meses.','ok','target')}
 <h2 class="sec">Funcionalidades por Fase</h2>
 ${T(['Pri.','Funcionalidade','Descrição','Fase'],[
+  ['P1','Uso do Login do IOC (SSO)', 'Autenticação própria é suficiente para esta versão', 'Fase 1 meses 1–3 '],
   ['P1','CMS Core','Tipos de conteúdo por área, editor WYSIWYG, versionamento, fluxo editorial configurável, agendamento, RBAC por área','Fase 1 · meses 1–3'],
   ['P1','Autenticação própria','Login e gestão de usuários com autenticação interna; papéis e permissões por área do portal','Fase 1 · meses 1–3'],
   ['P1','Portal Institucional','Página inicial, sobre o IOC, notícias, agenda, editais, documentos; eMAG/WCAG 2.1 AA, padrão visual IOC/gov.br','Fase 1 · meses 1–3'],
@@ -412,7 +413,7 @@ ${T(['Pri.','Funcionalidade','Descrição','Fase'],[
   ['P4','Testes e entrega','Cobertura ≥ 80%, documentação completa, treinamento, handover ao TI','Fase 4 · mês 9'],
 ])}
 <h2 class="sec">Fora do Escopo (nesta versão)</h2>
-${BL(['Login único institucional (SSO) — autenticação própria é suficiente para esta versão','Portais dos programas de pós-graduação em servidores separados — centralização futura','Área de Parceiros e Serviços Institucionais — roadmap futuro','Integrações com SIGA, ARCA, EAD — roadmap futuro','API pública — roadmap futuro','Aplicativo móvel nativo','Infraestrutura de servidores — responsabilidade exclusiva do TI'])}
+${BL(['Portais dos programas de pós-graduação em servidores separados — centralização futura','Área de Parceiros e Serviços Institucionais — roadmap futuro','Integrações com SIGA, ARCA, EAD — roadmap futuro','API pública — roadmap futuro','Aplicativo móvel nativo','Infraestrutura de servidores — responsabilidade exclusiva do TI'])}
 <h2 class="sec">Cronograma Resumido</h2>
 <div class="tl">
   <div class="tli"><div class="tlp">Fase 1<span>meses 1–3</span></div><div class="tld"></div><div class="tlc"><div class="tlt">Fundação — CMS + Portal Institucional</div><div class="tld2">CMS Core, autenticação, portal institucional público, biblioteca de mídia</div><div class="tlb">Marco: portal principal online e seguro</div></div></div>
@@ -454,7 +455,6 @@ function vRoadmap(){return `<style>${BASE}</style><div class="view">
 <h1 class="vt">Roadmap Futuro<br><em>Oportunidades de Evolução</em></h1>
 <p class="sub">Itens fora do escopo dos 9 meses que a arquitetura Laravel foi projetada para suportar nativamente.</p>
 <div class="rm">
-  <div class="rmi"><div class="rmic rmic-b">${svg('key',18)}</div><div><div class="rmt">Login Único (SSO)</div><div class="rmd">Integração com Shibboleth ou Keycloak para autenticação via conta Fiocruz. Laravel Sanctum já incluso no escopo — sem reescrita da autenticação.</div><span class="rmtag">Versão futura</span></div></div>
   <div class="rmi"><div class="rmic rmic-b">${svg('graduationCap',18)}</div><div><div class="rmt">Portais de Pós-Graduação</div><div class="rmd">Centralização dos portais de PPG dispersos. Arquitetura multissite: um backend, múltiplos frontends com identidade própria por programa.</div><span class="rmtag">Versão futura</span></div></div>
   <div class="rmi"><div class="rmic rmic-g">${svg('handshake',18)}</div><div><div class="rmt">Área de Parceiros e Serviços</div><div class="rmd">Catálogo de laboratórios de referência com serviços, capacidades técnicas e contato. Diretório de convênios e parcerias institucionais.</div><span class="rmtag">Versão futura</span></div></div>
   <div class="rmi"><div class="rmic rmic-b">${svg('link',18)}</div><div><div class="rmt">Integrações Fiocruz</div><div class="rmd">SIGA (acadêmico), ARCA (repositório de publicações) e EAD (plataforma de cursos a distância).</div><span class="rmtag">Versão futura</span></div></div>
