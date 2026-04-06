@@ -235,7 +235,8 @@ a{color:var(--accent);text-decoration:none;}
   <div class="hero-bar">
     <div class="hero-tag">Portal IOC/Fiocruz — Sistema de Gerenciamento de Conteúdo</div>
     <h1 class="hero-title">Cronograma <em>9 Meses</em></h1>
-    <p class="hero-sub">Laravel 11 · Vue 3 · MySQL 8 · Redis · MeiliSearch · Docker · GitHub Actions · 2 Servidores VPS</p>
+    <p class="hero-sub">Laravel 11 · Vue 3 SPA · Nuxt 3 SSR · MySQL 8 · Redis · MeiliSearch · Docker · GitHub Actions · 2 Servidores VPS
+</p>
     <div class="hero-metrics">
       <div class="hm"><div class="hm-num">1.584</div><div class="hm-lbl">Horas totais</div></div>
       <div class="hm"><div class="hm-num">4</div><div class="hm-lbl">Fases</div></div>
@@ -295,7 +296,10 @@ const PHASES = [
     id:'f1', label:'Fase 1', name:'Fundação', period:'Meses 1–3', color:'#e47267', bg:'#fdf1ef',
     weeks:'Semanas 1–12', totalH:528, totalDays:66,
     desc:'Infra Docker, CMS Core, autenticação, portal institucional público. Marco: portal seguro online.',
-    docker:`VPS App: Laravel + Nginx + PHP-FPM\nVPS DB: MySQL 8 + Redis + MeiliSearch\nDockerfile multi-stage (builder + runtime)\ngithub Actions: build → test → push image → deploy`,
+    docker:`VPS App: Laravel API + Nginx Gateway + Vue 3 SPA (admin) + Nuxt 3 SSR (portal)
+            VPS DB: MySQL 8 + Redis + MeiliSearch
+            Dockerfile multi-stage (builder + runtime)
+            GitHub Actions: build → test → push image → deploy`,
     sprints:[
       {
         id:'f1s1', week:'Sem 1–2', title:'Infraestrutura Docker & CI/CD', h:80,
@@ -311,9 +315,9 @@ const PHASES = [
           {t:'GitHub Actions: workflow deploy', d:'SSH para VPS, pull nova imagem, migrate, restart graceful'},
           {t:'Secrets e variáveis de ambiente no GitHub', d:'DATABASE_URL, REDIS_URL, APP_KEY encriptados'},
           {t:'Setup repositório GitHub privado + branch main/develop', d:'Proteção de branch, require reviews'},
-          {t:'Monitoramento básico: UptimeRobot + alertas Slack/e-mail', d:'Alertas de downtime e uso de disco'},
+          {t:'Monitoramento básico: Uptime Kuma + Grafana Cloud + alertas Telegram', d:'Alertas de downtime, uso de disco, métricas CPU/RAM'},
         ],
-        tech:['Ubuntu 22.04 LTS','Docker 24.x','Docker Compose 2','GitHub Actions','Nginx','WireGuard','UptimeRobot'],
+        tech:['Ubuntu 24.04 LTS','Docker 29.x','Docker Compose 2','GitHub Actions','Nginx','WireGuard','Uptime Kuma','Grafana Cloud'],
         note:'Esta semana é crítica. Sem infraestrutura sólida, todo desenvolvimento posterior fica travado.',
         noteType:'warn',
         docker:`# VPS App — docker-compose (parcial)\nservices:\n  nginx:\n    image: nginx:alpine\n    volumes: [./nginx.conf:/etc/nginx/conf.d/default.conf]\n  app:\n    build: . # Dockerfile multi-stage\n    env_file: .env.production\n  queue:\n    extends: {service: app}\n    command: php artisan queue:work\n  scheduler:\n    extends: {service: app}\n    command: sh -c "while true; do php artisan schedule:run; sleep 60; done"`
@@ -379,8 +383,8 @@ const PHASES = [
         noteType:'warn',
       },
       {
-        id:'f1s5', week:'Sem 10–12', title:'Portal Público + Interface Admin (Vue 3)', h:120,
-        desc:'Frontend: painel administrativo em Vue 3 + Pinia e portal público institucional em Blade/Vue. Conformidade eMAG/WCAG.',
+        id:'f1s5', week:'Sem 10–12', title:'Portal Público (Nuxt 3 SSR) + Interface Admin (Vue 3 SPA)', h:120,
+        desc:'Frontend desacoplado: admin em Vue 3 SPA (cms.ioc.local), portal público em Nuxt 3 SSR com BlockRenderer e SSR para SEO.',
         tags:['Vue 3','Pinia','Blade','eMAG','WCAG'],
         tasks:[
           {t:'Setup Vue 3 + Vite + Pinia + Vue Router (SPA admin)', d:'Autenticação Sanctum com cookie/token'},
@@ -389,13 +393,14 @@ const PHASES = [
           {t:'ContentEditorView: editor Tiptap + page builder de blocos', d:'Drag-and-drop, pré-visualização, autosave 30s'},
           {t:'MediaLibraryView: grid com upload drag-and-drop', d:'Busca por tag, tipo MIME, metadados'},
           {t:'UserManagementView + RolePermissionView', d:'CRUD de usuários, atribuição de papéis por setor'},
-          {t:'Portal público Blade: layout gov.br / padrão IOC', d:'Menu responsivo, breadcrumb, footer'},
-          {t:'Páginas públicas: HomePage, ContentPage, NewsPage, SearchPage', d:'Templates semânticos eMAG'},
+          {t:'Setup Nuxt 3 SSR: nuxt.config, módulo sitemap, useAsyncData', d:'ioc.local · SSR para SEO e Core Web Vitals'},
+          {t:'BlockRenderer.vue: resolução dinâmica de componentes por tipo de bloco', d:'Hero, RichText, NewsGrid, Gallery, CTA, Embed'},
+          {t:'Páginas dinâmicas: [slug].vue com useAsyncData + useHead (SEO)', d:'SSR server-side, HTML completo para crawlers'},
           {t:'Acessibilidade: landmarks, skip-nav, foco, contraste 4.5:1', d:'Teste com axe-core e teclado'},
           {t:'Integração MeiliSearch: busca global com sugestões e filtros', d:'SearchController, SearchService, Strategy pattern'},
           {t:'Testes E2E básicos com Dusk (fluxo de login e criação de conteúdo)', d:'Cenários críticos'},
         ],
-        tech:['Vue 3','Pinia','Vite','Tiptap','Blade','Tailwind','axe-core','MeiliSearch','Laravel Dusk'],
+        tech:['Vue 3','Pinia','Vite','Nuxt 3','Tiptap','BlockRenderer','Tailwind','axe-core','MeiliSearch','Laravel Dusk'],
         note:'Marco da Fase 1: ao final da Semana 12, o portal institucional deve estar online em produção, eliminando o risco do Drupal 7.',
         noteType:'ok',
       },
@@ -620,7 +625,7 @@ const PHASES = [
           {t:'Entrega dos repositórios, secrets e acessos ao TI', d:'Documentação de credenciais segura'},
           {t:'Handover formal com ata assinada', d:'Transferência de propriedade do sistema'},
         ],
-        tech:['Blue-green Deploy','DNS Cutover','GitHub Actions','UptimeRobot'],
+        tech:['Blue-green Deploy','DNS Cutover','GitHub Actions','Uptime Kuma','Grafana Cloud'],
         note:'Marco final: portal novo em produção, Drupal 7 descomissionado, TI capacitado e documentação entregue.',
         noteType:'ok',
       },
