@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fluxo de Usuário — Plataformas Tecnológicas IOC</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f4f6f9;
+      color: #1a2a3a;
+    }
+    header {
+      background: #0d2a45;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    header .label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #7ab8e8;
+    }
+    header h1 {
+      font-size: 18px;
+      font-weight: 500;
+      color: #ffffff;
+    }
+    header .sep {
+      width: 1px;
+      height: 32px;
+      background: #1a4a6a;
+    }
+    .meta {
+      display: flex;
+      gap: 24px;
+      padding: 12px 32px;
+      background: #ffffff;
+      border-bottom: 1px solid #e0e8f0;
+      font-size: 13px;
+      color: #506070;
+    }
+    .meta span { font-weight: 500; color: #1a2a3a; }
+    .frame-wrap {
+      padding: 24px 32px;
+      display: flex;
+      justify-content: center;
+    }
+    .frame-box {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+      overflow: hidden;
+      width: 100%;
+      max-width: 800px;
+    }
+    .frame-box iframe {
+      display: block;
+      width: 100%;
+      height: 640px;
+      border: none;
+    }
+    footer {
+      text-align: center;
+      padding: 16px;
+      font-size: 12px;
+      color: #8090a0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <div class="label">Portal IOC/Fiocruz</div>
+      <h1>Fluxo de Usuário — Plataformas Tecnológicas</h1>
+    </div>
+    <div class="sep"></div>
+    <div>
+      <div class="label">Reunião</div>
+      <h1>Vice-Diretoria de Pesquisa · 08/05/2026</h1>
+    </div>
+  </header>
+
+  <div class="meta">
+    Definido e validado em reunião com: <span>Bruno, Luciana, Beatriz e Rubem</span>
+    &nbsp;·&nbsp; Ferramenta: <span>Miro</span>
+  </div>
+
+  <div class="frame-wrap">
+    <div class="frame-box">
+      <iframe
+        width="768"
+        height="640"
+        src="https://miro.com/app/live-embed/uXjVHWXHJwo=/?focusWidget=3458764671086258477&embedMode=view_only_without_ui&embedId=710908762707"
+        scrolling="no"
+        allow="fullscreen; clipboard-read; clipboard-write"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+
+  <footer>Portal IOC/Fiocruz · Ciência e Saúde desde 1900</footer>
+
+</body>
+</html>
